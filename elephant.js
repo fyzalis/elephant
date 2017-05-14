@@ -1,5 +1,9 @@
 $(document).ready(function() {
     (function($) {
+
+
+
+
         $.fn.elephant = function(options) {
 
 
@@ -7,8 +11,9 @@ $(document).ready(function() {
             // OPTIONS  This is the easiest way to have default options.
             var settings = $.extend({
                 // These are the defaults.
-                timeRefresh: 1000,
-                triggers: new Array()
+                //timeRefresh: 1000,
+                triggers: new Array(),
+                activeDuration: 30
                 //backgroundColor: "yellow"
             }, options);
 
@@ -18,26 +23,40 @@ $(document).ready(function() {
                 scroll: 0,
                 visit: 0,
                 trigger: 0,
-                favorite: 0
+                favorite: 0,
+                updated_at: new Date(),
+                active: true
             }
 
+            var local_storage = {};
 
 
 
 
             function updateTime() {
+              checkActiveDuration();
+              if(stats.active){
                 stats.time++;
                 updateEntry();
+              }
             }
 
-            var countSeconds = setInterval(function() {
-                updateTime()
-            }, 1000);
 
+            function checkActiveDuration(){
+              var now = new Date();
+              var sec1 = stats.updated_at.getTime()/1000;
+              var sec2 = now.getTime()/1000;
+              var diff = Math.round(sec2-sec1);
+              console.log('diff:'+diff);
+              if(diff>settings.activeDuration){
+                setActive(false);
+              }
+            }
 
 
             var countScroll = function() {
                 $(window).scroll(function(event) {
+                    setActive(true);
                     stats.scroll += 1;
                     updateEntry();
                 });
@@ -45,13 +64,14 @@ $(document).ready(function() {
             }
 
             var addVisit = function() {
+                console.log('ADD VISITE');
                 stats.visit += 1;
                 updateEntry();
             }
 
 
             var countTrigger = function() {
-                console.log('TRIGGER');
+
                 $.each(settings.triggers, function(index, value) {
                     $(value).on('click', function() {
                         addTrigger();
@@ -60,6 +80,7 @@ $(document).ready(function() {
             }
 
             var addTrigger = function() {
+                setActive(true);
                 stats.trigger += 1;
                 updateEntry();
             }
@@ -72,9 +93,19 @@ $(document).ready(function() {
                     } else {
                         stats.favorite = 1;
                     }
+
                     updateEntry();
                 });
             };
+
+            var setActive = function(active){
+              console.log('SET ACTIVE : '+active);
+              stats.updated_at = new Date();
+              stats.active = active;
+            }
+
+
+
 
 
 
@@ -86,49 +117,91 @@ $(document).ready(function() {
             }
 
 
-            var createEntry = function() {
-                console.log('CREATE entry on : ' + path);
-                localStorage.setItem(path, jsonize(stats));
-            }
-
-            var updateEntry = function() {
-                //console.log('UPDATE entry on : ' + path);
-                //console.log(stats);
-                localStorage.setItem(path, jsonize(stats));
-            }
-
-
             var entryExists = function() {
-                if (localStorage.getItem(path) == null) {
+                console.log('ENTRY EXISTS ?');
+                console.log(local_storage);
+
+
+                console.log(local_storage[path]);
+
+                if (local_storage.hasOwnProperty(path)) {
+                    console.log('true');
+                    return true;
+                } else {
+                    console.log('false');
+                    return false;
+                }
+            }
+            var elephantExists = function() {
+                if (localStorage.getItem('elephant') == null) {
                     return false;
                 } else {
                     return true;
                 }
             }
+            var createElephant = function() {
+                console.log('CREATE ELEPHANT on : ' + path);
+                localStorage.setItem('elephant', jsonize({}));
+            }
+
+            var createEntry = function() {
+                console.log('CREATE entry on : ' + path);
+
+                local_storage[path] = stats;
+
+                localStorage.setItem('elephant', jsonize(local_storage));
+            }
+
+            function loadElephant() {
+                console.log('LOAD ELEPHANT');
+
+                local_storage = unjsonize(localStorage.getItem('elephant'));
+                console.log(local_storage);
+
+            }
 
             var loadEntry = function() {
-                var data = unjsonize(localStorage.getItem(path));
                 console.log('LOAD ENTRY');
+                var data = local_storage[path];
+                console.log(data);
                 stats.time = data.time;
                 stats.scroll = data.scroll;
                 stats.visit = data.visit;
                 stats.trigger = data.trigger;
                 stats.favorite = data.favorite;
-                console.log(stats);
+                console.log(data);
             }
+
+
+            var updateEntry = function() {
+                console.log('UPDATE ENTRY');
+                console.log(stats);
+                if(stats.active){
+                  local_storage[path] = stats;
+                  localStorage.setItem('elephant', jsonize(local_storage));
+                }
+            }
+
 
 
 
             var displayData = function() {
-
-
-                $.each(settings.triggers, function(index, value) {
-                    $(value).on('click', function() {
-                        addTrigger();
-                    })
+                console.log('display data');
+                var list = "";
+                $.each(local_storage, function(index, value) {
+                    list += "<ul>";
+                    list += "<li>" + index + "</li>";
+                    $.each(value, function(key, val) {
+                        list += "<li>" + key + " : " + val + "</li>";
+                    });
+                    list += "</ul>";
                 });
-
+                $('#elephanto').html(list);
             }
+
+
+
+
 
 
 
@@ -148,14 +221,28 @@ $(document).ready(function() {
 
 
             if (runElephant()) {
-              console.log('run elephant');
+                console.log('run elephant');
+
+
+                if (!elephantExists()) {
+                    console.log('CREATE ELEPHANT');
+                    createElephant();
+                }
+
+                loadElephant();
 
                 if (!entryExists()) {
                     createEntry();
                 }
 
+
+
                 loadEntry();
-                //countSeconds();
+
+                setInterval(function() {
+                    updateTime()
+                }, 1000);
+
                 countScroll();
                 addVisit();
                 countTrigger();
@@ -177,10 +264,18 @@ $(document).ready(function() {
             }
 
 
-            if(runElephanto()){
-              console.log('run elephanto !');
+            if (runElephanto()) {
+                console.log('run elephanto !');
 
-              displayData();
+
+                if (!elephantExists()) {
+                    console.log('CREATE ELEPHANT');
+                    createElephant();
+                }
+
+                loadElephant();
+
+                displayData();
 
 
             }
@@ -205,7 +300,8 @@ $(document).ready(function() {
 $(document).ready(function() {
 
     $.fn.elephant({
-        triggers: new Array('.trigger1', '.trigger2')
+        triggers: new Array('.trigger1', '.trigger2'),
+        activeDuration: 5
     });
 
 
