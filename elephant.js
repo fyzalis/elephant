@@ -14,7 +14,7 @@ $(document).ready(function() {
                 triggers: new Array(),
                 activeDuration: 30
             }, options);
-            var path = window.location.pathname;
+            let path = window.location.pathname;
             var stats = {
                 time: 0,
                 scroll: 0,
@@ -22,14 +22,31 @@ $(document).ready(function() {
                 trigger: 0,
                 favorite: 0,
                 updated_at: new Date(),
-                active: true
+                active: true,
+                score: 0
             }
             var local_storage = {};
+            var coeffs = {
+                time: 1,
+                scroll: 1,
+                visit: 10,
+                trigger: 10
+            }
 
 
 
 
             //FUNCTIONS
+
+            //MAIN
+            var runElephant = function() {
+                console.log('run elephant ?')
+                return $('div#elephant').length ? true : false;
+            }
+            var runElephanto = function() {
+                console.log('run elephanto ?')
+                return $('div#elephanto').length ? true : false;
+            }
 
             //ELEPHANT
             var elephantExists = function() {
@@ -66,20 +83,22 @@ $(document).ready(function() {
                 localStorage.setItem('elephant', jsonize(local_storage));
             }
             var loadEntry = function() {
-                console.log('load entry');
+                console.log('load entry' + path);
                 var data = local_storage[path];
                 stats.time = data.time;
                 stats.scroll = data.scroll;
                 stats.visit = data.visit;
                 stats.trigger = data.trigger;
                 stats.favorite = data.favorite;
+                console.log(stats);
             }
             var updateEntry = function() {
                 console.log('update entry');
                 if (stats.active) {
-                  console.log(path);
-                  console.log(jsonize(stats));
+                    console.log('stats / local storage');
                     local_storage[path] = stats;
+                    console.log(stats);
+                    console.log(local_storage);
                     localStorage.setItem('elephant', jsonize(local_storage));
                 }
             }
@@ -87,20 +106,12 @@ $(document).ready(function() {
 
 
 
-            //MAIN
-            var runElephant = function() {
-              console.log('run elephant ?')
-                return $('div#elephant').length ? true : false;
-            }
-            var runElephanto = function() {
-              console.log('run elephanto ?')
-                return $('div#elephanto').length ? true : false;
-            }
+
 
 
             //Counters
             function updateTime() {
-              console.log('updateTime');
+                console.log('updateTime');
                 checkActiveDuration();
                 if (stats.active) {
                     stats.time++;
@@ -108,7 +119,7 @@ $(document).ready(function() {
                 }
             }
             var countScroll = function() {
-              console.log('countScroll');
+                console.log('countScroll');
                 $(window).scroll(function(event) {
                     switchActive(true);
                     stats.scroll += 1;
@@ -123,7 +134,7 @@ $(document).ready(function() {
             }
 
             var addTrigger = function() {
-              console.log('addTrigger');
+                console.log('addTrigger');
                 switchActive(true);
                 stats.trigger += 1;
                 updateEntry();
@@ -142,7 +153,7 @@ $(document).ready(function() {
                 }
             }
             var switchActive = function(active) {
-                console.log('setActive'+active);
+                console.log('setActive' + active);
                 if (active) {
                     stats.updated_at = new Date();
                 }
@@ -151,7 +162,7 @@ $(document).ready(function() {
 
             //Events
             var countTrigger = function() {
-              console.log('countTrigger');
+                console.log('countTrigger');
                 $.each(settings.triggers, function(index, value) {
                     $(value).on('click', function() {
                         addTrigger();
@@ -160,7 +171,7 @@ $(document).ready(function() {
             }
 
             var countFavorite = function() {
-              console.log('countFavorite');
+                console.log('countFavorite');
                 $('#elephantAdd').on('click', function() {
                     switchFavorite();
                     updateEntry();
@@ -182,6 +193,7 @@ $(document).ready(function() {
 
 
 
+            //ELEPHANTO
             //IHM
             var displayData = function() {
                 console.log('display data');
@@ -196,6 +208,22 @@ $(document).ready(function() {
                 });
                 $('#elephanto').html(list);
             }
+            //Calul score
+            var computeScore = function() {
+                console.log('computeScore');
+                $.each(local_storage, function(index, value) {
+                    var score = 0;
+                    $.each(value, function(key, val) {
+                        if (key == 'time' || key == 'visit' || key == 'trigger' || key == 'scroll'){
+                          score += Math.round(local_storage[index][key] * coeffs[key]);
+                        }
+                    });
+                    local_storage[index]['score'] = score;
+                });
+            }
+
+
+
 
             //Utilities
             function jsonize(data) {
@@ -249,9 +277,9 @@ $(document).ready(function() {
                     createElephant();
                 }
                 loadElephant();
+                computeScore();
                 displayData();
             }
-
         };
     }(jQuery));
 });
