@@ -7,16 +7,13 @@ $(document).ready(function() {
         $.fn.elephant = function(options) {
 
 
+            //VAR INIT
 
-            // OPTIONS  This is the easiest way to have default options.
+            // OPTIONS
             var settings = $.extend({
-                // These are the defaults.
-                //timeRefresh: 1000,
                 triggers: new Array(),
                 activeDuration: 30
-                //backgroundColor: "yellow"
             }, options);
-
             var path = window.location.pathname;
             var stats = {
                 time: 0,
@@ -27,112 +24,16 @@ $(document).ready(function() {
                 updated_at: new Date(),
                 active: true
             }
-
             var local_storage = {};
 
 
 
 
-            function updateTime() {
-              checkActiveDuration();
-              if(stats.active){
-                stats.time++;
-                updateEntry();
-              }
-            }
+            //FUNCTIONS
 
-
-            function checkActiveDuration(){
-              var now = new Date();
-              var sec1 = stats.updated_at.getTime()/1000;
-              var sec2 = now.getTime()/1000;
-              var diff = Math.round(sec2-sec1);
-              console.log('diff:'+diff);
-              if(diff>settings.activeDuration){
-                setActive(false);
-              }
-            }
-
-
-            var countScroll = function() {
-                $(window).scroll(function(event) {
-                    setActive(true);
-                    stats.scroll += 1;
-                    updateEntry();
-                });
-
-            }
-
-            var addVisit = function() {
-                console.log('ADD VISITE');
-                stats.visit += 1;
-                updateEntry();
-            }
-
-
-            var countTrigger = function() {
-
-                $.each(settings.triggers, function(index, value) {
-                    $(value).on('click', function() {
-                        addTrigger();
-                    })
-                });
-            }
-
-            var addTrigger = function() {
-                setActive(true);
-                stats.trigger += 1;
-                updateEntry();
-            }
-
-
-            var countFavorite = function() {
-                $('#elephantAdd').on('click', function() {
-                    if (stats.favorite == 1) {
-                        stats.favorite = 0;
-                    } else {
-                        stats.favorite = 1;
-                    }
-
-                    updateEntry();
-                });
-            };
-
-            var setActive = function(active){
-              console.log('SET ACTIVE : '+active);
-              stats.updated_at = new Date();
-              stats.active = active;
-            }
-
-
-
-
-
-
-            var runElephant = function() {
-                return $('div#elephant').length ? true : false;
-            }
-            var runElephanto = function() {
-                return $('div#elephanto').length ? true : false;
-            }
-
-
-            var entryExists = function() {
-                console.log('ENTRY EXISTS ?');
-                console.log(local_storage);
-
-
-                console.log(local_storage[path]);
-
-                if (local_storage.hasOwnProperty(path)) {
-                    console.log('true');
-                    return true;
-                } else {
-                    console.log('false');
-                    return false;
-                }
-            }
+            //ELEPHANT
             var elephantExists = function() {
+                console.log('elephant exists');
                 if (localStorage.getItem('elephant') == null) {
                     return false;
                 } else {
@@ -140,51 +41,148 @@ $(document).ready(function() {
                 }
             }
             var createElephant = function() {
-                console.log('CREATE ELEPHANT on : ' + path);
+                console.log('create elephant');
                 localStorage.setItem('elephant', jsonize({}));
             }
 
+            function loadElephant() {
+                console.log('load elephant');
+                local_storage = unjsonize(localStorage.getItem('elephant'));
+            }
+
+
+            //ENTRIES
+            var entryExists = function() {
+                console.log('entryexists ?');
+                if (local_storage.hasOwnProperty(path)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
             var createEntry = function() {
-                console.log('CREATE entry on : ' + path);
-
+                console.log('create entry');
                 local_storage[path] = stats;
-
                 localStorage.setItem('elephant', jsonize(local_storage));
             }
-
-            function loadElephant() {
-                console.log('LOAD ELEPHANT');
-
-                local_storage = unjsonize(localStorage.getItem('elephant'));
-                console.log(local_storage);
-
-            }
-
             var loadEntry = function() {
-                console.log('LOAD ENTRY');
+                console.log('load entry');
                 var data = local_storage[path];
-                console.log(data);
                 stats.time = data.time;
                 stats.scroll = data.scroll;
                 stats.visit = data.visit;
                 stats.trigger = data.trigger;
                 stats.favorite = data.favorite;
-                console.log(data);
             }
-
-
             var updateEntry = function() {
-                console.log('UPDATE ENTRY');
-                console.log(stats);
-                if(stats.active){
-                  local_storage[path] = stats;
-                  localStorage.setItem('elephant', jsonize(local_storage));
+                console.log('update entry');
+                if (stats.active) {
+                  console.log(path);
+                  console.log(jsonize(stats));
+                    local_storage[path] = stats;
+                    localStorage.setItem('elephant', jsonize(local_storage));
                 }
             }
 
 
 
 
+            //MAIN
+            var runElephant = function() {
+              console.log('run elephant ?')
+                return $('div#elephant').length ? true : false;
+            }
+            var runElephanto = function() {
+              console.log('run elephanto ?')
+                return $('div#elephanto').length ? true : false;
+            }
+
+
+            //Counters
+            function updateTime() {
+              console.log('updateTime');
+                checkActiveDuration();
+                if (stats.active) {
+                    stats.time++;
+                    updateEntry();
+                }
+            }
+            var countScroll = function() {
+              console.log('countScroll');
+                $(window).scroll(function(event) {
+                    switchActive(true);
+                    stats.scroll += 1;
+                    updateEntry();
+                });
+
+            }
+            var addVisit = function() {
+                console.log('add visite');
+                stats.visit += 1;
+                updateEntry();
+            }
+
+            var addTrigger = function() {
+              console.log('addTrigger');
+                switchActive(true);
+                stats.trigger += 1;
+                updateEntry();
+            }
+
+
+            //Switch
+            function switchFavorite() {
+                console.log('switchFavorite');
+                if (stats.favorite == 1) {
+                    stats.favorite = 0;
+                    updateEntry();
+                } else {
+                    stats.favorite = 1;
+                    switchActive(true);
+                }
+            }
+            var switchActive = function(active) {
+                console.log('setActive'+active);
+                if (active) {
+                    stats.updated_at = new Date();
+                }
+                stats.active = active;
+            }
+
+            //Events
+            var countTrigger = function() {
+              console.log('countTrigger');
+                $.each(settings.triggers, function(index, value) {
+                    $(value).on('click', function() {
+                        addTrigger();
+                    })
+                });
+            }
+
+            var countFavorite = function() {
+              console.log('countFavorite');
+                $('#elephantAdd').on('click', function() {
+                    switchFavorite();
+                    updateEntry();
+                });
+            };
+
+
+            //Check user activity
+            function checkActiveDuration() {
+                var now = new Date();
+                var sec1 = stats.updated_at.getTime() / 1000;
+                var sec2 = now.getTime() / 1000;
+                var diff = Math.round(sec2 - sec1);
+                console.log('checkActiveDuration:' + diff);
+                if (diff > settings.activeDuration && stats.active == true) {
+                    switchActive(false);
+                }
+            }
+
+
+
+            //IHM
             var displayData = function() {
                 console.log('display data');
                 var list = "";
@@ -199,13 +197,7 @@ $(document).ready(function() {
                 $('#elephanto').html(list);
             }
 
-
-
-
-
-
-
-
+            //Utilities
             function jsonize(data) {
                 return JSON.stringify(data);
             }
@@ -215,81 +207,50 @@ $(document).ready(function() {
             }
 
 
+            //Auto RunS
 
 
-
-
-
+            //Record page variables
             if (runElephant()) {
                 console.log('run elephant');
-
-
                 if (!elephantExists()) {
                     console.log('CREATE ELEPHANT');
                     createElephant();
                 }
-
                 loadElephant();
-
                 if (!entryExists()) {
                     createEntry();
                 }
-
-
-
                 loadEntry();
 
+                //Init action detection
                 setInterval(function() {
                     updateTime()
                 }, 1000);
-
                 countScroll();
                 addVisit();
                 countTrigger();
                 countFavorite();
 
-
-
-
                 //TMP DEV
+                //Reset Local storage
                 $('#reset').on('click', function() {
-                    stats.time = 0;
-                    stats.scroll = 0;
-                    stats.visit = 0;
-                    stats.trigger = 0;
-                    stats.favorite = 0;
-                    updateEntry();
+                    createElephant();
                 })
-
             }
 
 
+
+            //Display Local Storage Datas
             if (runElephanto()) {
                 console.log('run elephanto !');
-
-
                 if (!elephantExists()) {
                     console.log('CREATE ELEPHANT');
                     createElephant();
                 }
-
                 loadElephant();
-
                 displayData();
-
-
             }
-
-
-
-
-            /*
-            // Greenify the collection based on the settings variable.
-            return this.css({
-                color: settings.color,
-                backgroundColor: settings.backgroundColor
-            });
-            */
 
         };
     }(jQuery));
