@@ -14,7 +14,8 @@ $(document).ready(function() {
                 triggers: new Array(),
                 activeDuration: 30
             }, options);
-            let path = window.location.pathname;
+            let page = window.location.pathname;
+            var entry_list = new Array();
             var stats = {
                 time: 0,
                 scroll: 0,
@@ -59,19 +60,18 @@ $(document).ready(function() {
             }
             var createElephant = function() {
                 console.log('create elephant');
-                localStorage.setItem('elephant', jsonize({}));
+                localStorage.setItem('elephant', jsonize(entry_list));
             }
 
             function loadElephant() {
-                console.log('load elephant');
-                local_storage = unjsonize(localStorage.getItem('elephant'));
+                entry_list = unjsonize(localStorage.getItem('elephant'));
             }
 
 
             //ENTRIES
             var entryExists = function() {
-                console.log('entryexists ?');
-                if (local_storage.hasOwnProperty(path)) {
+                console.log('entryexists ???????????????');
+                if (jQuery.inArray(page, entry_list) !== -1) {
                     return true;
                 } else {
                     return false;
@@ -79,12 +79,13 @@ $(document).ready(function() {
             }
             var createEntry = function() {
                 console.log('create entry');
-                local_storage[path] = stats;
-                localStorage.setItem('elephant', jsonize(local_storage));
+                entry_list.push(page);
+                localStorage.setItem('elephant', jsonize(entry_list));
+                localStorage.setItem('elephant::' + page, jsonize(stats));
             }
             var loadEntry = function() {
-                console.log('load entry' + path);
-                var data = local_storage[path];
+                console.log('load entry :' + page);
+                var data = unjsonize(localStorage.getItem('elephant::' + page));
                 stats.time = data.time;
                 stats.scroll = data.scroll;
                 stats.visit = data.visit;
@@ -93,14 +94,8 @@ $(document).ready(function() {
                 console.log(stats);
             }
             var updateEntry = function() {
-                console.log('update entry');
-                if (stats.active) {
-                    console.log('stats / local storage');
-                    local_storage[path] = stats;
-                    console.log(stats);
-                    console.log(local_storage);
-                    localStorage.setItem('elephant', jsonize(local_storage));
-                }
+                computeScore();
+                localStorage.setItem('elephant::' + page, jsonize(stats));
             }
 
 
@@ -158,6 +153,7 @@ $(document).ready(function() {
                     stats.updated_at = new Date();
                 }
                 stats.active = active;
+                updateEntry();
             }
 
             //Events
@@ -211,15 +207,12 @@ $(document).ready(function() {
             //Calul score
             var computeScore = function() {
                 console.log('computeScore');
-                $.each(local_storage, function(index, value) {
-                    var score = 0;
-                    $.each(value, function(key, val) {
-                        if (key == 'time' || key == 'visit' || key == 'trigger' || key == 'scroll'){
-                          score += Math.round(local_storage[index][key] * coeffs[key]);
-                        }
-                    });
-                    local_storage[index]['score'] = score;
-                });
+                var score = 0;
+                score += Math.round(stats.time * coeffs.time);
+                score += Math.round(stats.visit * coeffs.visit);
+                score += Math.round(stats.trigger * coeffs.trigger);
+                score += Math.round(stats.scroll * coeffs.scroll);
+                stats.score = score;
             }
 
 
