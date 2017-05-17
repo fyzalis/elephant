@@ -26,7 +26,7 @@ $(document).ready(function() {
                 active: true,
                 score: 0
             }
-            var local_storage = {};
+            //var local_storage = {};
             var coeffs = {
                 time: 1,
                 scroll: 1,
@@ -85,14 +85,27 @@ $(document).ready(function() {
             }
             var loadEntry = function() {
                 console.log('load entry :' + page);
-                var data = unjsonize(localStorage.getItem('elephant::' + page));
-                stats.time = data.time;
-                stats.scroll = data.scroll;
-                stats.visit = data.visit;
-                stats.trigger = data.trigger;
-                stats.favorite = data.favorite;
-                console.log(stats);
+                var page_data = unjsonize(localStorage.getItem('elephant::' + page));
+                fillStats(page_data);
             }
+            var loadEntryElephanto = function(entry) {
+                console.log('load entry elephanto :' + entry);
+                var page_data = unjsonize(localStorage.getItem('elephant::' + entry));
+                fillStats(page_data);
+            }
+
+            var fillStats = function(page_data){
+              console.log('fill stats');
+              for (var prop in page_data) {
+                  if(!page_data.hasOwnProperty(prop)) continue;
+                  if(prop != "updated_at"){
+                    stats[prop] = page_data[prop];
+                  } else {
+                    stats[prop] = new Date(page_data[prop]);
+                  }
+              }
+            }
+
             var updateEntry = function() {
                 computeScore();
                 localStorage.setItem('elephant::' + page, jsonize(stats));
@@ -125,6 +138,7 @@ $(document).ready(function() {
             var addVisit = function() {
                 console.log('add visite');
                 stats.visit += 1;
+                switchActive(true);
                 updateEntry();
             }
 
@@ -193,13 +207,21 @@ $(document).ready(function() {
             //IHM
             var displayData = function() {
                 console.log('display data');
+
+                console.log(entry_list);
+
                 var list = "";
-                $.each(local_storage, function(index, value) {
+                $.each(entry_list, function(index, value) {
                     list += "<ul>";
-                    list += "<li>" + index + "</li>";
-                    $.each(value, function(key, val) {
+                    list += "<li>" + value + "</li>";
+
+                    loadEntryElephanto(value);
+
+                    console.log('display stats !')
+                    $.each(stats, function(key, val) {
                         list += "<li>" + key + " : " + val + "</li>";
                     });
+
                     list += "</ul>";
                 });
                 $('#elephanto').html(list);
@@ -270,7 +292,7 @@ $(document).ready(function() {
                     createElephant();
                 }
                 loadElephant();
-                computeScore();
+
                 displayData();
             }
         };
