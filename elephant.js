@@ -24,7 +24,8 @@ $(document).ready(function() {
                 favorite: 0,
                 updated_at: new Date(),
                 active: true,
-                score: 0
+                score: 0,
+                position: 0
             }
             //var local_storage = {};
             var coeffs = {
@@ -33,6 +34,7 @@ $(document).ready(function() {
                 visit: 10,
                 trigger: 10
             }
+            var position_list = new Array();
 
 
 
@@ -93,22 +95,33 @@ $(document).ready(function() {
                 var page_data = unjsonize(localStorage.getItem('elephant::' + entry));
                 fillStats(page_data);
             }
+            var loadEntryForPosition = function(entry) {
+                console.log('load entry for position :' + entry);
+                return unjsonize(localStorage.getItem('elephant::' + entry));
+            }
 
-            var fillStats = function(page_data){
-              console.log('fill stats');
-              for (var prop in page_data) {
-                  if(!page_data.hasOwnProperty(prop)) continue;
-                  if(prop != "updated_at"){
-                    stats[prop] = page_data[prop];
-                  } else {
-                    stats[prop] = new Date(page_data[prop]);
-                  }
-              }
+            var fillStats = function(page_data) {
+                console.log('fill stats');
+                for (var prop in page_data) {
+                    if (!page_data.hasOwnProperty(prop)) continue;
+                    if (prop != "updated_at") {
+                        stats[prop] = page_data[prop];
+                    } else {
+                        stats[prop] = new Date(page_data[prop]);
+                    }
+                }
             }
 
             var updateEntry = function() {
                 computeScore();
                 localStorage.setItem('elephant::' + page, jsonize(stats));
+            }
+
+            var updateEntryForPosition = function(entry, data) {
+                console.log('updateEntryForPosition')
+                console.log(entry);
+                console.log(data);
+                localStorage.setItem('elephant::' + entry, jsonize(stats));
             }
 
 
@@ -195,7 +208,7 @@ $(document).ready(function() {
                 var sec1 = stats.updated_at.getTime() / 1000;
                 var sec2 = now.getTime() / 1000;
                 var diff = Math.round(sec2 - sec1);
-                console.log('checkActiveDuration:' + diff);
+                //console.log('checkActiveDuration:' + diff);
                 if (diff > settings.activeDuration && stats.active == true) {
                     switchActive(false);
                 }
@@ -211,6 +224,8 @@ $(document).ready(function() {
                 console.log(entry_list);
 
                 var list = "";
+                list += "<ul>";
+                /*
                 $.each(entry_list, function(index, value) {
                     list += "<ul>";
                     list += "<li>" + value + "</li>";
@@ -223,7 +238,14 @@ $(document).ready(function() {
                     });
 
                     list += "</ul>";
+                });*/
+
+
+                $.each(position_list, function(index, value) {
+                  list += "<li>Position " + index + " : "+value+"<br /><br /></li>";
                 });
+                list += "</ul>";
+
                 $('#elephanto').html(list);
             }
             //Calul score
@@ -235,6 +257,48 @@ $(document).ready(function() {
                 score += Math.round(stats.trigger * coeffs.trigger);
                 score += Math.round(stats.scroll * coeffs.scroll);
                 stats.score = score;
+                computePosition();
+            }
+            //Calul position
+
+            var computePosition = function() {
+                console.log('computePosition');
+                var score_list = new Array();
+                var position = 0;
+
+                $.each(entry_list, function(index, page) {
+                    var tmp_entry = new Array();
+                    tmp_entry['page'] = page;
+                    tmp_entry['stats'] = loadEntryForPosition(entry_list[index]);
+                    score_list.push(tmp_entry);
+                });
+
+
+                score_list.sort(function(a, b) {
+                    return b.stats.score - a.stats.score;
+                });
+                console.log('SCORE LIST SORTEEEEEEEEEEEEEED');
+                console.log(score_list);
+
+                $.each(score_list, function(index, page) {
+                    position_list[index] = page.page;
+                    //page.stats.position = index;
+                    //updateEntryForPosition(page.page, page.stats);
+                });
+
+                console.log('POSITION LISTTTTTTTTTTTTT');
+                console.log(position_list);
+
+                //Update local storage
+                $.each(position_list, function(pos, page) {
+                    console.log('pos');
+                    console.log(pos);
+                    console.log('page');
+                    console.log(page);
+                });
+
+
+
             }
 
 
@@ -292,7 +356,7 @@ $(document).ready(function() {
                     createElephant();
                 }
                 loadElephant();
-
+                computePosition();
                 displayData();
             }
         };
