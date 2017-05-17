@@ -15,6 +15,12 @@ $(document).ready(function() {
                 activeDuration: 30
             }, options);
             let page = window.location.pathname;
+            var meta = {
+                page: page,
+                text: "",
+                image: ""
+            };
+
             var entry_list = new Array();
             var stats = {
                 time: 0,
@@ -84,6 +90,13 @@ $(document).ready(function() {
                 entry_list.push(page);
                 localStorage.setItem('elephant', jsonize(entry_list));
                 localStorage.setItem('elephant::' + page, jsonize(stats));
+
+
+                meta.text = $('#elephant').data('text');
+                meta.image = $('#elephant').data('image');
+                console.log('META');
+                console.log(meta);
+                localStorage.setItem('elephanto::' + page, jsonize(meta));
             }
             var loadEntry = function() {
                 console.log('load entry :' + page);
@@ -239,10 +252,19 @@ $(document).ready(function() {
 
                     list += "</ul>";
                 });*/
-
-
                 $.each(position_list, function(index, value) {
-                  list += "<li>Position " + index + " : "+value+"<br /><br /></li>";
+                    list += "<li>Position " + index + " :<br />";
+                    console.log('VALUE');
+                    console.log(value);
+                    var entry = unjsonize(localStorage.getItem('elephanto::'+value));
+                    console.log('ENTRY UNIQUE AVEC META A AFFICHER');
+                    console.log(entry);
+
+                    list += "<a href='"+entry.page+"'>";
+                    list += entry.text;
+                    list += "</a><br />";
+                    list += "<img src='"+entry.image+"' /><hr />";
+                    list += "</li>";
                 });
                 list += "</ul>";
 
