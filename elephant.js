@@ -233,41 +233,20 @@ $(document).ready(function() {
             //IHM
             var displayData = function() {
                 console.log('display data');
-
-                console.log(entry_list);
-
                 var list = "";
                 list += "<ul>";
-                /*
-                $.each(entry_list, function(index, value) {
-                    list += "<ul>";
-                    list += "<li>" + value + "</li>";
-
-                    loadEntryElephanto(value);
-
-                    console.log('display stats !')
-                    $.each(stats, function(key, val) {
-                        list += "<li>" + key + " : " + val + "</li>";
-                    });
-
-                    list += "</ul>";
-                });*/
+                console.log(position_list);
                 $.each(position_list, function(index, value) {
-                    list += "<li>Position " + index + " :<br />";
-                    console.log('VALUE');
-                    console.log(value);
-                    var entry = unjsonize(localStorage.getItem('elephanto::'+value));
-                    console.log('ENTRY UNIQUE AVEC META A AFFICHER');
-                    console.log(entry);
-
-                    list += "<a href='"+entry.page+"'>";
-                    list += entry.text;
-                    list += "</a><br />";
-                    list += "<img src='"+entry.image+"' /><hr />";
+                    var metas = unjsonize(localStorage.getItem('elephanto::'+value));
+                    var stat = unjsonize(localStorage.getItem('elephant::'+value));
+                    list += "<li>";
+                    list += "<a href='"+metas.page+"'>";
+                    list += metas.text;
+                    list += "</a> (score :"+stat.score+")<br />";
+                    list += "<img src='"+metas.image+"' /><hr />";
                     list += "</li>";
                 });
                 list += "</ul>";
-
                 $('#elephanto').html(list);
             }
             //Calul score
@@ -294,33 +273,12 @@ $(document).ready(function() {
                     tmp_entry['stats'] = loadEntryForPosition(entry_list[index]);
                     score_list.push(tmp_entry);
                 });
-
-
                 score_list.sort(function(a, b) {
                     return b.stats.score - a.stats.score;
                 });
-                console.log('SCORE LIST SORTEEEEEEEEEEEEEED');
-                console.log(score_list);
-
                 $.each(score_list, function(index, page) {
                     position_list[index] = page.page;
-                    //page.stats.position = index;
-                    //updateEntryForPosition(page.page, page.stats);
                 });
-
-                console.log('POSITION LISTTTTTTTTTTTTT');
-                console.log(position_list);
-
-                //Update local storage
-                $.each(position_list, function(pos, page) {
-                    console.log('pos');
-                    console.log(pos);
-                    console.log('page');
-                    console.log(page);
-                });
-
-
-
             }
 
 
