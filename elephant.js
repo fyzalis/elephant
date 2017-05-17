@@ -14,7 +14,7 @@ $(document).ready(function() {
                 triggers: new Array(),
                 activeDuration: 30
             }, options);
-            let page = window.location.pathname;
+            var page = window.location.pathname;
             var meta = {
                 page: page,
                 text: "",
@@ -30,10 +30,8 @@ $(document).ready(function() {
                 favorite: 0,
                 updated_at: new Date(),
                 active: true,
-                score: 0,
-                position: 0
+                score: 0
             }
-            //var local_storage = {};
             var coeffs = {
                 time: 1,
                 scroll: 1,
@@ -49,17 +47,14 @@ $(document).ready(function() {
 
             //MAIN
             var runElephant = function() {
-                console.log('run elephant ?')
                 return $('div#elephant').length ? true : false;
             }
             var runElephanto = function() {
-                console.log('run elephanto ?')
                 return $('div#elephanto').length ? true : false;
             }
 
             //ELEPHANT
             var elephantExists = function() {
-                console.log('elephant exists');
                 if (localStorage.getItem('elephant') == null) {
                     return false;
                 } else {
@@ -67,7 +62,6 @@ $(document).ready(function() {
                 }
             }
             var createElephant = function() {
-                console.log('create elephant');
                 localStorage.setItem('elephant', jsonize(entry_list));
             }
 
@@ -78,7 +72,6 @@ $(document).ready(function() {
 
             //ENTRIES
             var entryExists = function() {
-                console.log('entryexists ???????????????');
                 if (jQuery.inArray(page, entry_list) !== -1) {
                     return true;
                 } else {
@@ -86,35 +79,26 @@ $(document).ready(function() {
                 }
             }
             var createEntry = function() {
-                console.log('create entry');
                 entry_list.push(page);
                 localStorage.setItem('elephant', jsonize(entry_list));
                 localStorage.setItem('elephant::' + page, jsonize(stats));
-
-
                 meta.text = $('#elephant').data('text');
                 meta.image = $('#elephant').data('image');
-                console.log('META');
-                console.log(meta);
                 localStorage.setItem('elephanto::' + page, jsonize(meta));
             }
             var loadEntry = function() {
-                console.log('load entry :' + page);
                 var page_data = unjsonize(localStorage.getItem('elephant::' + page));
                 fillStats(page_data);
             }
             var loadEntryElephanto = function(entry) {
-                console.log('load entry elephanto :' + entry);
                 var page_data = unjsonize(localStorage.getItem('elephant::' + entry));
                 fillStats(page_data);
             }
             var loadEntryForPosition = function(entry) {
-                console.log('load entry for position :' + entry);
                 return unjsonize(localStorage.getItem('elephant::' + entry));
             }
 
             var fillStats = function(page_data) {
-                console.log('fill stats');
                 for (var prop in page_data) {
                     if (!page_data.hasOwnProperty(prop)) continue;
                     if (prop != "updated_at") {
@@ -130,46 +114,26 @@ $(document).ready(function() {
                 localStorage.setItem('elephant::' + page, jsonize(stats));
             }
 
-            var updateEntryForPosition = function(entry, data) {
-                console.log('updateEntryForPosition')
-                console.log(entry);
-                console.log(data);
-                localStorage.setItem('elephant::' + entry, jsonize(stats));
-            }
-
-
-
 
 
 
 
             //Counters
-            function updateTime() {
-                console.log('updateTime');
+            function incrementTime() {
                 checkActiveDuration();
                 if (stats.active) {
                     stats.time++;
                     updateEntry();
                 }
             }
-            var countScroll = function() {
-                console.log('countScroll');
-                $(window).scroll(function(event) {
-                    switchActive(true);
-                    stats.scroll += 1;
-                    updateEntry();
-                });
 
-            }
-            var addVisit = function() {
-                console.log('add visite');
+            var incrementVisit = function() {
                 stats.visit += 1;
                 switchActive(true);
                 updateEntry();
             }
 
-            var addTrigger = function() {
-                console.log('addTrigger');
+            var incrementTrigger = function() {
                 switchActive(true);
                 stats.trigger += 1;
                 updateEntry();
@@ -178,7 +142,6 @@ $(document).ready(function() {
 
             //Switch
             function switchFavorite() {
-                console.log('switchFavorite');
                 if (stats.favorite == 1) {
                     stats.favorite = 0;
                     updateEntry();
@@ -188,7 +151,6 @@ $(document).ready(function() {
                 }
             }
             var switchActive = function(active) {
-                console.log('setActive' + active);
                 if (active) {
                     stats.updated_at = new Date();
                 }
@@ -196,32 +158,38 @@ $(document).ready(function() {
                 updateEntry();
             }
 
+
+
             //Events
-            var countTrigger = function() {
-                console.log('countTrigger');
+            var listenTrigger = function() {
                 $.each(settings.triggers, function(index, value) {
                     $(value).on('click', function() {
-                        addTrigger();
+                        incrementTrigger();
                     })
                 });
             }
-
-            var countFavorite = function() {
-                console.log('countFavorite');
+            var listenFavorite = function() {
                 $('#elephantAdd').on('click', function() {
                     switchFavorite();
                     updateEntry();
                 });
             };
+            var listenScroll = function() {
+                $(window).scroll(function(event) {
+                    switchActive(true);
+                    stats.scroll += 1;
+                    updateEntry();
+                });
+
+            }
 
 
             //Check user activity
-            function checkActiveDuration() {
+            var checkActiveDuration = function() {
                 var now = new Date();
                 var sec1 = stats.updated_at.getTime() / 1000;
                 var sec2 = now.getTime() / 1000;
                 var diff = Math.round(sec2 - sec1);
-                //console.log('checkActiveDuration:' + diff);
                 if (diff > settings.activeDuration && stats.active == true) {
                     switchActive(false);
                 }
@@ -232,18 +200,16 @@ $(document).ready(function() {
             //ELEPHANTO
             //IHM
             var displayData = function() {
-                console.log('display data');
                 var list = "";
                 list += "<ul>";
-                console.log(position_list);
                 $.each(position_list, function(index, value) {
-                    var metas = unjsonize(localStorage.getItem('elephanto::'+value));
-                    var stat = unjsonize(localStorage.getItem('elephant::'+value));
+                    var metas = unjsonize(localStorage.getItem('elephanto::' + value));
+                    var stat = unjsonize(localStorage.getItem('elephant::' + value));
                     list += "<li>";
-                    list += "<a href='"+metas.page+"'>";
+                    list += "<a href='" + metas.page + "'>";
                     list += metas.text;
-                    list += "</a> (score :"+stat.score+")<br />";
-                    list += "<img src='"+metas.image+"' /><hr />";
+                    list += "</a> (score :" + stat.score + ")<br />";
+                    list += "<img src='" + metas.image + "' /><hr />";
                     list += "</li>";
                 });
                 list += "</ul>";
@@ -251,7 +217,6 @@ $(document).ready(function() {
             }
             //Calul score
             var computeScore = function() {
-                console.log('computeScore');
                 var score = 0;
                 score += Math.round(stats.time * coeffs.time);
                 score += Math.round(stats.visit * coeffs.visit);
@@ -261,12 +226,8 @@ $(document).ready(function() {
                 computePosition();
             }
             //Calul position
-
             var computePosition = function() {
-                console.log('computePosition');
                 var score_list = new Array();
-                var position = 0;
-
                 $.each(entry_list, function(index, page) {
                     var tmp_entry = new Array();
                     tmp_entry['page'] = page;
@@ -282,8 +243,6 @@ $(document).ready(function() {
             }
 
 
-
-
             //Utilities
             function jsonize(data) {
                 return JSON.stringify(data);
@@ -296,12 +255,9 @@ $(document).ready(function() {
 
             //Auto RunS
 
-
             //Record page variables
             if (runElephant()) {
-                console.log('run elephant');
                 if (!elephantExists()) {
-                    console.log('CREATE ELEPHANT');
                     createElephant();
                 }
                 loadElephant();
@@ -312,27 +268,19 @@ $(document).ready(function() {
 
                 //Init action detection
                 setInterval(function() {
-                    updateTime()
+                    incrementTime()
                 }, 1000);
-                countScroll();
-                addVisit();
-                countTrigger();
-                countFavorite();
-
-                //TMP DEV
-                //Reset Local storage
-                $('#reset').on('click', function() {
-                    createElephant();
-                })
+                listenScroll();
+                incrementVisit();
+                listenTrigger();
+                listenFavorite();
             }
 
 
 
             //Display Local Storage Datas
             if (runElephanto()) {
-                console.log('run elephanto !');
                 if (!elephantExists()) {
-                    console.log('CREATE ELEPHANT');
                     createElephant();
                 }
                 loadElephant();
