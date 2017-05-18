@@ -1,11 +1,7 @@
 $(document).ready(function() {
     (function($) {
 
-
-
-
         $.fn.elephant = function(options) {
-
 
             //VAR INIT
 
@@ -20,7 +16,6 @@ $(document).ready(function() {
                 text: "",
                 image: ""
             };
-
             var entry_list = new Array();
             var stats = {
                 time: 0,
@@ -208,8 +203,12 @@ $(document).ready(function() {
                     list += "<li>";
                     list += "<a href='" + metas.page + "'>";
                     list += metas.text;
-                    list += "</a> (score :" + stat.score + ")<br />";
-                    list += "<img src='" + metas.image + "' /><hr />";
+                    list += "</a> (score :" + stat.score + ")(favorite : " + stat.favorite + ")<br />";
+                    list += "<img src='" + metas.image + "' style='width:30px;' />";
+                    if (stat.favorite) {
+                        list += "<img src='/home/bubu/webprojects/elephant/images/coeur.png'  style='width:30px;' />";
+                    }
+                    list += "<hr />";
                     list += "</li>";
                 });
                 list += "</ul>";
@@ -228,22 +227,42 @@ $(document).ready(function() {
             //Calul position
             var computePosition = function() {
                 var score_list = new Array();
+                var favorite_list = new Array();
+                var no_favorite_list = new Array();
+                var i = 0;
                 $.each(entry_list, function(index, page) {
                     var tmp_entry = new Array();
                     tmp_entry['page'] = page;
                     tmp_entry['stats'] = loadEntryForPosition(entry_list[index]);
-                    score_list.push(tmp_entry);
+                    if (tmp_entry['stats'].favorite) {
+                        favorite_list.push(tmp_entry);
+                    } else {
+                        no_favorite_list.push(tmp_entry);
+                    }
                 });
-                score_list.sort(function(a, b) {
+                favorite_list.sort(function(a, b) {
                     return b.stats.score - a.stats.score;
                 });
-                $.each(score_list, function(index, page) {
-                    position_list[index] = page.page;
+                no_favorite_list.sort(function(a, b) {
+                    return b.stats.score - a.stats.score;
                 });
+                $.each(favorite_list, function(index, page) {
+                    position_list[i] = page.page;
+                    i++;
+                });
+                $.each(no_favorite_list, function(index, page) {
+                    position_list[i] = page.page;
+                    i++
+                });                
             }
 
 
             //Utilities
+            function debug(data, title) {
+                if (!title) title = 'DEBUG';
+                console.log(title, data);
+            }
+
             function jsonize(data) {
                 return JSON.stringify(data);
             }
