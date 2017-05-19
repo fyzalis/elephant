@@ -180,9 +180,11 @@ $(document).ready(function() {
         });
       }
       var listenFirstPosition = function() {
-        $('#elephanto li.first').on('click', function() {
+        $('#elephanto div.open').on('click', function() {
           expandView = true;
           $('#elephanto li.not-first').toggle();
+          $('#elephanto div.open').toggle();
+          $('#elephanto li.first').css('padding-top', '10px');
         });
       };
 
@@ -203,50 +205,46 @@ $(document).ready(function() {
       //ELEPHANTO
       //IHM
       var displayData = function() {
-        debug(settings.maxDisplayedResult, 'MAX DISPLAYED');
-        var list = "";
-        var cnt = 0;
-        list += "<ul class='elephanto'>";
-        $.each(position_list, function(index, value) {
-          if (cnt < settings.maxDisplayedResult) {
-            var metas = unjsonize(localStorage.getItem('elephanto::' + value));
-            var stat = unjsonize(localStorage.getItem('elephant::' + value));
-            var positionClass = "";
+        if (position_list.length > 0) {
+          var list = "";
+          var cnt = 0;
+          list += "<div class='open'>&uarr;</div>";
+          list += "<ul>";
+          $.each(position_list, function(index, value) {
+            if (cnt < settings.maxDisplayedResult) {
+              var metas = unjsonize(localStorage.getItem('elephanto::' + value));
+              var stat = unjsonize(localStorage.getItem('elephant::' + value));
+              var positionClass = "";
 
+              if (cnt == 0) {
+                positionClass = "first";
+              } else if (expandView == false) {
+                positionClass = "not-first";
+              }
 
-
-            if(cnt==0){
-              positionClass = "first";
-            } else if(expandView==false){
-              positionClass = "not-first";
+              list += "<li data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "' class='" + positionClass + "'>";
+              if (metas.image) {
+                list += "<a href='" + metas.page + "'>";
+                list += "<img src='" + metas.image + "' />";
+                list += "</a>";
+              }
+              if (metas.text) {
+                list += "<a href='" + metas.page + "'>";
+                list += metas.text;
+                list += "</a>";
+              }
+              if (stat.favorite) {
+                list += "<span class='favorite'>&starf;</span>";
+              }
+              list += "</li>";
+              cnt++;
             } else {
-              positionClass = "";
+              return false;
             }
-
-
-
-            list += "<li data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "' class='"+positionClass+"'>";
-            if (metas.image) {
-              list += "<a href='" + metas.page + "'>";
-              list += "<img src='" + metas.image + "' />";
-              list += "</a>";
-            }
-            if (metas.text) {
-              list += "<a href='" + metas.page + "'>";
-              list += metas.text;
-              list += "</a>";
-            }
-            if (stat.favorite) {
-              list += "<img src='/star-icon.png' />";
-            }
-            list += "</li>";
-            cnt++;
-          } else {
-            return false;
-          }
-        });
-        list += "</ul>";
-        $('#elephanto').html(list);
+          });
+          list += "</ul>";
+          $('#elephanto').html(list);
+        }
       }
       //Calul score
       var computeScore = function() {
@@ -337,8 +335,12 @@ $(document).ready(function() {
           createElephant();
         }
         loadElephant();
+        computePosition();
+        displayData();
+        listenFirstPosition();
 
         var refreshData = setInterval(function() {
+          loadElephant();
           computePosition();
           displayData();
           listenFirstPosition();
@@ -353,7 +355,6 @@ $(document).ready(function() {
 $(document).ready(function() {
   $.fn.elephant({
     triggers: new Array('.trigger1', '.trigger2'),
-    activeDuration: 5,
-    maxDisplayedResult:3
+    activeDuration: 5
   });
 });

@@ -13,17 +13,42 @@ div#elephanto {
   bottom: 0px;
   right: 0px;
   border: solid 1px black;
+}
+
+div#elephanto div.open {
+  margin: 0px auto;
+  font-size: 15px;
+  border-bottom: black;
+  cursor: pointer;
+}
+
+div#elephanto ul {
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+
+div#elephanto ul li {
   padding: 10px;
 }
 
-ul.elephanto {
-  list-style: decimal;
+div#elephanto ul li:first-child {
+  padding-top: 0px;
 }
 
-ul.elephanto li.not-first {
+div#elephanto ul li.not-first {
   display: none;
 }
 
-ul.elephanto li img {
-  max-width: 50px;
+div#elephanto ul li img, ul.elephanto li a {
+  vertical-align: middle;
+  padding: 2px;
+}
+
+div#elephanto ul li img {
+  max-width: 100px;
+}
+
+div#elephanto ul li span.favorite {
+  color: orange;
 }
