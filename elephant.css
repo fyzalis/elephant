@@ -49,6 +49,11 @@ div#elephanto ul li {
   border-bottom: solid 1px lightGrey;
 }
 
+div#elephanto ul li:hover {
+  background-color: #efefef;
+  cursor: pointer;
+}
+
 div#elephanto ul li:first-child {
   padding-top: 0px;
 }
@@ -71,6 +76,10 @@ div#elephanto ul li a, div#elephanto ul li a:visited {
   font-size: 14px;
   text-decoration: none;
   color: #333;
+}
+
+div#elephanto ul li a:hover {
+  color: blue;
 }
 
 div#elephanto ul li img {

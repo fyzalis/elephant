@@ -180,18 +180,22 @@ $(document).ready(function() {
           updateEntry();
         });
       }
-      var listenFirstPosition = function() {
+      var listenOpen = function() {
         $('#elephanto div.open').on('click', function() {
-          console.log('open');
           expandView = true;
           $('#elephanto li.not-first').toggle();
-          $('#elephanto div.open').toggle();
+        });
+      };
+      var listenClose = function() {
+        $('#elephanto div.close').on('click', function() {
+          expandView = false;
+          $('#elephanto li.other').toggle();
         });
       };
       var listenExit = function() {
-        $('#elephanto span.exit').on('click', function() {
-          console.log('exit');
+        $('#elephanto span.exit').on('click', function() {          
           $('#elephanto').toggle();
+          clearInterval(refreshData);
         });
       };
 
@@ -226,7 +230,7 @@ $(document).ready(function() {
             if (cnt < settings.maxDisplayedResult) {
               var metas = unjsonize(localStorage.getItem('elephanto::' + value));
               var stat = unjsonize(localStorage.getItem('elephant::' + value));
-              var positionClass = "";
+              var positionClass = "other";
 
               if (cnt == 0) {
                 positionClass = "first";
@@ -349,14 +353,16 @@ $(document).ready(function() {
         loadElephant();
         computePosition();
         displayData();
-        listenFirstPosition();
+        listenOpen();
+        listenClose();
         listenExit();
 
         var refreshData = setInterval(function() {
           loadElephant();
           computePosition();
           displayData();
-          listenFirstPosition();
+          listenOpen();
+          listenClose();
           listenExit();
         }, (settings.refreshRender * 1000));
       }
@@ -369,6 +375,6 @@ $(document).ready(function() {
 $(document).ready(function() {
   $.fn.elephant({
     triggers: new Array('.trigger1', '.trigger2'),
-    activeDuration: 5,
+    activeDuration: 5
   });
 });
