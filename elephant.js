@@ -206,7 +206,7 @@ $(document).ready(function() {
                     list += "</a> (score :" + stat.score + ")(favorite : " + stat.favorite + ")<br />";
                     list += "<img src='" + metas.image + "' style='width:30px;' />";
                     if (stat.favorite) {
-                        list += "<img src='/home/bubu/webprojects/elephant/images/coeur.png'  style='width:30px;' />";
+                        list += "<img src='/star-icon.png' />";
                     }
                     list += "<hr />";
                     list += "</li>";
@@ -253,7 +253,7 @@ $(document).ready(function() {
                 $.each(no_favorite_list, function(index, page) {
                     position_list[i] = page.page;
                     i++
-                });                
+                });
             }
 
 
