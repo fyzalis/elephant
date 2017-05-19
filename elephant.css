@@ -1,18 +1,10 @@
-/*DEV*/
-
-body {
-  height: 5000px;
-  border-bottom: solid 10px red;
-}
-
-
-/*ELEPHANT*/
-
 div#elephanto {
   position: fixed;
   bottom: 0px;
   right: 0px;
   border: solid 1px black;
+  z-index: 9999;
+  background-color: white;
 }
 
 div#elephanto div.open, div#elephanto div.close {
@@ -28,6 +20,7 @@ div#elephanto div.open, div#elephanto div.close {
 div#elephanto span.exit {
   float: right;
   cursor: pointer;
+  margin-right: 5px;
 }
 
 div#elephanto div.open:hover, div#elephanto div.close:hover {
@@ -83,7 +76,9 @@ div#elephanto ul li a:hover {
 }
 
 div#elephanto ul li img {
-  max-width: 75px;
+  width: 75px;
+  height: 50px;
+  object-fit: cover;
 }
 
 div#elephanto ul li span.favorite {

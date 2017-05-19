@@ -216,6 +216,7 @@ $(document).ready(function() {
       //ELEPHANTO
       //IHM
       var displayData = function() {
+        console.log('displayData');
         if (position_list.length > 0) {
           var list = "";
           var cnt = 0;
