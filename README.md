@@ -23,11 +23,13 @@ Bon allez, let's code !
 
 # Installation
 1 - Copier le dossier elephant dans votre répertoire javascript
+
 2 - appeler les fichier JS et CSS correspondant dans vos balise head
 ~~~~
 <link rel="stylesheet" href="/path/to/elephant.min.css">
 <script type="text/javascript" src="/path/to/elephant.min.js"></script>
 ~~~~
+
 3 - Positionner la div déclencheuse du comptage des stats dans les pages désirées
 ~~~~
 <div id="elephant" data-text="Le texte qui s'affichera dans le rendu visuel" data-image="l'image lié à cette page"></div>
