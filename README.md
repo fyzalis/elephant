@@ -30,7 +30,24 @@ Bon allez, let's code !
 <script type="text/javascript" src="/path/to/elephant.min.js"></script>
 ~~~~
 
-3 - Positionner la div déclencheuse du comptage des stats dans les pages désirées
+3 - Positionner la div déclencheuse du comptage des stats dans les pages désirées (id='elephant')
 ~~~~
 <div id="elephant" data-text="Le texte qui s'affichera dans le rendu visuel" data-image="l'image lié à cette page"></div>
+~~~~
+Puis exécuter le plugin JS
+~~~~
+$(document).ready(function () {
+  $.fn.elephant();
+});
+~~~~
+
+4 - Positionner la div de rendu dans les pages désirées (id='elephanto')
+~~~~
+<div id="elephanto"></div>
+~~~~
+Puis exécuter le plugin JS
+~~~~
+$(document).ready(function () {
+  $.fn.elephant();
+});
 ~~~~
