@@ -193,7 +193,7 @@ $(document).ready(function() {
         });
       };
       var listenExit = function() {
-        $('#elephanto span.exit').on('click', function() {          
+        $('#elephanto span.exit').on('click', function() {
           $('#elephanto').toggle();
           clearInterval(refreshData);
         });
@@ -368,13 +368,4 @@ $(document).ready(function() {
       }
     };
   }(jQuery));
-});
-
-
-
-$(document).ready(function() {
-  $.fn.elephant({
-    triggers: new Array('.trigger1', '.trigger2'),
-    activeDuration: 5
-  });
 });

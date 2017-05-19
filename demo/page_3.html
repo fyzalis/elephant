@@ -24,4 +24,12 @@
     <div id="elephant" data-text="Appartement neuf à L'Union - ref 143-3" data-image="/demo/images/3.jpg"></div>
     <input type=button value="AJOUT FAVORIS" id="elephantAdd" />
     <div id="elephanto"></div>
+    <script>
+    $(document).ready(function() {
+      $.fn.elephant({
+        triggers: new Array('.trigger1', '.trigger2'),
+        activeDuration: 5
+      });
+    });
+    </script>
 </body>

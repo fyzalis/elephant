@@ -24,4 +24,12 @@
     <div id="elephant" data-text="Appartement neuf à Castanet-Tolosan - ref 498-4" data-image="/demo/images/4.jpg"></div>
     <input type=button value="AJOUT FAVORIS" id="elephantAdd" />
     <div id="elephanto"></div>
+    <script>
+    $(document).ready(function() {
+      $.fn.elephant({
+        triggers: new Array('.trigger1', '.trigger2'),
+        activeDuration: 5
+      });
+    });
+    </script>
 </body>
