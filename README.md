@@ -34,3 +34,7 @@ Bon allez, let's code !
 ~~~~
 <div id="elephant" data-text="Le texte qui s'affichera dans le rendu visuel" data-image="l'image lié à cette page"></div>
 ~~~~
+Puis exécuter le plugin JS
+~~~~
+$.fn.elephant();
+~~~~
