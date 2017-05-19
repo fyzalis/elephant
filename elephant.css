@@ -15,11 +15,27 @@ div#elephanto {
   border: solid 1px black;
 }
 
-div#elephanto div.open {
+div#elephanto div.open, div#elephanto div.close {
   margin: 0px auto;
-  font-size: 15px;
-  border-bottom: black;
+  font-size: 16px;
+  border-bottom: solid 1px black;
   cursor: pointer;
+  background-color: #efefef;
+  font-family: Arial;
+  vertical-align: middle;
+}
+
+div#elephanto span.exit {
+  float: right;
+  cursor: pointer;
+}
+
+div#elephanto div.open:hover, div#elephanto div.close:hover {
+  background-color: #ddd;
+}
+
+div#elephanto div.open span.text, div#elephanto div.close span.text {
+  font-size: 14px;
 }
 
 div#elephanto ul {
@@ -29,24 +45,36 @@ div#elephanto ul {
 }
 
 div#elephanto ul li {
-  padding: 10px;
+  padding: 0px 10px 0px 10px;
+  border-bottom: solid 1px lightGrey;
 }
 
 div#elephanto ul li:first-child {
   padding-top: 0px;
 }
 
+div#elephanto ul li:last-child {
+  border-bottom: none;
+}
+
 div#elephanto ul li.not-first {
   display: none;
 }
 
-div#elephanto ul li img, ul.elephanto li a {
+div#elephanto ul li img, div#elephanto ul li a {
   vertical-align: middle;
   padding: 2px;
 }
 
+div#elephanto ul li a, div#elephanto ul li a:visited {
+  font-family: Arial;
+  font-size: 14px;
+  text-decoration: none;
+  color: #333;
+}
+
 div#elephanto ul li img {
-  max-width: 100px;
+  max-width: 75px;
 }
 
 div#elephanto ul li span.favorite {

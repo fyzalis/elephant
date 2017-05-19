@@ -10,7 +10,8 @@ $(document).ready(function() {
         triggers: new Array(),
         activeDuration: 30,
         refreshRender: 1,
-        maxDisplayedResult: 5
+        maxDisplayedResult: 5,
+        moreText: 'Vos pages favorites'
       }, options);
       var page = window.location.pathname;
       var meta = {
@@ -181,10 +182,16 @@ $(document).ready(function() {
       }
       var listenFirstPosition = function() {
         $('#elephanto div.open').on('click', function() {
+          console.log('open');
           expandView = true;
           $('#elephanto li.not-first').toggle();
           $('#elephanto div.open').toggle();
-          $('#elephanto li.first').css('padding-top', '10px');
+        });
+      };
+      var listenExit = function() {
+        $('#elephanto span.exit').on('click', function() {
+          console.log('exit');
+          $('#elephanto').toggle();
         });
       };
 
@@ -208,7 +215,12 @@ $(document).ready(function() {
         if (position_list.length > 0) {
           var list = "";
           var cnt = 0;
-          list += "<div class='open'>&uarr;</div>";
+          if(!expandView){
+            list += "<div class='open'>&#8613; <span class='text'>"+settings.moreText+"</span><span class='exit'>&#10006;</span></div>";
+          } else{
+            list += "<div class='close'>&#8615; <span class='text'>"+settings.moreText+"</span><span class='exit'>&#10006;</span></div>";
+          }
+
           list += "<ul>";
           $.each(position_list, function(index, value) {
             if (cnt < settings.maxDisplayedResult) {
@@ -338,12 +350,14 @@ $(document).ready(function() {
         computePosition();
         displayData();
         listenFirstPosition();
+        listenExit();
 
         var refreshData = setInterval(function() {
           loadElephant();
           computePosition();
           displayData();
           listenFirstPosition();
+          listenExit();
         }, (settings.refreshRender * 1000));
       }
     };
@@ -355,6 +369,6 @@ $(document).ready(function() {
 $(document).ready(function() {
   $.fn.elephant({
     triggers: new Array('.trigger1', '.trigger2'),
-    activeDuration: 5
+    activeDuration: 5,
   });
 });
