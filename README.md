@@ -61,13 +61,13 @@ maxDisplayedResult: 5,
 moreText: 'Vos pages favorites'
 }
 ~~~~
-triggers : définie les éléments qui incrémente le score 'trigger' (type selecteur JQuery (tag, id, class,...))
+triggers : définie les éléments qui incrémentent la stat 'trigger' (type selecteur JQuery (tag, id, class,...)).
 
-activeDuration (secondes) : définit la durée à partir de laquelle l'utilisateur est considéré comme inactif sur une page. Pris en compte pour le score 'time'.
+activeDuration (secondes) : définit la durée à partir de laquelle l'utilisateur est considéré comme inactif sur une page. Pris en compte pour l'incrémentation de la stat 'time'.
 
-refreshRender (secondes) : définit le temps de rafraichissmeent du rendu visuel
+refreshRender (secondes) : définit le temps de rafraichissmeent du rendu visuel.
 
-maxDisplayedResult : définit le nombre maximal de position à afficher dans le rendu visuel
+maxDisplayedResult : définit le nombre maximal de positions à afficher dans le rendu visuel.
 
-moreText: 'définit le texte à afficher en haut du rendu visuel pour switcher l'ouverture de la div
+moreText: définit le texte à afficher en haut du rendu visuel pour switcher l'ouverture de la div.
 
