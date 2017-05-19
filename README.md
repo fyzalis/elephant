@@ -47,3 +47,27 @@ $(document).ready(function () {
   $.fn.elephant();
 });
 ~~~~
+
+# Options
+Le plugin Elephant prends en compte certaines options de personnalisation.
+
+Options par défaut :
+~~~~
+{
+triggers: new Array(),
+activeDuration: 30,
+refreshRender: 1,
+maxDisplayedResult: 5,
+moreText: 'Vos pages favorites'
+}
+~~~~
+triggers : définie les éléments qui incrémente le score 'trigger' (type selecteur JQuery (tag, id, class,...))
+
+activeDuration (secondes) : définit la durée à partir de laquelle l'utilisateur est considéré comme inactif sur une page. Pris en compte pour le score 'time'.
+
+refreshRender (secondes) : définit le temps de rafraichissmeent du rendu visuel
+
+maxDisplayedResult : définit le nombre maximal de position à afficher dans le rendu visuel
+
+moreText: 'définit le texte à afficher en haut du rendu visuel pour switcher l'ouverture de la div
+
