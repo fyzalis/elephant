@@ -19,3 +19,12 @@ liste non-exhaustive
 Pourquoi elephant ? Parcequ'ils ont une bonne mémoire, surtout pour retrouver leur point d'eau ! :)
 
 Bon allez, let's code !
+
+
+# Installation
+1 - Copier le dossier elephant dans votre répertoire javascript
+2 - appeler les fichier JS et CSS correspondant dans vos balise head
+~~~~
+<link rel="stylesheet" href="/path/to/elephant.min.css">
+<script type="text/javascript" src="/path/to/elephant.min.js"></script>
+~~~~
