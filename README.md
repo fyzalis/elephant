@@ -28,3 +28,7 @@ Bon allez, let's code !
 <link rel="stylesheet" href="/path/to/elephant.min.css">
 <script type="text/javascript" src="/path/to/elephant.min.js"></script>
 ~~~~
+3 - Positionner la div déclencheuse du comptage des stats dans les pages désirées
+~~~~
+<div id="elephant" data-text="Le texte qui s'affichera dans le rendu visuel" data-image="l'image lié à cette page"></div>
+~~~~
