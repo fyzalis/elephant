@@ -82,6 +82,20 @@ div#elephanto ul li img {
   object-fit: cover;
 }
 
-div#elephanto ul li span.favorite {
-  color: orange;
+div#elephant_favorite {
+  cursor: pointer;
+}
+
+span.elephant_favorite_off {
+  color: lightGrey;
+  font-size: 24px;
+}
+
+span.elephant_favorite_on {
+  color: red;
+  font-size: 24px;
+}
+
+div#elephant_favorite div:not(.active) {
+  display: none;
 }

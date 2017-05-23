@@ -11,7 +11,11 @@ $(document).ready(function() {
         activeDuration: 30,
         refreshRender: 1,
         maxDisplayedResult: 5,
-        moreText: 'Vos pages favorites'
+        moreText: 'Vos pages favorites',
+        favoriteTrigger: '#elephant_favorite',
+        favoriteIcon: '&hearts;',
+        favoriteOffText: "Cette page m'intéresse",
+        favoriteOnText: "Cette page ne m'intéresse plus"
       }, options);
       var page = window.location.pathname;
       var meta = {
@@ -148,6 +152,7 @@ $(document).ready(function() {
           stats.favorite = 1;
           switchActive(true);
         }
+        changeFavoriteRender();
       }
       var switchActive = function(active) {
         if (active) {
@@ -168,7 +173,7 @@ $(document).ready(function() {
         });
       }
       var listenFavorite = function() {
-        $('#elephantAdd').on('click', function() {
+        $(settings.favoriteTrigger).on('click', function() {
           switchFavorite();
           updateEntry();
         });
@@ -211,6 +216,38 @@ $(document).ready(function() {
         }
       }
 
+      //Display favorite
+      var displayFavorite = function() {
+        if ($('#elephant_favorite').length > 0) {
+          var favorite_block, favorite_off_class, favorite_on_class = "";
+          if (stats.favorite) {
+            favorite_on_class = "active";
+          } else {
+            favorite_off_class = "active";
+          }
+          favorite_block += "<div id='elephant_favorite_off' class='" + favorite_off_class + "'>";
+          favorite_block += "<span class='elephant_favorite_off'>" + settings.favoriteIcon + "</span>";
+          favorite_block += "<span>" + settings.favoriteOffText + "</span>";
+          favorite_block += "</div>";
+          favorite_block += "<div id='elephant_favorite_on' class='" + favorite_on_class + "'>";
+          favorite_block += "<span class='elephant_favorite_on'>" + settings.favoriteIcon + "</span>";
+          favorite_block += "<span>" + settings.favoriteOnText + "</span>";
+          favorite_block += "</div>";
+          $('#elephant_favorite').html(favorite_block);
+        }
+      }
+
+      //Switch favorite 'button' render
+      var changeFavoriteRender = function() {
+        if (stats.favorite) {
+          $('#elephant_favorite_off').removeClass('active');
+          $('#elephant_favorite_on').addClass('active');
+        } else {
+          $('#elephant_favorite_off').addClass('active');
+          $('#elephant_favorite_on').removeClass('active');
+        }
+      }
+
 
 
       //ELEPHANTO
@@ -219,10 +256,10 @@ $(document).ready(function() {
         if (position_list.length > 0) {
           var list = "";
           var cnt = 0;
-          if(!expandView){
-            list += "<div class='open'>&#8613; <span class='text'>"+settings.moreText+"</span><span class='exit'>&#10006;</span></div>";
-          } else{
-            list += "<div class='close'>&#8615; <span class='text'>"+settings.moreText+"</span><span class='exit'>&#10006;</span></div>";
+          if (!expandView) {
+            list += "<div class='open'>&#8613; <span class='text'>" + settings.moreText + "</span><span class='exit'>&#10006;</span></div>";
+          } else {
+            list += "<div class='close'>&#8615; <span class='text'>" + settings.moreText + "</span><span class='exit'>&#10006;</span></div>";
           }
 
           list += "<ul>";
@@ -250,7 +287,7 @@ $(document).ready(function() {
                 list += "</a>";
               }
               if (stat.favorite) {
-                list += "<span class='favorite'>&starf;</span>";
+                list += "<span class='elephant_favorite_on'>" + settings.favoriteIcon + "</span>";
               }
               list += "</li>";
               cnt++;
@@ -332,6 +369,7 @@ $(document).ready(function() {
           createEntry();
         }
         loadEntry();
+        displayFavorite();
 
         //Init action detection
         setInterval(function() {
