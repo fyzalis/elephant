@@ -47,7 +47,7 @@ Bon allez, let's code !
 ~~~~
 
 
-5 - Puis exécuter le plugin JS
+6 - Puis exécuter le plugin JS
 ~~~~
 $(document).ready(function () {
   $.fn.elephant();
