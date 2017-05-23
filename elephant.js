@@ -189,18 +189,28 @@ $(document).ready(function() {
         });
       }
       var listenOpen = function() {
+        $('#elephanto div.open').off();
         $('#elephanto div.open').on('click', function() {
-          expandView = true;
+          expandView = !expandView;
+          if(expandView){
+            $('#elephanto span.symbol').html('&#8615;')
+          } else {
+            $('#elephanto span.symbol').html('&#8613;')
+          }
           $('#elephanto li.not-first').toggle();
         });
       };
+
+      /*
       var listenClose = function() {
+        $('#elephanto div.close').off();
         $('#elephanto div.close').on('click', function() {
           expandView = false;
           $('#elephanto li.other').toggle();
         });
-      };
+      };*/
       var listenExit = function() {
+        $('#elephanto span.exit').off();
         $('#elephanto span.exit').on('click', function() {
           $('#elephanto').toggle();
           clearInterval(refreshData);
@@ -268,11 +278,14 @@ $(document).ready(function() {
           force_render = false;
           position_has_changed = false;
 
-          if (!expandView) {
+          /*if (!expandView) {
             list += "<div class='open'>&#8613; <span class='text'>" + settings.moreText + "</span><span class='exit'>&#10006;</span></div>";
           } else {
             list += "<div class='close'>&#8615; <span class='text'>" + settings.moreText + "</span><span class='exit'>&#10006;</span></div>";
-          }
+          }*/
+
+
+          list += "<div class='open'><span class='symbol'>&#8613;</span> <span class='text'>" + settings.moreText + "</span><span class='exit'>&#10006;</span></div>";
 
           list += "<ul>";
           $.each(position_list, function(index, value) {
@@ -421,7 +434,7 @@ $(document).ready(function() {
         computePosition();
         displayData();
         listenOpen();
-        listenClose();
+        //listenClose();
         listenExit();
 
         var refreshData = setInterval(function() {
@@ -429,7 +442,7 @@ $(document).ready(function() {
           computePosition();
           displayData();
           listenOpen();
-          listenClose();
+          //listenClose();
           listenExit();
         }, (settings.refreshRender * 1000));
       }
