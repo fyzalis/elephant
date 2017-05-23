@@ -254,7 +254,7 @@ $(document).ready(function() {
       var openElephanto = function(){
         if(expand_view){
           $('#elephanto span.symbol').html('&#8615;');
-          $('#elephanto li:not(.first)').fadeToggle("fast", "swing");
+          $('#elephanto li:not(.first)').fadeToggle("slow", "swing");
         } else {
           $('#elephanto span.symbol').html('&#8613;');
           $('#elephanto li:not(.first)').toggle();
@@ -382,7 +382,7 @@ $(document).ready(function() {
 
 
       //RUN
-      
+
       //Elephant : record data
       if (runElephant()) {
         if (!elephantExists()) {
