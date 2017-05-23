@@ -3,9 +3,6 @@ $(document).ready(function() {
 
     $.fn.elephant = function(options) {
 
-      //VAR INIT
-
-      // OPTIONS
       var settings = $.extend({
         triggers: new Array(),
         activeDuration: 30,
@@ -43,12 +40,7 @@ $(document).ready(function() {
       var position_list = new Array();
       var position_has_changed = false;
       var force_render = true;
-      var expandView = false;
-
-
-
-
-      //FUNCTIONS
+      var expand_view = false;
 
       //MAIN
       var runElephant = function() {
@@ -120,9 +112,6 @@ $(document).ready(function() {
       }
 
 
-
-
-
       //Counters
       function incrementTime() {
         checkActiveDuration();
@@ -191,20 +180,10 @@ $(document).ready(function() {
       var listenOpen = function() {
         $('#elephanto div.open').off();
         $('#elephanto div.open').on('click', function() {
-          console.log('listenOPEN');
-          expandView = !expandView;
-          console.log(expandView);
-          if(expandView){
-            $('#elephanto span.symbol').html('&#8615;');
-            $('#elephanto li:not(.first)').fadeToggle("fast", "swing");
-          } else {
-            $('#elephanto span.symbol').html('&#8613;');
-            $('#elephanto li:not(.first)').toggle();
-          }
-
+          expand_view = !expand_view;
+          openElephanto();
         });
       };
-
       var listenExit = function() {
         $('#elephanto span.exit').off();
         $('#elephanto span.exit').on('click', function() {
@@ -272,12 +251,20 @@ $(document).ready(function() {
 
 
       //ELEPHANTO
-      //IHM
+      var openElephanto = function(){
+        if(expand_view){
+          $('#elephanto span.symbol').html('&#8615;');
+          $('#elephanto li:not(.first)').fadeToggle("fast", "swing");
+        } else {
+          $('#elephanto span.symbol').html('&#8613;');
+          $('#elephanto li:not(.first)').toggle();
+        }
+      }
       var displayData = function() {
         if (position_list.length > 0 && (position_has_changed || force_render)) {
           var list = "";
           var cnt = 0;
-          var symbol = expandView ? '&#8615;' : '&#8613';
+          var symbol = expand_view ? '&#8615;' : '&#8613';
 
           force_render = false;
           position_has_changed = false;
@@ -290,12 +277,6 @@ $(document).ready(function() {
               var metas = unjsonize(localStorage.getItem('elephanto::' + value));
               var stat = unjsonize(localStorage.getItem('elephant::' + value));
               var positionClass = cnt == 0 ? 'first' : "";
-/*
-              if (cnt == 0) {
-                positionClass = "first";
-              } else if (expandView == false) {
-                positionClass = "not-first";
-              }*/
 
               list += "<li data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "' data-url='" + metas.page + "' class='" + positionClass + "'>";
               if (metas.image) {
@@ -316,6 +297,11 @@ $(document).ready(function() {
 
           list += "</ul>";
           $('#elephanto').html(list);
+
+          if(expand_view){
+            openElephanto();
+          }
+
           listenLink();
           listenOpen();
           listenExit();
@@ -380,7 +366,6 @@ $(document).ready(function() {
         return  unjsonize(localStorage.getItem('elephant_position_list'));
       }
 
-
       //Utilities
       function debug(data, title) {
         if (!title) title = 'DEBUG';
@@ -396,9 +381,9 @@ $(document).ready(function() {
       }
 
 
-      //Auto RunS
-
-      //Record page variables
+      //RUN
+      
+      //Elephant : record data
       if (runElephant()) {
         if (!elephantExists()) {
           createElephant();
@@ -409,8 +394,6 @@ $(document).ready(function() {
         }
         loadEntry();
         displayFavorite();
-
-        //Init action detection
         setInterval(function() {
           incrementTime()
         }, 1000);
@@ -420,9 +403,7 @@ $(document).ready(function() {
         listenFavorite();
       }
 
-
-
-      //Display Local Storage Datas
+      //Elephanto : display data
       if (runElephanto()) {
         if (!elephantExists()) {
           createElephant();
@@ -430,9 +411,6 @@ $(document).ready(function() {
         loadElephant();
         computePosition();
         displayData();
-        //listenOpen();
-        //listenExit();
-
         var refreshData = setInterval(function() {
           loadElephant();
           computePosition();
