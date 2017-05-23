@@ -41,7 +41,7 @@ Bon allez, let's code !
 <div id="elephanto"></div>
 ~~~~
 
-5 - Positionner la div dédié au favoris (id='elephant_favorite')
+5 - Positionner la div dédiée aux favoris (id='elephant_favorite')
 ~~~~
 <div id="elephant_favorite"></div>
 ~~~~
@@ -55,7 +55,7 @@ $(document).ready(function () {
 ~~~~
 
 # Options
-Le plugin Elephant prends en compte certaines options de personnalisation.
+Le plugin Elephant prends en compte certaines options personalisable.
 
 Options par défaut :
 ~~~~
@@ -71,20 +71,20 @@ favoriteOffText: "Cette page m'intéresse",
 favoriteOnText: "Cette page ne m'intéresse plus"
 }
 ~~~~
-triggers : définie les éléments qui incrémentent la stat 'trigger' (type selecteur JQuery (tag, id, class,...)).
+triggers (tableau) : définie les éléments qui incrémentent la stat 'trigger' (type selecteur JQuery (tag, id, class,...)).
 
 activeDuration (secondes) : définit la durée à partir de laquelle l'utilisateur est considéré comme inactif sur une page. Pris en compte pour l'incrémentation de la stat 'time'.
 
 refreshRender (secondes) : définit le temps de rafraichissmeent du rendu visuel.
 
-maxDisplayedResult : définit le nombre maximal de positions à afficher dans le rendu visuel.
+maxDisplayedResult (entier) : définit le nombre maximal de positions à afficher dans le rendu visuel.
 
-moreText: définit le texte à afficher en haut du rendu visuel pour switcher l'ouverture de la div.
+moreText (chaîne) : définit le texte à afficher en haut du rendu visuel pour switcher l'ouverture de la div.
 
-favoriteTrigger: id de la div du bouton favoris.
+favoriteTrigger (chaîne) : id de la div du bouton favoris.
 
-favoriteIcon: icône pour le favoris.
+favoriteIcon (chaîne) : icône pour le favoris.
 
-favoriteOffText: texte pour ajouter une page dans les favoris.
+favoriteOffText (chaîne) : texte pour ajouter une page dans les favoris.
 
-favoriteOnText: texte pour enlever une page des favoris.
+favoriteOnText (chaîne) : texte pour enlever une page des favoris.
