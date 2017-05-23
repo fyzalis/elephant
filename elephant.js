@@ -191,14 +191,16 @@ $(document).ready(function() {
       var listenOpen = function() {
         $('#elephanto div.open').off();
         $('#elephanto div.open').on('click', function() {
+          console.log('listenOPEN');
           expandView = !expandView;
+          console.log(expandView);
           if(expandView){
-            $('#elephanto span.symbol').html('&#8615;') ;
+            $('#elephanto span.symbol').html('&#8615;');
+            $('#elephanto li:not(.first)').fadeToggle("fast", "swing");
           } else {
             $('#elephanto span.symbol').html('&#8613;');
+            $('#elephanto li:not(.first)').toggle();
           }
-
-          $('#elephanto li.not-first').fadeToggle("fast", "swing");
 
         });
       };
@@ -210,6 +212,13 @@ $(document).ready(function() {
           clearInterval(refreshData);
         });
       };
+
+      var listenLink = function(){
+        $('#elephanto ul li').off('click');
+        $('#elephanto ul li').on('click', function(){
+          location.href=$(this).data('url');
+        });
+      }
 
 
       //Check user activity
@@ -268,23 +277,25 @@ $(document).ready(function() {
         if (position_list.length > 0 && (position_has_changed || force_render)) {
           var list = "";
           var cnt = 0;
+          var symbol = expandView ? '&#8615;' : '&#8613';
 
           force_render = false;
           position_has_changed = false;
-          list += "<div class='open'><span class='symbol'>&#8613;</span> <span class='text'>" + settings.moreText + "</span><span class='exit'>&#10006;</span></div>";
+
+          list += "<div class='open'><span class='symbol'>"+symbol+"</span> <span class='text'>" + settings.moreText + "</span><span class='exit'>&#10006;</span></div>";
           list += "<ul>";
 
           $.each(position_list, function(index, value) {
             if (cnt < settings.maxDisplayedResult) {
               var metas = unjsonize(localStorage.getItem('elephanto::' + value));
               var stat = unjsonize(localStorage.getItem('elephant::' + value));
-              var positionClass = "other";
-
+              var positionClass = cnt == 0 ? 'first' : "";
+/*
               if (cnt == 0) {
                 positionClass = "first";
               } else if (expandView == false) {
                 positionClass = "not-first";
-              }
+              }*/
 
               list += "<li data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "' data-url='" + metas.page + "' class='" + positionClass + "'>";
               if (metas.image) {
@@ -302,13 +313,12 @@ $(document).ready(function() {
               return false;
             }
           });
-          
+
           list += "</ul>";
           $('#elephanto').html(list);
-          $('#elephanto ul li').off('click');
-          $('#elephanto ul li').on('click', function(){
-            location.href=$(this).data('url');
-          });
+          listenLink();
+          listenOpen();
+          listenExit();
         }
       }
       //Calul score
@@ -420,17 +430,13 @@ $(document).ready(function() {
         loadElephant();
         computePosition();
         displayData();
-        listenOpen();
-        //listenClose();
-        listenExit();
+        //listenOpen();
+        //listenExit();
 
         var refreshData = setInterval(function() {
           loadElephant();
           computePosition();
           displayData();
-          listenOpen();
-          //listenClose();
-          listenExit();
         }, (settings.refreshRender * 1000));
       }
     };

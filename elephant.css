@@ -56,7 +56,7 @@ div#elephanto ul li:last-child {
   border-bottom: none;
 }
 
-div#elephanto ul li.not-first {
+div#elephanto ul li:not(.first) {
   display: none;
 }
 
