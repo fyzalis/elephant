@@ -218,13 +218,17 @@ $(document).ready(function() {
 
       //Display favorite
       var displayFavorite = function() {
-        if ($('#elephant_favorite').length > 0) {
-          var favorite_block, favorite_off_class, favorite_on_class = "";
+        if ($(settings.favoriteTrigger).length > 0) {
+          var favorite_block = "";
+          var favorite_off_class = "";
+          var favorite_on_class = "";
+
           if (stats.favorite) {
             favorite_on_class = "active";
           } else {
             favorite_off_class = "active";
           }
+
           favorite_block += "<div id='elephant_favorite_off' class='" + favorite_off_class + "'>";
           favorite_block += "<span class='elephant_favorite_off'>" + settings.favoriteIcon + "</span>";
           favorite_block += "<span>" + settings.favoriteOffText + "</span>";
@@ -233,6 +237,7 @@ $(document).ready(function() {
           favorite_block += "<span class='elephant_favorite_on'>" + settings.favoriteIcon + "</span>";
           favorite_block += "<span>" + settings.favoriteOnText + "</span>";
           favorite_block += "</div>";
+
           $('#elephant_favorite').html(favorite_block);
         }
       }
@@ -275,16 +280,12 @@ $(document).ready(function() {
                 positionClass = "not-first";
               }
 
-              list += "<li data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "' class='" + positionClass + "'>";
+              list += "<li data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "' data-url='" + metas.page + "' class='" + positionClass + "'>";
               if (metas.image) {
-                list += "<a href='" + metas.page + "'>";
                 list += "<img src='" + metas.image + "' />";
-                list += "</a>";
               }
               if (metas.text) {
-                list += "<a href='" + metas.page + "'>";
-                list += metas.text;
-                list += "</a>";
+                list += "<span class='text'>"+metas.text+"</span>";
               }
               if (stat.favorite) {
                 list += "<span class='elephant_favorite_on'>" + settings.favoriteIcon + "</span>";
@@ -297,6 +298,10 @@ $(document).ready(function() {
           });
           list += "</ul>";
           $('#elephanto').html(list);
+          $('#elephanto ul li').off('click');
+          $('#elephanto ul li').on('click', function(){
+            location.href=$(this).data('url');
+          });
         }
       }
       //Calul score

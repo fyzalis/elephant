@@ -60,19 +60,18 @@ div#elephanto ul li.not-first {
   display: none;
 }
 
-div#elephanto ul li img, div#elephanto ul li a {
+div#elephanto ul li img, div#elephanto ul li span.text {
   vertical-align: middle;
   padding: 2px;
 }
 
-div#elephanto ul li a, div#elephanto ul li a:visited {
+div#elephanto ul li span.text {
   font-family: Arial;
   font-size: 14px;
-  text-decoration: none;
   color: #333;
 }
 
-div#elephanto ul li a:hover {
+div#elephanto ul li:hover span.text {
   color: blue;
 }
 
