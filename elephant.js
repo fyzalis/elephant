@@ -41,6 +41,8 @@ $(document).ready(function() {
         trigger: 10
       }
       var position_list = new Array();
+      var position_has_changed = false;
+      var force_render = true;
       var expandView = false;
 
 
@@ -174,6 +176,7 @@ $(document).ready(function() {
       }
       var listenFavorite = function() {
         $(settings.favoriteTrigger).on('click', function() {
+          force_render = true;
           switchFavorite();
           updateEntry();
         });
@@ -258,9 +261,13 @@ $(document).ready(function() {
       //ELEPHANTO
       //IHM
       var displayData = function() {
-        if (position_list.length > 0) {
+        if (position_list.length > 0 && (position_has_changed || force_render)) {
           var list = "";
           var cnt = 0;
+
+          force_render = false;
+          position_has_changed = false;
+
           if (!expandView) {
             list += "<div class='open'>&#8613; <span class='text'>" + settings.moreText + "</span><span class='exit'>&#10006;</span></div>";
           } else {
@@ -316,6 +323,8 @@ $(document).ready(function() {
       }
       //Calul position
       var computePosition = function() {
+
+        var lastPositionList = getLastPositionList();
         var score_list = new Array();
         var favorite_list = new Array();
         var no_favorite_list = new Array();
@@ -344,6 +353,21 @@ $(document).ready(function() {
           position_list[i] = page.page;
           i++
         });
+        $.each(position_list, function(index, page){
+          if(position_list[index] !== lastPositionList[index]){
+            position_has_changed = true;
+          }
+        });
+
+        saveLastPositionList();
+      }
+
+
+      var saveLastPositionList = function(){
+        localStorage.setItem('elephant_position_list', jsonize(position_list));
+      }
+      var getLastPositionList = function(){
+        return  unjsonize(localStorage.getItem('elephant_position_list'));
       }
 
 
