@@ -41,6 +41,12 @@ Bon allez, let's code !
 <div id="elephanto"></div>
 ~~~~
 
+5 - Positionner la div dédié au favoris (id='elephant_favorite')
+~~~~
+<div id="elephant_favorite"></div>
+~~~~
+
+
 5 - Puis exécuter le plugin JS
 ~~~~
 $(document).ready(function () {
@@ -58,7 +64,11 @@ triggers: new Array(),
 activeDuration: 30,
 refreshRender: 1,
 maxDisplayedResult: 5,
-moreText: 'Vos pages favorites'
+moreText: 'Vos pages favorites',
+favoriteTrigger: '#elephant_favorite',
+favoriteIcon: '&hearts;',
+favoriteOffText: "Cette page m'intéresse",
+favoriteOnText: "Cette page ne m'intéresse plus"
 }
 ~~~~
 triggers : définie les éléments qui incrémentent la stat 'trigger' (type selecteur JQuery (tag, id, class,...)).
@@ -71,3 +81,10 @@ maxDisplayedResult : définit le nombre maximal de positions à afficher dans le
 
 moreText: définit le texte à afficher en haut du rendu visuel pour switcher l'ouverture de la div.
 
+favoriteTrigger: id de la div du bouton favoris.
+
+favoriteIcon: icône pour le favoris.
+
+favoriteOffText: texte pour ajouter une page dans les favoris.
+
+favoriteOnText: texte pour enlever une page des favoris.
