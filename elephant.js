@@ -8,11 +8,15 @@ $(document).ready(function() {
         activeDuration: 30,
         refreshRender: 1,
         maxDisplayedResult: 5,
-        moreText: 'Vos pages favorites',
+        title: 'Favoris',
+        entryName: {
+          'one':'page',
+          'several':'pages'
+        },
         favoriteTrigger: '#elephant_favorite',
         favoriteIcon: '&hearts;',
-        favoriteOffText: "Cette page m'intéresse",
-        favoriteOnText: "Cette page ne m'intéresse plus",
+        favoriteOffText: "Add to favorites",
+        favoriteOnText: "Remove from favorites",
         path: "",
         theme: "default"
       }, options);
@@ -268,11 +272,12 @@ $(document).ready(function() {
           var cnt = 0;
           var symbol = expand_view ? '&#8615;' : '&#8613';
           var displayed_entries = position_list.length>settings.maxDisplayedResult ? settings.maxDisplayedResult : position_list.length;
+          var entry_name = displayed_entries>1 ? settings.entryName.several : settings.entryName.one;
 
           force_render = false;
           position_has_changed = false;
 
-          list += "<div class='open'><span class='symbol'>" + symbol + "</span> <span class='text'>" + settings.moreText + " ("+displayed_entries+")</span><span class='exit'>&#10006;</span></div>";
+          list += "<div class='open'><span class='symbol'>" + symbol + "</span> <span class='text'>" + settings.title + " ("+displayed_entries+" "+entry_name+")</span><span class='exit'>&#10006;</span></div>";
           list += "<ul>";
 
           $.each(position_list, function(index, value) {
