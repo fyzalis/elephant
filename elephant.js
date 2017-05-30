@@ -286,20 +286,21 @@ $(document).ready(function() {
       //ELEPHANTO
       var openElephanto = function() {
         if (expand_view) {
-          $('#elephanto span.symbol').html('&#8615;');
+          //$('#elephanto span.symbol').html('&#8615;');
           //$('#elephanto div.entry:not(.first)').fadeToggle("slow", "swing");
           $('#elephanto div.entry:not(.first)').css('display', 'flex');
         } else {
-          $('#elephanto span.symbol').html('&#8613;');
+          //$('#elephanto span.symbol').html('&#8613;');
           //$('#elephanto div.entry:not(.first)').toggle();
           $('#elephanto div.entry:not(.first)').css('display', 'none');
         }
       }
       var displayData = function() {
+
         if (position_list.length > 0 && (position_has_changed || force_render)) {
           var list = "";
           var cnt = 0;
-          var symbol = expand_view ? '&#8615;' : '&#8613';
+          //var symbol = expand_view ? '&#8615;' : '&#8613';
           var displayed_entries = position_list.length>settings.maxDisplayedResult ? settings.maxDisplayedResult : position_list.length;
           var entry_name = displayed_entries>1 ? settings.entryName.several : settings.entryName.one;
           var metas = "";
@@ -310,9 +311,9 @@ $(document).ready(function() {
           position_has_changed = false;
 
           list += "<div class='open'>";
-          list += "<span class='symbol'>" + symbol + "</span> ";
-          list += "<span class='text'>" + settings.title + " ("+displayed_entries+" "+entry_name+")</span>";
-          list += "<span class='exit'><img src='"+themePath+"/open.png' /></span>";
+          list += "<div class='expand'><img src='" + themePath + "/expand.png' /></div>";
+          list += "<div class='text'>" + settings.title + " ("+displayed_entries+" "+entry_name+")</div>";
+          list += "<div class='exit'><img src='"+themePath+"/open.png' /></div>";
           list += "</div>";
           list += "<div class='list'>";
 
@@ -341,16 +342,11 @@ $(document).ready(function() {
               return false;
             }
           });
-
           list += "</div>";
-
-
           $('#elephanto').html(list);
-
           if (expand_view) {
             openElephanto();
           }
-
           listenLink();
           listenOpen();
           listenExit();
@@ -374,13 +370,13 @@ $(document).ready(function() {
       }
       //Calul position
       var computePosition = function() {
-
         var lastPositionList = getLastPositionList();
         var score_list = new Array();
         var favorite_list = new Array();
         var no_favorite_list = new Array();
         position_list = new Array();
         var i = 0;
+
         $.each(entry_list, function(index, page) {
           var tmp_entry = new Array();
           tmp_entry['page'] = page;
@@ -391,9 +387,11 @@ $(document).ready(function() {
             no_favorite_list.push(tmp_entry);
           }
         });
+
         favorite_list.sort(function(a, b) {
           return b.stats.score - a.stats.score;
         });
+
         no_favorite_list.sort(function(a, b) {
           return b.stats.score - a.stats.score;
         });
@@ -402,6 +400,7 @@ $(document).ready(function() {
           position_list[i] = page.page;
           i++;
         });
+
         $.each(no_favorite_list, function(index, page) {
           position_list[i] = page.page;
           i++

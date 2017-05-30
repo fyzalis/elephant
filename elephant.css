@@ -15,25 +15,32 @@ div#elephanto div.open {
   cursor: pointer;
   background-color: #efefef;
   font-family: Arial;
-  vertical-align: middle;
-}
-
-div#elephanto span.exit {
-  float: right;
-  cursor: pointer;
-  margin-right: 5px;
-}
-
-div#elephanto span.exit img {
-  height: 16px;
+  font-size: 14px;
+  display: flex;
 }
 
 div#elephanto div.open:hover {
   background-color: #ddd;
 }
 
-div#elephanto div.open span.text {
-  font-size: 14px;
+div#elephanto div.open div {
+  display: flex;
+  align-items: center;
+  /*justify-content: center;*/
+  flex-direction: row;
+  padding: 5px;
+}
+
+div#elephanto div.open div.text {
+  flex: 1;
+}
+
+div#elephanto div.open div.exit {
+  cursor: pointer;
+}
+
+div#elephanto div.open div.exit img {
+  height: 16px;
 }
 
 div#elephanto div.list {
@@ -50,7 +57,7 @@ div#elephanto div.list div.entry {
 div#elephanto div.list div.entry div {
   display: flex;
   align-items: center;
-  justify-content: center;
+  /*justify-content: center;*/
   flex-direction: row;
   padding: 5px;
 }
@@ -60,7 +67,7 @@ div#elephanto div.list div.favorite {}
 div#elephanto div.list div.image {}
 
 div#elephanto div.list div.text {
-  flex: 1
+  flex: 1;
 }
 
 div#elephanto div.list div.remove {}
@@ -115,17 +122,3 @@ div#elephant_favorite {
 div#elephant_favorite div:not(.active) {
   display: none;
 }
-
-
-/*
-span.elephant_favorite_off {
-  color: lightGrey;
-  font-size: 24px;
-}
-*/
-
-
-/*span.elephant_favorite_on {
-  color: red;
-  font-size: 24px;
-}*/
