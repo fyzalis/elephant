@@ -14,13 +14,14 @@ $(document).ready(function() {
           'several':'pages'
         },
         favoriteTrigger: '#elephant_favorite',
-        favoriteIcon: '&hearts;',
+        //favoriteIcon: '&hearts;',
         favoriteOffText: "Add to favorites",
         favoriteOnText: "Remove from favorites",
         path: "",
         theme: "default"
       }, options);
       var page = window.location.pathname;
+      var themePath = settings.path+"/themes/"+settings.theme;
       var meta = {
         page: page,
         text: "",
@@ -117,6 +118,26 @@ $(document).ready(function() {
         localStorage.setItem('elephant::' + page, jsonize(stats));
       }
 
+      var removeEntry = function(entry) {
+        var entryIndex = 0;
+        entryIndex = entry_list.indexOf(entry);
+        if (entryIndex > -1) {
+          entry_list.splice(entryIndex, 1);
+        }
+        localStorage.setItem('elephant', jsonize(entry_list));
+        localStorage.removeItem('elephant::' + entry);
+        localStorage.removeItem('elephanto::' + entry);
+        lastPostionList = getLastPositionList();
+        entryIndex = lastPostionList.indexOf(entry);
+        if (entryIndex > -1) {
+          lastPostionList.splice(entryIndex, 1);
+        }
+        saveLastPositionList();
+        force_render = true;
+        computePosition();
+        displayData();
+      }
+
 
       //Counters
       function incrementTime() {
@@ -199,9 +220,15 @@ $(document).ready(function() {
       };
 
       var listenLink = function() {
-        $('#elephanto ul li').off('click');
-        $('#elephanto ul li').on('click', function() {
+        $('#elephanto div.list div.entry div.text').off('click');
+        $('#elephanto div.list div.entry div.text').on('click', function() {
           location.href = $(this).data('url');
+        });
+      }
+      var listenRemove = function() {
+        $('#elephanto div.list div.entry div.remove img').off('click');
+        $('#elephanto div.list div.entry div.remove img').on('click', function() {
+          removeEntry($(this).data('entry'));
         });
       }
 
@@ -260,10 +287,12 @@ $(document).ready(function() {
       var openElephanto = function() {
         if (expand_view) {
           $('#elephanto span.symbol').html('&#8615;');
-          $('#elephanto li:not(.first)').fadeToggle("slow", "swing");
+          //$('#elephanto div.entry:not(.first)').fadeToggle("slow", "swing");
+          $('#elephanto div.entry:not(.first)').css('display', 'flex');
         } else {
           $('#elephanto span.symbol').html('&#8613;');
-          $('#elephanto li:not(.first)').toggle();
+          //$('#elephanto div.entry:not(.first)').toggle();
+          $('#elephanto div.entry:not(.first)').css('display', 'none');
         }
       }
       var displayData = function() {
@@ -273,37 +302,49 @@ $(document).ready(function() {
           var symbol = expand_view ? '&#8615;' : '&#8613';
           var displayed_entries = position_list.length>settings.maxDisplayedResult ? settings.maxDisplayedResult : position_list.length;
           var entry_name = displayed_entries>1 ? settings.entryName.several : settings.entryName.one;
-
+          var metas = "";
+          var stat = "";
+          var positionClass = "";
+          var favoriteIcon = "";
           force_render = false;
           position_has_changed = false;
 
-          list += "<div class='open'><span class='symbol'>" + symbol + "</span> <span class='text'>" + settings.title + " ("+displayed_entries+" "+entry_name+")</span><span class='exit'>&#10006;</span></div>";
-          list += "<ul>";
+          list += "<div class='open'>";
+          list += "<span class='symbol'>" + symbol + "</span> ";
+          list += "<span class='text'>" + settings.title + " ("+displayed_entries+" "+entry_name+")</span>";
+          list += "<span class='exit'><img src='"+themePath+"/open.png' /></span>";
+          list += "</div>";
+          list += "<div class='list'>";
 
           $.each(position_list, function(index, value) {
             if (cnt < settings.maxDisplayedResult) {
-              var metas = unjsonize(localStorage.getItem('elephanto::' + value));
-              var stat = unjsonize(localStorage.getItem('elephant::' + value));
-              var positionClass = cnt == 0 ? 'first' : "";
 
-              list += "<li data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "' data-url='" + metas.page + "' class='" + positionClass + "'>";
+              metas = unjsonize(localStorage.getItem('elephanto::' + value));
+              stat = unjsonize(localStorage.getItem('elephant::' + value));
+              positionClass = cnt == 0 ? 'first' : "";
+              favoriteIcon = stat.favorite ? themePath+"/favorite-on.png" : themePath+"/favorite-off.png";
+              list += "<div class='entry " + positionClass + "' data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "'>";
+              list += "<div class='favorite'><img src='"+favoriteIcon+"' /></div>";
+
               if (metas.image) {
-                list += "<img src='" + metas.image + "' />";
+                list += "<div class='image'><img src='" + metas.image + "'  /></div>";
               }
               if (metas.text) {
-                list += "<span class='text'>" + metas.text + "</span>";
+                list += "<div class='text' data-url='" + metas.page + "'>"+ metas.text + "</div>";
               }
-              if (stat.favorite) {
-                list += "<span class='elephant_favorite_on'>" + settings.favoriteIcon + "</span>";
-              }
-              list += "</li>";
+
+              list += "<div class='remove'><img src='"+themePath+"/remove.png' data-entry='"+value+"' /></div>";
+              list += "</div>";
               cnt++;
+
             } else {
               return false;
             }
           });
 
-          list += "</ul>";
+          list += "</div>";
+
+
           $('#elephanto').html(list);
 
           if (expand_view) {
@@ -313,7 +354,13 @@ $(document).ready(function() {
           listenLink();
           listenOpen();
           listenExit();
+          listenRemove();
         }
+
+        if (position_list.length ==0){
+          $('#elephanto').html("");
+        }
+
       }
       //Calul score
       var computeScore = function() {
@@ -332,6 +379,7 @@ $(document).ready(function() {
         var score_list = new Array();
         var favorite_list = new Array();
         var no_favorite_list = new Array();
+        position_list = new Array();
         var i = 0;
         $.each(entry_list, function(index, page) {
           var tmp_entry = new Array();
@@ -349,6 +397,7 @@ $(document).ready(function() {
         no_favorite_list.sort(function(a, b) {
           return b.stats.score - a.stats.score;
         });
+
         $.each(favorite_list, function(index, page) {
           position_list[i] = page.page;
           i++;
@@ -357,6 +406,7 @@ $(document).ready(function() {
           position_list[i] = page.page;
           i++
         });
+
         $.each(position_list, function(index, page) {
           if (position_list[index] !== lastPositionList[index]) {
             position_has_changed = true;

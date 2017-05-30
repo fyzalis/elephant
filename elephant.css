@@ -24,6 +24,10 @@ div#elephanto span.exit {
   margin-right: 5px;
 }
 
+div#elephanto span.exit img {
+  height: 16px;
+}
+
 div#elephanto div.open:hover {
   background-color: #ddd;
 }
@@ -32,69 +36,96 @@ div#elephanto div.open span.text {
   font-size: 14px;
 }
 
-div#elephanto ul {
+div#elephanto div.list {
   margin: 0px;
   padding: 0px;
-  list-style: none;
 }
 
-div#elephanto ul li {
+div#elephanto div.list div.entry {
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+}
+
+div#elephanto div.list div.entry div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  padding: 5px;
+}
+
+div#elephanto div.list div.favorite {}
+
+div#elephanto div.list div.image {}
+
+div#elephanto div.list div.text {
+  flex: 1
+}
+
+div#elephanto div.list div.remove {}
+
+div#elephanto div.list div.entry {
   padding: 0px 10px 0px 10px;
   border-bottom: solid 1px lightGrey;
 }
 
-div#elephanto ul li:hover {
+div#elephanto div.list div.entry:hover {
   background-color: #efefef;
   cursor: pointer;
 }
 
-div#elephanto ul li:first-child {
+div#elephanto div.list div.entry:first-child {
   padding-top: 0px;
 }
 
-div#elephanto ul li:last-child {
+div#elephanto div.list div.entry:last-child {
   border-bottom: none;
 }
 
-div#elephanto ul li:not(.first) {
+div#elephanto div.list div.entry:not(.first) {
   display: none;
 }
 
-div#elephanto ul li img, div#elephanto ul li span.text {
-  vertical-align: middle;
-  padding: 2px;
-}
-
-div#elephanto ul li span.text {
+div#elephanto div.list div.entry div.text {
   font-family: Arial;
   font-size: 14px;
   color: #333;
 }
 
-div#elephanto ul li:hover span.text {
+div#elephanto div.list div.entry:hover div.text {
   color: blue;
 }
 
-div#elephanto ul li img {
+div#elephanto div.list div.image img {
   width: 75px;
   height: 50px;
   object-fit: cover;
+}
+
+div#elephanto div.list div.favorite img {
+  width: 25px;
+  margin-right: 10px;
 }
 
 div#elephant_favorite {
   cursor: pointer;
 }
 
+div#elephant_favorite div:not(.active) {
+  display: none;
+}
+
+
+/*
 span.elephant_favorite_off {
   color: lightGrey;
   font-size: 24px;
 }
+*/
 
-span.elephant_favorite_on {
+
+/*span.elephant_favorite_on {
   color: red;
   font-size: 24px;
-}
-
-div#elephant_favorite div:not(.active) {
-  display: none;
-}
+}*/
