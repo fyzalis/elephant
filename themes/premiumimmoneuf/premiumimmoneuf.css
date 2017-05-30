@@ -1,0 +1,8 @@
+div#elephanto {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  border: solid 1px black;
+  z-index: 9999;
+  background-color: yellow;
+}

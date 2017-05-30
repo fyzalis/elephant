@@ -12,7 +12,9 @@ $(document).ready(function() {
         favoriteTrigger: '#elephant_favorite',
         favoriteIcon: '&hearts;',
         favoriteOffText: "Cette page m'intéresse",
-        favoriteOnText: "Cette page ne m'intéresse plus"
+        favoriteOnText: "Cette page ne m'intéresse plus",
+        path: "",
+        theme: "default"
       }, options);
       var page = window.location.pathname;
       var meta = {
@@ -192,10 +194,10 @@ $(document).ready(function() {
         });
       };
 
-      var listenLink = function(){
+      var listenLink = function() {
         $('#elephanto ul li').off('click');
-        $('#elephanto ul li').on('click', function(){
-          location.href=$(this).data('url');
+        $('#elephanto ul li').on('click', function() {
+          location.href = $(this).data('url');
         });
       }
 
@@ -251,8 +253,8 @@ $(document).ready(function() {
 
 
       //ELEPHANTO
-      var openElephanto = function(){
-        if(expand_view){
+      var openElephanto = function() {
+        if (expand_view) {
           $('#elephanto span.symbol').html('&#8615;');
           $('#elephanto li:not(.first)').fadeToggle("slow", "swing");
         } else {
@@ -265,11 +267,12 @@ $(document).ready(function() {
           var list = "";
           var cnt = 0;
           var symbol = expand_view ? '&#8615;' : '&#8613';
+          var displayed_entries = position_list.length>settings.maxDisplayedResult ? settings.maxDisplayedResult : position_list.length;
 
           force_render = false;
           position_has_changed = false;
 
-          list += "<div class='open'><span class='symbol'>"+symbol+"</span> <span class='text'>" + settings.moreText + "</span><span class='exit'>&#10006;</span></div>";
+          list += "<div class='open'><span class='symbol'>" + symbol + "</span> <span class='text'>" + settings.moreText + " ("+displayed_entries+")</span><span class='exit'>&#10006;</span></div>";
           list += "<ul>";
 
           $.each(position_list, function(index, value) {
@@ -283,7 +286,7 @@ $(document).ready(function() {
                 list += "<img src='" + metas.image + "' />";
               }
               if (metas.text) {
-                list += "<span class='text'>"+metas.text+"</span>";
+                list += "<span class='text'>" + metas.text + "</span>";
               }
               if (stat.favorite) {
                 list += "<span class='elephant_favorite_on'>" + settings.favoriteIcon + "</span>";
@@ -298,7 +301,7 @@ $(document).ready(function() {
           list += "</ul>";
           $('#elephanto').html(list);
 
-          if(expand_view){
+          if (expand_view) {
             openElephanto();
           }
 
@@ -349,8 +352,8 @@ $(document).ready(function() {
           position_list[i] = page.page;
           i++
         });
-        $.each(position_list, function(index, page){
-          if(position_list[index] !== lastPositionList[index]){
+        $.each(position_list, function(index, page) {
+          if (position_list[index] !== lastPositionList[index]) {
             position_has_changed = true;
           }
         });
@@ -359,12 +362,20 @@ $(document).ready(function() {
       }
 
 
-      var saveLastPositionList = function(){
+      var saveLastPositionList = function() {
         localStorage.setItem('elephant_position_list', jsonize(position_list));
       }
-      var getLastPositionList = function(){
-        return  unjsonize(localStorage.getItem('elephant_position_list'));
+      var getLastPositionList = function() {
+        return unjsonize(localStorage.getItem('elephant_position_list'));
       }
+
+
+      var loadTheme = function() {
+        if (settings.theme != "default") {
+          $("head").append($("<link rel='stylesheet' href='" + settings.path + "/themes/" + settings.theme + "/" + settings.theme + ".min.css' type='text/css' media='screen' />"));
+        }
+      }
+
 
       //Utilities
       function debug(data, title) {
@@ -408,6 +419,7 @@ $(document).ready(function() {
         if (!elephantExists()) {
           createElephant();
         }
+        loadTheme();
         loadElephant();
         computePosition();
         displayData();
