@@ -95,5 +95,16 @@ path (chaîne): chemin du dossier du plugin (nécéssaire pour la gestion des th
 
 theme (chaîne): nom du dossier contenant le thème désiré
 
+
+# Themes
+
+Afin de personnaliser le plugin sur votre site, il est très facile de faire des thèmes. Il vous suffit juste de copier le répertoire du thème par défaut,
+de personnaliser les différents fichiers (css, images), puis de l'appeler dans les options du plugin grâce à la variable 'theme'
+
+
 # Screenshot
-![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+Thème par défaut :
+![theme par defaut](https://github.com/fyzalis/elephant/blob/master/demo/elephant-screenshot-default.png)
+
+Thème Premium
+![theme premium](https://github.com/fyzalis/elephant/blob/master/demo/elephant-screenshot-premium.png)
