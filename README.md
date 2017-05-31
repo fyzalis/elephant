@@ -69,6 +69,8 @@ favoriteTrigger: '#elephant_favorite',
 favoriteIcon: '&hearts;',
 favoriteOffText: "Cette page m'intéresse",
 favoriteOnText: "Cette page ne m'intéresse plus"
+path: "",
+theme: "default"
 }
 ~~~~
 triggers (tableau) : définie les éléments qui incrémentent la stat 'trigger' (type selecteur JQuery (tag, id, class,...)).
@@ -88,3 +90,7 @@ favoriteIcon (chaîne) : icône pour le favoris.
 favoriteOffText (chaîne) : texte pour ajouter une page dans les favoris.
 
 favoriteOnText (chaîne) : texte pour enlever une page des favoris.
+
+path (chaîne): chemin du dossier du plugin (nécéssaire pour la gestion des thèmes).
+
+theme (chaîne): nom du dossier contenant le thème désiré

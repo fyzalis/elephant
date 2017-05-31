@@ -10,24 +10,24 @@ $(document).ready(function() {
         maxDisplayedResult: 5,
         title: 'Favoris',
         entryName: {
-          'one':'page',
-          'several':'pages'
+          'one': '',
+          'several': ''
         },
         favoriteTrigger: '#elephant_favorite',
-        //favoriteIcon: '&hearts;',
         favoriteOffText: "Add to favorites",
         favoriteOnText: "Remove from favorites",
         path: "",
         theme: "default"
       }, options);
       var page = window.location.pathname;
-      var themePath = settings.path+"/themes/"+settings.theme;
+      var themePath = settings.path + "/themes/" + settings.theme;
       var meta = {
         page: page,
         text: "",
         image: ""
       };
       var entry_list = new Array();
+      var view_state = "visible"; // => Expand, Reduce, visible
       var stats = {
         time: 0,
         scroll: 0,
@@ -47,7 +47,6 @@ $(document).ready(function() {
       var position_list = new Array();
       var position_has_changed = false;
       var force_render = true;
-      var expand_view = false;
 
       //MAIN
       var runElephant = function() {
@@ -67,6 +66,7 @@ $(document).ready(function() {
       }
       var createElephant = function() {
         localStorage.setItem('elephant', jsonize(entry_list));
+        localStorage.setItem('elephant_view', view_state);
       }
 
       function loadElephant() {
@@ -207,18 +207,9 @@ $(document).ready(function() {
       var listenOpen = function() {
         $('#elephanto div.open').off();
         $('#elephanto div.open').on('click', function() {
-          expand_view = !expand_view;
           openElephanto();
         });
       };
-      var listenExit = function() {
-        $('#elephanto span.exit').off();
-        $('#elephanto span.exit').on('click', function() {
-          $('#elephanto').toggle();
-          clearInterval(refreshData);
-        });
-      };
-
       var listenLink = function() {
         $('#elephanto div.list div.entry div.text').off('click');
         $('#elephanto div.list div.entry div.text').on('click', function() {
@@ -285,24 +276,29 @@ $(document).ready(function() {
 
       //ELEPHANTO
       var openElephanto = function() {
-        if (expand_view) {
-          //$('#elephanto span.symbol').html('&#8615;');
-          //$('#elephanto div.entry:not(.first)').fadeToggle("slow", "swing");
-          $('#elephanto div.entry:not(.first)').css('display', 'flex');
-        } else {
-          //$('#elephanto span.symbol').html('&#8613;');
-          //$('#elephanto div.entry:not(.first)').toggle();
-          $('#elephanto div.entry:not(.first)').css('display', 'none');
+        if (view_state == "visible" || view_state == "reduce") {
+          $('#elephanto div.open div.switch_view img.expand').css('display', 'none');
+          $('#elephanto div.open div.switch_view img.reduce').css('display', 'block');
+          $('#elephanto div.list').css('display', 'block');
+          $('#elephanto div.list div.entry').css('display', 'flex');
+          view_state = "expand";
+        } else if (view_state == "expand") {
+          $('#elephanto div.open div.switch_view img.expand').css('display', 'block');
+          $('#elephanto div.open div.switch_view img.reduce').css('display', 'none');
+          $('#elephanto div.list').toggle();
+          view_state = "reduce";
         }
+        localStorage.setItem('elephant_view', view_state);
       }
-      var displayData = function() {
 
+
+
+      var displayData = function() {
         if (position_list.length > 0 && (position_has_changed || force_render)) {
           var list = "";
           var cnt = 0;
-          //var symbol = expand_view ? '&#8615;' : '&#8613';
-          var displayed_entries = position_list.length>settings.maxDisplayedResult ? settings.maxDisplayedResult : position_list.length;
-          var entry_name = displayed_entries>1 ? settings.entryName.several : settings.entryName.one;
+          var displayed_entries = position_list.length > settings.maxDisplayedResult ? settings.maxDisplayedResult : position_list.length;
+          var entry_name = displayed_entries > 1 ? settings.entryName.several : settings.entryName.one;
           var metas = "";
           var stat = "";
           var positionClass = "";
@@ -311,53 +307,62 @@ $(document).ready(function() {
           position_has_changed = false;
 
           list += "<div class='open'>";
-          list += "<div class='expand'><img src='" + themePath + "/expand.png' /></div>";
-          list += "<div class='text'>" + settings.title + "<span class='count'>"+displayed_entries+entry_name+"</span></div>";
-          list += "<div class='exit'><img src='"+themePath+"/open.png' /></div>";
+          list += "<div class='logo'><img src='" + themePath + "/logo.png' /></div>";
+          list += "<div class='text'>" + settings.title + "<span class='count'>" + displayed_entries + entry_name + "</span></div>";
+          list += "<div class='switch_view'>";
+          list += "<img class='expand' src='" + themePath + "/open.png' />";
+          list += "<img class='reduce' src='" + themePath + "/reduce.png' />";
+          list += "</div>";
           list += "</div>";
           list += "<div class='list'>";
 
           $.each(position_list, function(index, value) {
             if (cnt < settings.maxDisplayedResult) {
-
               metas = unjsonize(localStorage.getItem('elephanto::' + value));
               stat = unjsonize(localStorage.getItem('elephant::' + value));
               positionClass = cnt == 0 ? 'first' : "";
-              favoriteIcon = stat.favorite ? themePath+"/favorite-on.png" : themePath+"/favorite-off.png";
+              favoriteIcon = stat.favorite ? themePath + "/favorite-on.png" : themePath + "/favorite-off.png";
               list += "<div class='entry " + positionClass + "' data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "'>";
-              list += "<div class='favorite'><img src='"+favoriteIcon+"' /></div>";
+              list += "<div class='favorite'><img src='" + favoriteIcon + "' /></div>";
 
               if (metas.image) {
                 list += "<div class='image'><img src='" + metas.image + "'  /></div>";
               }
               if (metas.text) {
-                list += "<div class='text' data-url='" + metas.page + "'>"+ metas.text + "</div>";
+                list += "<div class='text' data-url='" + metas.page + "'>" + metas.text + "</div>";
               }
 
-              list += "<div class='remove'><img src='"+themePath+"/remove.png' data-entry='"+value+"' /></div>";
+              list += "<div class='remove'><img src='" + themePath + "/remove.png' data-entry='" + value + "' /></div>";
               list += "</div>";
               cnt++;
-
             } else {
               return false;
             }
           });
           list += "</div>";
           $('#elephanto').html(list);
-          if (expand_view) {
-            openElephanto();
-          }
           listenLink();
           listenOpen();
-          listenExit();
           listenRemove();
+          autoSwitchView();
         }
 
-        if (position_list.length ==0){
+        if (position_list.length == 0) {
           $('#elephanto').html("");
         }
-
       }
+
+
+      var autoSwitchView = function() {
+        view_state = localStorage.getItem('elephant_view');
+        if (view_state == "reduce") {
+          $('#elephanto div.list').css('display', 'none');
+        } else if (view_state == "expand") {
+          $('#elephanto div.list').css('display', 'block');
+          $('#elephanto div.list div.entry').css('display', 'flex');
+        }
+      }
+
       //Calul score
       var computeScore = function() {
         var score = 0;
@@ -422,12 +427,8 @@ $(document).ready(function() {
       var getLastPositionList = function() {
         return unjsonize(localStorage.getItem('elephant_position_list'));
       }
-
-
       var loadTheme = function() {
-        if (settings.theme != "default") {
-          $("head").append($("<link rel='stylesheet' href='" + settings.path + "/themes/" + settings.theme + "/" + settings.theme + ".min.css' type='text/css' media='screen' />"));
-        }
+        $("head").append($("<link rel='stylesheet' href='" + settings.path + "/themes/" + settings.theme + "/" + settings.theme + ".min.css' type='text/css' media='screen' />"));
       }
 
 
@@ -477,6 +478,7 @@ $(document).ready(function() {
         loadElephant();
         computePosition();
         displayData();
+
         var refreshData = setInterval(function() {
           loadElephant();
           computePosition();

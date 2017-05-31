@@ -9,7 +9,7 @@ div#elephanto {
 
 div#elephanto div.open {
   margin: 0px auto;
-  padding: 0px 0px 0px 5px;
+  padding: 0px;
   font-size: 16px;
   border-bottom: solid 1px black;
   cursor: pointer;
@@ -26,7 +26,6 @@ div#elephanto div.open:hover {
 div#elephanto div.open div {
   display: flex;
   align-items: center;
-  /*justify-content: center;*/
   flex-direction: row;
   padding: 5px;
 }
@@ -49,12 +48,16 @@ div#elephanto div.open div.text span.count {
   margin-left: 5px;
 }
 
-div#elephanto div.open div.exit {
+div#elephanto div.open div.switch_view {
   cursor: pointer;
 }
 
-div#elephanto div.open div.exit img {
+div#elephanto div.open div.switch_view img {
   height: 16px;
+}
+
+div#elephanto div.open div.switch_view img.reduce {
+  display: none;
 }
 
 div#elephanto div.list {
@@ -71,20 +74,13 @@ div#elephanto div.list div.entry {
 div#elephanto div.list div.entry div {
   display: flex;
   align-items: center;
-  /*justify-content: center;*/
   flex-direction: row;
   padding: 5px;
 }
 
-div#elephanto div.list div.favorite {}
-
-div#elephanto div.list div.image {}
-
 div#elephanto div.list div.text {
   flex: 1;
 }
-
-div#elephanto div.list div.remove {}
 
 div#elephanto div.list div.entry {
   padding: 0px 10px 0px 10px;
