@@ -103,8 +103,10 @@ de personnaliser les différents fichiers (css, images), puis de l'appeler dans 
 
 
 # Screenshot
-Thème par défaut :
+
+**Thème par défaut :**
 ![theme par defaut](https://github.com/fyzalis/elephant/blob/master/demo/elephant-screenshot-default.png)
 
-Thème Premium
+
+**Thème premiumimmoneuf :**
 ![theme premium](https://github.com/fyzalis/elephant/blob/master/demo/elephant-screenshot-premium.png)
