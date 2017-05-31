@@ -19,15 +19,6 @@ $(document).ready(function() {
         path: "",
         theme: "default"
       }, options);
-      var page = window.location.pathname;
-      var themePath = settings.path + "/themes/" + settings.theme;
-      var meta = {
-        page: page,
-        text: "",
-        image: ""
-      };
-      var entry_list = new Array();
-      var view_state = "visible"; // => Expand, Reduce, visible
       var stats = {
         time: 0,
         scroll: 0,
@@ -47,6 +38,15 @@ $(document).ready(function() {
       var position_list = new Array();
       var position_has_changed = false;
       var force_render = true;
+      var entry_list = new Array();
+      var view_state = "visible"; // => Expand, Reduce, visible
+      var page = window.location.pathname;
+      var themePath = settings.path + "/themes/" + settings.theme;
+      var meta = {
+        page: page,
+        text: "",
+        image: ""
+      };
 
       //MAIN
       var runElephant = function() {
@@ -449,6 +449,10 @@ $(document).ready(function() {
 
 
       //RUN
+      if(settings.path == ""){
+        console.error('You must define your Elephant directory path. Elephant not running...');
+        return false;
+      }
 
       //Elephant : record data
       if (runElephant()) {
