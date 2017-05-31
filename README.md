@@ -1,24 +1,18 @@
-# elephant
-Affichage historique navigation personnalisé et basé sur un scoring de page intéressantes pour l'utilisateur.
+# ELEPHANT
 
+Ce plugin Jquery permet de stocker, classer par intérêt, et restituer la navigation d'un internaute sur des pages données d'un site.
 
-Ce module permettra d'afficher une liste de pages qui sont sensés être plus intéerssantes que les autres pour l'utilisateur d'un site web.
+Il permet d'afficher une liste de pages sensés intéresser l'utilisateur du site.
 
-Ca se présentera comme un mini historique de navigation.
-
-Les liens affichés à l'intérieur seront les pages "produits" d'un site d'annonces immobilières.
-L'ordre de classement des différentes pages enregistrées doit se faire par un petit algo, en js (pas de backend pour l'instant), qui prendra en compte certains paramètres mesurables tels que :
+L'ordre de classement des différentes pages enregistrées prends en compte certains paramètres mesurables tels que :
 - le temps passé sur la page
 - le fait de plus ou moins scroller dans la page
 - le nombre de fois ou l'utilisateur à visité la page
-- des éléments "déclencheurs" (du type ouvrir une liste d'information, ouvrir des photos, etc...)
-- un possible bouton "favoris", pour que l'utilisateur puisse notifié son interet
+- des éléments "déclencheurs" (ex: ouvrir une liste d'informations, ouvrir des photos, cliquer sur un bouton, etc...)
+- un bouton "favoris", pour que l'utilisateur puisse notifié manuellement son intérêt
 
-liste non-exhaustive
 
-Pourquoi elephant ? Parcequ'ils ont une bonne mémoire, surtout pour retrouver leur point d'eau ! :)
-
-Bon allez, let's code !
+*Plugin réalisé par [Julien Buabent](http://julienbuabent.fr), pour le groupe [immo9 - Immobilier neuf à Toulouse](http://toulouseimmo9.com)*
 
 
 # Installation
@@ -32,7 +26,7 @@ Bon allez, let's code !
 
 3 - Positionner la div déclencheuse du comptage des stats dans les pages désirées (id='elephant')
 ~~~~
-<div id="elephant" data-text="Le texte qui s'affichera dans le rendu visuel" data-image="/path/to/image.jpg"></div>
+<div id="elephant" data-text="Le texte qui s'affichera<br />dans le rendu visuel" data-image="/path/to/image.jpg"></div>
 ~~~~
 
 
@@ -55,7 +49,9 @@ $(document).ready(function () {
 ~~~~
 
 # Options
-Le plugin Elephant prends en compte certaines options personalisable.
+Le plugin Elephant prends en compte certaines options personnalisable.
+
+** Important : ** pour l'instant, l'option 'path' doit être obligatoirement renseignée.
 
 Options par défaut :
 ~~~~
@@ -64,12 +60,15 @@ triggers: new Array(),
 activeDuration: 30,
 refreshRender: 1,
 maxDisplayedResult: 5,
-moreText: 'Vos pages favorites',
+title: 'My selection',
+entryName: {
+  'one': '',
+  'several': ''
+},
 favoriteTrigger: '#elephant_favorite',
-favoriteIcon: '&hearts;',
 favoriteOffText: "Cette page m'intéresse",
 favoriteOnText: "Cette page ne m'intéresse plus"
-path: "",
+path: "",  //OBLIGATOIRE
 theme: "default"
 }
 ~~~~
@@ -81,11 +80,11 @@ refreshRender (secondes) : définit le temps de rafraichissmeent du rendu visuel
 
 maxDisplayedResult (entier) : définit le nombre maximal de positions à afficher dans le rendu visuel.
 
-moreText (chaîne) : définit le texte à afficher en haut du rendu visuel pour switcher l'ouverture de la div.
+title (chaîne) : définit le texte à afficher en haut du rendu visuel.
+
+entryName (objet): défini le nom 'humain' des entrées de la sélection (ex: produit, bien immobilier, annonce, etc...)
 
 favoriteTrigger (chaîne) : id de la div du bouton favoris.
-
-favoriteIcon (chaîne) : icône pour le favoris.
 
 favoriteOffText (chaîne) : texte pour ajouter une page dans les favoris.
 
@@ -98,7 +97,7 @@ theme (chaîne): nom du dossier contenant le thème désiré
 
 # Themes
 
-Afin de personnaliser le plugin sur votre site, il est très facile de faire des thèmes. Il vous suffit juste de copier le répertoire du thème par défaut,
+Afin de personnaliser le plugin sur votre site, il est très facile de faire votre propre thème. Il vous suffit juste de copier le répertoire du thème par défaut,
 de personnaliser les différents fichiers (css, images), puis de l'appeler dans les options du plugin grâce à la variable 'theme'
 
 
