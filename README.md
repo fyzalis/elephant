@@ -49,7 +49,7 @@ $(document).ready(function () {
 # Options
 Le plugin Elephant prends en compte certaines options personnalisable.
 
-** Important : ** pour l'instant, l'option 'path' doit être obligatoirement renseignée.
+**Important :** pour l'instant, l'option 'path' doit être obligatoirement renseignée.
 
 Options par défaut :
 ~~~~
