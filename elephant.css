@@ -132,3 +132,12 @@ div#elephant_favorite {
 div#elephant_favorite div:not(.active) {
   display: none;
 }
+
+div#elephant_favorite img {
+  height: 32px;
+  width: 32px;
+}
+
+div#elephant_favorite span.text {
+  margin-left: 10px;
+}

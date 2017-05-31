@@ -8,14 +8,14 @@ $(document).ready(function() {
         activeDuration: 30,
         refreshRender: 1,
         maxDisplayedResult: 5,
-        title: 'Favoris',
+        title: 'My selection',
         entryName: {
           'one': '',
           'several': ''
         },
         favoriteTrigger: '#elephant_favorite',
-        favoriteOffText: "Add to favorites",
-        favoriteOnText: "Remove from favorites",
+        favoriteOffText: "Add to my selection",
+        favoriteOnText: "Remove to my selection",
         path: "",
         theme: "default"
       }, options);
@@ -249,12 +249,13 @@ $(document).ready(function() {
           }
 
           favorite_block += "<div id='elephant_favorite_off' class='" + favorite_off_class + "'>";
-          favorite_block += "<span class='elephant_favorite_off'>" + settings.favoriteIcon + "</span>";
-          favorite_block += "<span>" + settings.favoriteOffText + "</span>";
+          favorite_block += "<span class='elephant_favorite_off'><img src='"+ themePath + "/favorite-off.png' /></span>";
+          favorite_block += "<span class='text'>" + settings.favoriteOffText + "</span>";
           favorite_block += "</div>";
+
           favorite_block += "<div id='elephant_favorite_on' class='" + favorite_on_class + "'>";
-          favorite_block += "<span class='elephant_favorite_on'>" + settings.favoriteIcon + "</span>";
-          favorite_block += "<span>" + settings.favoriteOnText + "</span>";
+          favorite_block += "<span class='elephant_favorite_on'><img src='"+ themePath + "/favorite-on.png' /></span>";
+          favorite_block += "<span class='text'>" + settings.favoriteOnText + "</span>";
           favorite_block += "</div>";
 
           $('#elephant_favorite').html(favorite_block);
