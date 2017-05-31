@@ -212,8 +212,8 @@ $(document).ready(function() {
         });
       };
       var listenLink = function() {
-        $('#elephanto div.list div.entry div.text').off('click');
-        $('#elephanto div.list div.entry div.text').on('click', function() {
+        $('#elephanto div.list div.entry div.favorite, #elephanto div.list div.entry div.image, #elephanto div.list div.entry div.text').off('click');
+        $('#elephanto div.list div.entry div.favorite, #elephanto div.list div.entry div.image, #elephanto div.list div.entry div.text').on('click', function() {
           location.href = $(this).data('url');
         });
       }
@@ -295,13 +295,13 @@ $(document).ready(function() {
           $('#elephanto div.open div.switch_view img.reduce').css('display', 'block');
           $('#elephanto div.list').css('display', 'block');
           $('#elephanto div.list div.entry').css('display', 'flex');
-          $('#elephanto div.info').css('display', 'block');
+          //$('#elephanto div.info').css('display', 'block');
           view_state = "expand";
         } else if (view_state == "expand") {
           $('#elephanto div.open div.switch_view img.expand').css('display', 'block');
           $('#elephanto div.open div.switch_view img.reduce').css('display', 'none');
           $('#elephanto div.list').toggle();
-          $('#elephanto div.info').css('display', 'none');
+          //$('#elephanto div.info').css('display', 'none');
           view_state = "reduce";
         }
         localStorage.setItem('elephant_view', view_state);
@@ -340,10 +340,10 @@ $(document).ready(function() {
               positionClass = cnt == 0 ? 'first' : "";
               favoriteIcon = stat.favorite ? themePath + "/favorite-on.png" : themePath + "/favorite-off.png";
               list += "<div class='entry " + positionClass + "' data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "'>";
-              list += "<div class='favorite'><img src='" + favoriteIcon + "' /></div>";
+              list += "<div class='favorite' data-url='" + metas.page + "'><img src='" + favoriteIcon + "' /></div>";
 
               if (metas.image) {
-                list += "<div class='image'><img src='" + metas.image + "'  /></div>";
+                list += "<div class='image' data-url='" + metas.page + "'><img src='" + metas.image + "'  /></div>";
               }
               if (metas.text) {
                 list += "<div class='text' data-url='" + metas.page + "'>" + metas.text + "</div>";
@@ -359,11 +359,17 @@ $(document).ready(function() {
           list += "</div>";
 
           list += "<div class='info'>";
-          list += "<img class='clear_elephant' src='" + themePath + "/clear.png' />";
-          list += "<img class='info' src='" + themePath + "/info.png'>";
+          list += "Infos <img class='info' src='" + themePath + "/info.png'>";
+          list += "Vider <img class='clear_elephant' src='" + themePath + "/clear.png' />";
           list += "</div>";
 
           $('#elephanto').html(list);
+
+          if(position_list.length==1){
+            $("div#elephanto div.open div.switch_view img.reduce").css('display', 'block');
+            $("div#elephanto div.open div.switch_view img.expand").css('display', 'none');
+          }
+
           listenLink();
           listenOpen();
           listenRemove();
@@ -381,11 +387,11 @@ $(document).ready(function() {
         view_state = localStorage.getItem('elephant_view');
         if (view_state == "reduce") {
           $('#elephanto div.list').css('display', 'none');
-          $('#elephanto div.info').css('display', 'none');
+          //$('#elephanto div.info').css('display', 'none');
         } else if (view_state == "expand") {
           $('#elephanto div.list').css('display', 'block');
           $('#elephanto div.list div.entry').css('display', 'flex');
-          $('#elephanto div.info').css('display', 'block');
+          //$('#elephanto div.info').css('display', 'block');
         }
       }
 
@@ -442,7 +448,7 @@ $(document).ready(function() {
             position_has_changed = true;
           }
         });
-
+        
         saveLastPositionList();
       }
 
@@ -451,7 +457,11 @@ $(document).ready(function() {
         localStorage.setItem('elephant_position_list', jsonize(position_list));
       }
       var getLastPositionList = function() {
-        return unjsonize(localStorage.getItem('elephant_position_list'));
+        var last_position_list = unjsonize(localStorage.getItem('elephant_position_list'));
+        if(typeof last_position_list == 'object'){
+          last_position_list = new Array();
+        }
+        return last_position_list;
       }
       var loadTheme = function() {
         $("head").append($("<link rel='stylesheet' href='" + settings.path + "/themes/" + settings.theme + "/" + settings.theme + ".min.css' type='text/css' media='screen' />"));

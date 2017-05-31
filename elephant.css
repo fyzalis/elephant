@@ -120,12 +120,21 @@ div#elephanto div.list div.favorite img {
   margin-right: 10px;
 }
 
+
+/* en attendant V2...*/
+
+div#elephanto div.info {
+  display: none;
+}
+
 div#elephanto div.info {
   text-align: right;
   margin: 0px;
   padding: 2px 5px;
   line-height: 20px;
   height: 20px;
+  font-family: Arial;
+  font-size: 14px;
 }
 
 div#elephanto div.info img {
@@ -133,7 +142,7 @@ div#elephanto div.info img {
   height: 16px;
   cursor: pointer;
   vertical-align: middle;
-  margin: 0px 5px;
+  margin: 0px 5px 0px 0px;
 }
 
 div#elephant_favorite {
