@@ -10,7 +10,6 @@ div#elephanto {
 div#elephanto div.open {
   margin: 0px auto;
   padding: 0px;
-  font-size: 16px;
   border-bottom: solid 1px black;
   cursor: pointer;
   background-color: #efefef;
@@ -96,10 +95,6 @@ div#elephanto div.list div.entry:first-child {
   padding-top: 0px;
 }
 
-div#elephanto div.list div.entry:last-child {
-  border-bottom: none;
-}
-
 div#elephanto div.list div.entry:not(.first) {
   display: none;
 }
@@ -123,6 +118,21 @@ div#elephanto div.list div.image img {
 div#elephanto div.list div.favorite img {
   width: 25px;
   margin-right: 10px;
+}
+
+div#elephanto div.info {
+  text-align: right;
+  margin: 0px;
+  padding: 2px 5px;
+  line-height: 20px;
+  height: 20px;
+}
+
+div#elephanto div.info img {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  vertical-align: middle;
 }
 
 div#elephant_favorite {

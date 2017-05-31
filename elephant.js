@@ -17,7 +17,8 @@ $(document).ready(function() {
         favoriteOffText: "Add to my selection",
         favoriteOnText: "Remove to my selection",
         path: "",
-        theme: "default"
+        theme: "default",
+        pluginInformation: "Selection made based on your browsing on the site."
       }, options);
       var stats = {
         time: 0,
@@ -222,6 +223,12 @@ $(document).ready(function() {
           removeEntry($(this).data('entry'));
         });
       }
+      var listenInfo = function(){
+        $('#elephanto div.info img.info').off('click');
+        $('#elephanto div.info img.info').on('click', function() {
+          alert(settings.pluginInformation);
+        });
+      }
 
 
       //Check user activity
@@ -282,11 +289,13 @@ $(document).ready(function() {
           $('#elephanto div.open div.switch_view img.reduce').css('display', 'block');
           $('#elephanto div.list').css('display', 'block');
           $('#elephanto div.list div.entry').css('display', 'flex');
+          $('#elephanto div.info').css('display', 'block');
           view_state = "expand";
         } else if (view_state == "expand") {
           $('#elephanto div.open div.switch_view img.expand').css('display', 'block');
           $('#elephanto div.open div.switch_view img.reduce').css('display', 'none');
           $('#elephanto div.list').toggle();
+          $('#elephanto div.info').css('display', 'none');
           view_state = "reduce";
         }
         localStorage.setItem('elephant_view', view_state);
@@ -341,10 +350,16 @@ $(document).ready(function() {
             }
           });
           list += "</div>";
+
+          list += "<div class='info'>";
+          list += "<img class='info' src='" + themePath + "/info.png'>";
+          list += "</div>";
+
           $('#elephanto').html(list);
           listenLink();
           listenOpen();
           listenRemove();
+          listenInfo();
           autoSwitchView();
         }
 
@@ -358,9 +373,11 @@ $(document).ready(function() {
         view_state = localStorage.getItem('elephant_view');
         if (view_state == "reduce") {
           $('#elephanto div.list').css('display', 'none');
+          $('#elephanto div.info').css('display', 'none');
         } else if (view_state == "expand") {
           $('#elephanto div.list').css('display', 'block');
           $('#elephanto div.list div.entry').css('display', 'flex');
+          $('#elephanto div.info').css('display', 'block');
         }
       }
 

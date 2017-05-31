@@ -66,8 +66,9 @@ entryName: {
 favoriteTrigger: '#elephant_favorite',
 favoriteOffText: "Cette page m'intéresse",
 favoriteOnText: "Cette page ne m'intéresse plus"
-path: "",  //OBLIGATOIRE
-theme: "default"
+path: "",
+theme: "default",
+pluginInformation: "Selection made based on your browsing on the site."
 }
 ~~~~
 triggers (tableau) : définie les éléments qui incrémentent la stat 'trigger' (type selecteur JQuery (tag, id, class,...)).
@@ -91,6 +92,8 @@ favoriteOnText (chaîne) : texte pour enlever une page des favoris.
 path (chaîne): chemin du dossier du plugin (nécéssaire pour la gestion des thèmes).
 
 theme (chaîne): nom du dossier contenant le thème désiré
+
+pluginInformation (chaîne): Phrase informative sur le fonctionnement du plugin. Dédié à l'utilisateur.
 
 
 # Themes
