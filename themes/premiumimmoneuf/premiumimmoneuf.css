@@ -90,3 +90,9 @@ div#elephant_favorite div#elephant_favorite_off img {
 div#elephant_favorite div#elephant_favorite_on img {
   padding: 5px;
 }
+
+@media only screen and (max-width: 500px) {
+  div#elephanto div.open {
+    border-top-left-radius: 0px;
+  }
+}

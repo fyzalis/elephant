@@ -133,6 +133,7 @@ div#elephanto div.info img {
   height: 16px;
   cursor: pointer;
   vertical-align: middle;
+  margin: 0px 5px;
 }
 
 div#elephant_favorite {
@@ -150,4 +151,19 @@ div#elephant_favorite img {
 
 div#elephant_favorite span.text {
   margin-left: 10px;
+}
+
+
+/* RESPONSIVE */
+
+@media only screen and (max-width: 500px) {
+  div#elephanto {
+    width: 100%;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+  }
+  div#elephanto div.open {
+    border-bottom: none;
+  }
 }

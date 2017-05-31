@@ -228,6 +228,12 @@ $(document).ready(function() {
         $('#elephanto div.info img.info').on('click', function() {
           alert(settings.pluginInformation);
         });
+        $('#elephanto div.info img.clear_elephant').off('click');
+        $('#elephanto div.info img.clear_elephant').on('click', function() {
+          if(confirm("Do you really reset your selection ?")){
+             localStorage.clear();
+           }
+        });
       }
 
 
@@ -299,6 +305,7 @@ $(document).ready(function() {
           view_state = "reduce";
         }
         localStorage.setItem('elephant_view', view_state);
+        return false;
       }
 
 
@@ -352,6 +359,7 @@ $(document).ready(function() {
           list += "</div>";
 
           list += "<div class='info'>";
+          list += "<img class='clear_elephant' src='" + themePath + "/clear.png' />";
           list += "<img class='info' src='" + themePath + "/info.png'>";
           list += "</div>";
 
