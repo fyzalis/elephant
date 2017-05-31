@@ -12,8 +12,6 @@ L'ordre de classement des différentes pages enregistrées prends en compte cert
 - un bouton "favoris", pour que l'utilisateur puisse notifié manuellement son intérêt
 
 
-*Plugin réalisé par [Julien Buabent](http://julienbuabent.fr), pour le groupe [immo9 - Immobilier neuf à Toulouse](http://toulouseimmo9.com)*
-
 
 # Installation
 1 - Copier le dossier elephant dans votre répertoire javascript
@@ -109,3 +107,7 @@ de personnaliser les différents fichiers (css, images), puis de l'appeler dans 
 
 **Thème premiumimmoneuf :**
 ![theme premium](https://github.com/fyzalis/elephant/blob/master/demo/elephant-screenshot-premium.png)
+
+
+# Auteur
+*Plugin réalisé par [Julien Buabent](http://julienbuabent.fr), pour le groupe [immo9 - Immobilier neuf à Toulouse](http://toulouseimmo9.com)*
