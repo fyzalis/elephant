@@ -2,7 +2,7 @@
 
 Ce plugin Jquery permet de stocker, classer par intérêt, et restituer la navigation d'un internaute sur des pages données d'un site.
 
-Il permet d'afficher une liste de pages sensés intéresser l'utilisateur du site.
+Il permet d'afficher une liste de pages sensés intéresser l'utilisateur du site, lui faciliter la recherche de produits, et retrouver facilement les produits pour lesquels il éprouve un réel intérêt.
 
 L'ordre de classement des différentes pages enregistrées prends en compte certains paramètres mesurables tels que :
 - le temps passé sur la page
