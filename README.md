@@ -94,3 +94,6 @@ favoriteOnText (chaîne) : texte pour enlever une page des favoris.
 path (chaîne): chemin du dossier du plugin (nécéssaire pour la gestion des thèmes).
 
 theme (chaîne): nom du dossier contenant le thème désiré
+
+# Screenshot
+![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
