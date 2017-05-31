@@ -312,7 +312,7 @@ $(document).ready(function() {
 
           list += "<div class='open'>";
           list += "<div class='expand'><img src='" + themePath + "/expand.png' /></div>";
-          list += "<div class='text'>" + settings.title + " ("+displayed_entries+" "+entry_name+")</div>";
+          list += "<div class='text'>" + settings.title + "<span class='count'>"+displayed_entries+entry_name+"</span></div>";
           list += "<div class='exit'><img src='"+themePath+"/open.png' /></div>";
           list += "</div>";
           list += "<div class='list'>";

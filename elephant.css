@@ -35,6 +35,20 @@ div#elephanto div.open div.text {
   flex: 1;
 }
 
+div#elephanto div.open div.text span.count {
+  padding: 4px;
+  background-color: red;
+  color: white;
+  height: 12px;
+  width: 12px;
+  line-height: 12px;
+  font-size: 12px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-left: 5px;
+}
+
 div#elephanto div.open div.exit {
   cursor: pointer;
 }
