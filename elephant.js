@@ -32,9 +32,9 @@ $(document).ready(function() {
       }
       var coeffs = {
         time: 1,
-        scroll: 1,
-        visit: 10,
-        trigger: 10
+        scroll: 0.5,
+        visit: 30,
+        trigger: 100
       }
       var position_list = new Array();
       var position_has_changed = false;
