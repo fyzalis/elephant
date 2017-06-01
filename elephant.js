@@ -356,8 +356,8 @@ $(document).ready(function() {
               return false;
             }
           });
-          list += "</div>";
 
+          list += "</div>";
           list += "<div class='info'>";
           list += "Infos <img class='info' src='" + themePath + "/info.png'>";
           list += "Vider <img class='clear_elephant' src='" + themePath + "/clear.png' />";
@@ -382,15 +382,18 @@ $(document).ready(function() {
         }
       }
 
-
       var autoSwitchView = function() {
         view_state = localStorage.getItem('elephant_view');
         if (view_state == "reduce") {
           $('#elephanto div.list').css('display', 'none');
+          $("div#elephanto div.open div.switch_view img.reduce").css('display', 'none');
+          $("div#elephanto div.open div.switch_view img.expand").css('display', 'block');
           //$('#elephanto div.info').css('display', 'none');
         } else if (view_state == "expand") {
           $('#elephanto div.list').css('display', 'block');
           $('#elephanto div.list div.entry').css('display', 'flex');
+          $("div#elephanto div.open div.switch_view img.reduce").css('display', 'block');
+          $("div#elephanto div.open div.switch_view img.expand").css('display', 'none');
           //$('#elephanto div.info').css('display', 'block');
         }
       }
@@ -448,7 +451,7 @@ $(document).ready(function() {
             position_has_changed = true;
           }
         });
-        
+
         saveLastPositionList();
       }
 
