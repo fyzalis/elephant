@@ -19,7 +19,23 @@
     <div id="elephanto"></div>
     <script>
     $(document).ready(function() {
-      $.fn.elephant();
+      $.fn.elephant({
+triggers: new Array(),
+activeDuration: 30,
+refreshRender: 1,
+maxDisplayedResult: 5,
+title: 'My selection',
+entryName: {
+  'one': '',
+  'several': ''
+},
+favoriteTrigger: '#elephant_favorite',
+favoriteOffText: "Cette page m'intéresse",
+favoriteOnText: "Cette page ne m'intéresse plus",
+path: "file:///home/bubu/Web/elephant/",
+theme: "immoneuf",
+pluginInformation: "Selection made based on your browsing on the site."
+});
     });
     </script>
 </body>

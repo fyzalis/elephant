@@ -41,7 +41,7 @@ $(document).ready(function() {
       var force_render = true;
       var entry_list = new Array();
       var view_state = "visible"; // => Expand, Reduce, visible
-      var page = window.location.pathname;
+      var page = window.location.href;
       var themePath = settings.path + "/themes/" + settings.theme;
       var meta = {
         page: page,
