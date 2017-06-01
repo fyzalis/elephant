@@ -303,9 +303,11 @@ $(document).ready(function() {
           $('#elephanto div.list').toggle();
           //$('#elephanto div.info').css('display', 'none');
           view_state = "reduce";
+        } else {
+          view_state = "visible";
         }
         localStorage.setItem('elephant_view', view_state);
-        return false;
+        return true;
       }
 
 

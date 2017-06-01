@@ -165,7 +165,7 @@ div#elephant_favorite span.text {
 
 /* RESPONSIVE */
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 450px) {
   div#elephanto {
     width: 100%;
     border-left: none;
