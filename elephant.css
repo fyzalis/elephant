@@ -29,8 +29,22 @@ div#elephanto div.open div {
   padding: 5px;
 }
 
+div#elephanto div.open div.logo {
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
 div#elephanto div.open div.text {
-  flex: 1;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: auto;
+}
+
+div#elephanto div.open div.switch_view {
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
 }
 
 div#elephanto div.open div.text span.count {
@@ -77,8 +91,28 @@ div#elephanto div.list div.entry div {
   padding: 5px;
 }
 
+div#elephanto div.list div.favorite {
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
+div#elephanto div.list div.image {
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+}
+
 div#elephanto div.list div.text {
-  flex: 1;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: auto;
+}
+
+div#elephanto div.list div.remove {
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
 }
 
 div#elephanto div.list div.entry {
