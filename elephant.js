@@ -24,6 +24,7 @@ $(document).ready(function() {
           'normal': 'View all',
           'see_other': 'Restraint view'
         },
+        clear: "Clear",
         clearText: "Would you really reset your selection ?",
         pluginInformation: "Selection made based on your browsing on the site."
       }, options);
@@ -389,7 +390,7 @@ $(document).ready(function() {
             list += "<span id='see_other_text'>"+settings.displayModeText.normal+"</span> <img class='see_other' src='" + themePath + "/see.png'>";
           }
           list += "Infos <img class='info' src='" + themePath + "/info.png'>";
-          list += "Vider <img class='clear_elephant' src='" + themePath + "/clear.png' />";
+          list += settings.clear+" <img class='clear_elephant' src='" + themePath + "/clear.png' />";
           list += "</div>";
 
           $('#elephanto').html(list);
@@ -498,7 +499,7 @@ $(document).ready(function() {
         $.each(position_list, function(index, page) {
           if (position_list[index] !== lastPositionList[index]) {
             position_has_changed = true;
-            displayData();            
+            displayData();
             var divBackgroundColor = $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('background-color');
             $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('background-color', 'white');
             $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').animate({ backgroundColor: divBackgroundColor }, 1000);
