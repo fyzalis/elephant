@@ -401,6 +401,10 @@ $(document).ready(function() {
           }
           list += "Infos <img class='info' src='" + themePath + "/info.png'>";
           list += settings.clear+" <img class='clear_elephant' src='" + themePath + "/clear.png' />";
+
+          //test
+          //list += "<span onClick='$.fn.elephant.export();'>EXPORT</span>";
+
           list += "</div>";
 
           $('#elephanto').html(list);
@@ -597,5 +601,48 @@ $(document).ready(function() {
         }, (settings.refreshRender * 1000));
       }
     };
+
+    $.fn.elephantExportHTML = function() {
+      console.log('EXPORT ME !');
+      var position_list = unjsonize(localStorage.getItem('elephant_position_list'));
+      var entry_list =  new Array();
+      var entry_info = new Array();
+      var humanStr = "";
+
+      $.each(position_list, function(index, value) {
+        entry_info = unjsonize(localStorage.getItem('elephant::' + value));
+        entry_info['url'] = position_list[index];
+        entry_list.push(entry_info);
+        }
+      );
+      $.each(entry_list, function(index, value) {
+        humanStr += "<strong>PAGE #"+(index+1)+"</strong><br />";
+        humanStr += "<i>Url: <a href='"+value.url+"' target='_blank'>"+value.url+"</a></i><br />";
+        humanStr += "<i>Last update: "+value.updated_at+"</i><br />";
+        humanStr += "<table border=1 cellpadding=5>";
+        humanStr += "<tr><td>Total score</td><td>"+value.score+"</td></tr>";
+        humanStr += "<tr><td>Favorite</td><td>"+value.favorite+"</td></tr>";
+        humanStr += "<tr><td>Visit</td><td>"+value.visit+"</td></tr>";
+        humanStr += "<tr><td>Time</td><td>"+value.time+"</td></tr>";
+        humanStr += "<tr><td>Trigger</td><td>"+value.trigger+"</td></tr>";
+        humanStr += "<tr><td>Scroll</td><td>"+value.scroll+"</td></tr>";
+        humanStr += "</table>";
+      });
+      return humanStr;
+      //Utilities
+      function debug(data, title) {
+        if (!title) title = 'DEBUG';
+        console.log(title, data);
+      }
+      function unjsonize(data) {
+        return jQuery.parseJSON(data);
+      }
+
+    }
+
   }(jQuery));
+
+
+
+
 });
