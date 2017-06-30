@@ -20,6 +20,10 @@ $(document).ready(function() {
         favoriteOnText: "Remove to my selection",
         path: "",
         theme: "default",
+        displayModeText:{
+          'normal': 'View all',
+          'see_other': 'Restraint view'
+        },
         pluginInformation: "Selection made based on your browsing on the site."
       }, options);
       var stats = {
@@ -50,6 +54,7 @@ $(document).ready(function() {
         text: "",
         image: ""
       };
+      var displayMode = "normal";
 
       //MAIN
       var runElephant = function() {
@@ -86,6 +91,10 @@ $(document).ready(function() {
         }
       }
       var createEntry = function() {
+        if(entry_list.length>=20){
+          console.error("Max recording size for elephant is limited to 20 entries. No more entry will be added before remove at least another.");
+          return false;
+        }
         entry_list.push(page);
         localStorage.setItem('elephant', jsonize(entry_list));
         localStorage.setItem('elephant::' + page, jsonize(stats));
@@ -210,6 +219,8 @@ $(document).ready(function() {
       var listenOpen = function() {
         $('#elephanto div.open').off();
         $('#elephanto div.open').on('click', function() {
+          displayMode = "normal";
+          switchToNormalMode();
           openElephanto();
         });
       };
@@ -235,6 +246,15 @@ $(document).ready(function() {
           if(confirm("Do you really reset your selection ?")){
              localStorage.clear();
            }
+        });
+        $('#elephanto div.info img.see_other').off('click');
+        $('#elephanto div.info img.see_other').on('click', function() {
+          if(displayMode == "normal"){
+            switchToSeeOtherMode();
+          } else if(displayMode == "see_other"){
+            switchToNormalMode();
+          }
+          displayData();
         });
       }
 
@@ -296,14 +316,16 @@ $(document).ready(function() {
           $('#elephanto div.open div.switch_view img.expand').css('display', 'none');
           $('#elephanto div.open div.switch_view img.reduce').css('display', 'block');
           $('#elephanto div.list').css('display', 'block');
-          $('#elephanto div.list div.entry').css('display', 'flex');
-          //$('#elephanto div.info').css('display', 'block');
+          $('#elephanto div.list div.entry:not(.hiddenEntry)').css('display', 'flex');
+          $('#see_other_text').toggle();
+          $('.see_other').toggle();
           view_state = "expand";
         } else if (view_state == "expand") {
           $('#elephanto div.open div.switch_view img.expand').css('display', 'block');
           $('#elephanto div.open div.switch_view img.reduce').css('display', 'none');
           $('#elephanto div.list').toggle();
-          //$('#elephanto div.info').css('display', 'none');
+          $('#see_other_text').toggle();
+          $('.see_other').toggle();
           view_state = "reduce";
         } else {
           view_state = "visible";
@@ -318,18 +340,18 @@ $(document).ready(function() {
         if (position_list.length > 0 && (position_has_changed || force_render)) {
           var list = "";
           var cnt = 0;
-          var displayed_entries = position_list.length > settings.maxDisplayedResult ? settings.maxDisplayedResult : position_list.length;
-          var entry_name = displayed_entries > 1 ? settings.entryName.several : settings.entryName.one;
+          var entry_name = position_list.length > 1 ? settings.entryName.several : settings.entryName.one;
           var metas = "";
           var stat = "";
           var positionClass = "";
+          var hiddenClass = "";
           var favoriteIcon = "";
           force_render = false;
           position_has_changed = false;
 
           list += "<div class='open'>";
           list += "<div class='logo'><img src='" + themePath + "/logo.png' /></div>";
-          list += "<div class='text'>" + settings.title + "<span class='count'>" + displayed_entries + entry_name + "</span></div>";
+          list += "<div class='text'>" + settings.title + "<span class='count'>" + position_list.length + entry_name + "</span></div>";
           list += "<div class='switch_view'>";
           list += "<img class='expand' src='" + themePath + "/open.png' />";
           list += "<img class='reduce' src='" + themePath + "/reduce.png' />";
@@ -338,12 +360,13 @@ $(document).ready(function() {
           list += "<div class='list'>";
 
           $.each(position_list, function(index, value) {
-            if (cnt < settings.maxDisplayedResult) {
               metas = unjsonize(localStorage.getItem('elephanto::' + value));
               stat = unjsonize(localStorage.getItem('elephant::' + value));
               positionClass = cnt == 0 ? 'first' : "";
               favoriteIcon = stat.favorite ? themePath + "/favorite-on.png" : themePath + "/favorite-off.png";
-              list += "<div class='entry " + positionClass + "' data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "'>";
+              hiddenClass = cnt < settings.maxDisplayedResult ? "" : "hiddenEntry";
+
+              list += "<div class='entry " + positionClass + " " + hiddenClass + "' data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "'>";
               list += "<div class='favorite' data-url='" + metas.page + "'><img src='" + favoriteIcon + "' /></div>";
 
               if (metas.image) {
@@ -356,18 +379,24 @@ $(document).ready(function() {
               list += "<div class='remove'><img src='" + themePath + "/remove.png' data-entry='" + value + "' /></div>";
               list += "</div>";
               cnt++;
-            } else {
-              return false;
-            }
           });
 
           list += "</div>";
           list += "<div class='info'>";
+          if(cnt > settings.maxDisplayedResult){
+            list += "<span id='see_other_text'>"+settings.displayModeText.normal+"</span> <img class='see_other' src='" + themePath + "/see.png'>";
+          }
           list += "Infos <img class='info' src='" + themePath + "/info.png'>";
           list += "Vider <img class='clear_elephant' src='" + themePath + "/clear.png' />";
           list += "</div>";
 
           $('#elephanto').html(list);
+
+          if(displayMode == "normal"){
+            switchToNormalMode();
+          } else if(displayMode == "see_other"){
+            switchToSeeOtherMode();
+          }
 
           if(position_list.length==1){
             $("div#elephanto div.open div.switch_view img.reduce").css('display', 'block');
@@ -392,14 +421,27 @@ $(document).ready(function() {
           $('#elephanto div.list').css('display', 'none');
           $("div#elephanto div.open div.switch_view img.reduce").css('display', 'none');
           $("div#elephanto div.open div.switch_view img.expand").css('display', 'block');
-          //$('#elephanto div.info').css('display', 'none');
         } else if (view_state == "expand") {
           $('#elephanto div.list').css('display', 'block');
-          $('#elephanto div.list div.entry').css('display', 'flex');
+          $('#elephanto div.list div.entry:not(.hiddenEntry)').css('display', 'flex');
           $("div#elephanto div.open div.switch_view img.reduce").css('display', 'block');
           $("div#elephanto div.open div.switch_view img.expand").css('display', 'none');
-          //$('#elephanto div.info').css('display', 'block');
         }
+      }
+
+      var switchToSeeOtherMode = function(){
+        displayMode = "see_other";
+        $('#see_other_text').html(settings.displayModeText.see_other);
+        $('div#elephanto').css('height', $(window).height()+'px');
+        $('div#elephanto div.list').css('overflow-y', 'auto');
+        $('div#elephanto div.list div.entry.hiddenEntry').css('display', 'flex');
+      }
+      var switchToNormalMode = function(){
+        displayMode = "normal";
+        $('#see_other_text').html(settings.displayModeText.normal);
+        $('div#elephanto').css('height', 'inherit');
+        $('div#elephanto div.list').css('overflow-y', 'auto');
+        $('div#elephanto div.list div.entry.hiddenEntry').css('display', 'none');
       }
 
       //Calul score
@@ -477,7 +519,7 @@ $(document).ready(function() {
         $("head").append($("<link rel='stylesheet' href='" + settings.path + "/themes/" + settings.theme + "/" + settings.theme + ".min.css' type='text/css' media='screen' id='cssTheme' />"));
         document.onreadystatechange = function () {
           if (document.readyState === "complete") {
-            $('div#elephanto').css('display', 'inherit');
+            $('div#elephanto').css('display', 'flex');
           }
         };
       }

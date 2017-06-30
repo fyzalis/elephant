@@ -6,6 +6,20 @@ div#elephanto {
   z-index: 9999;
   background-color: white;
   display: none;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+div#elephanto div.open {
+  flex: 0.5 2 auto;
+}
+
+div#elephanto div.list {
+  flex: 10 1 auto;
+}
+
+div#elephanto div.info {
+  flex: 0.5 2 auto;
 }
 
 div#elephanto div.open {
@@ -17,6 +31,7 @@ div#elephanto div.open {
   font-family: Arial;
   font-size: 14px;
   display: flex;
+  width: 100%;
 }
 
 div#elephanto div.open:hover {
@@ -92,6 +107,10 @@ div#elephanto div.list div.entry div {
   padding: 5px;
 }
 
+div#elephanto div.list div.entry.hiddenEntry {
+  display: none;
+}
+
 div#elephanto div.list div.favorite {
   flex-grow: 0;
   flex-shrink: 1;
@@ -158,9 +177,7 @@ div#elephanto div.list div.favorite img {
 
 /* en attendant V2...*/
 
-div#elephanto div.info {
-  display: none;
-}
+div#elephanto div.info {}
 
 div#elephanto div.info {
   text-align: right;
