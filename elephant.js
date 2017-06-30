@@ -1,3 +1,5 @@
+/* 2017-06-30 : dev v1.1 */
+
 $(document).ready(function() {
   (function($) {
 
@@ -41,7 +43,7 @@ $(document).ready(function() {
       var force_render = true;
       var entry_list = new Array();
       var view_state = "visible"; // => Expand, Reduce, visible
-      var page = window.location.href;
+      var page = window.location.pathname;
       var themePath = settings.path + "/themes/" + settings.theme;
       var meta = {
         page: page,
@@ -418,6 +420,7 @@ $(document).ready(function() {
         var no_favorite_list = new Array();
         position_list = new Array();
         var i = 0;
+        position_has_changed = false;
 
         $.each(entry_list, function(index, page) {
           var tmp_entry = new Array();
@@ -448,12 +451,14 @@ $(document).ready(function() {
           i++
         });
 
+
         $.each(position_list, function(index, page) {
+
           if (position_list[index] !== lastPositionList[index]) {
             position_has_changed = true;
+            displayData();
           }
         });
-
         saveLastPositionList();
       }
 
@@ -463,7 +468,7 @@ $(document).ready(function() {
       }
       var getLastPositionList = function() {
         var last_position_list = unjsonize(localStorage.getItem('elephant_position_list'));
-        if(typeof last_position_list == 'object'){
+        if($.isArray(last_position_list)==false){
           last_position_list = new Array();
         }
         return last_position_list;
@@ -527,7 +532,6 @@ $(document).ready(function() {
         var refreshData = setInterval(function() {
           loadElephant();
           computePosition();
-          displayData();
         }, (settings.refreshRender * 1000));
       }
     };
