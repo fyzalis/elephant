@@ -5,6 +5,7 @@ div#elephanto {
   border: solid 1px black;
   z-index: 9999;
   background-color: white;
+  display: none;
 }
 
 div#elephanto div.open {

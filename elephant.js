@@ -474,7 +474,12 @@ $(document).ready(function() {
         return last_position_list;
       }
       var loadTheme = function() {
-        $("head").append($("<link rel='stylesheet' href='" + settings.path + "/themes/" + settings.theme + "/" + settings.theme + ".min.css' type='text/css' media='screen' />"));
+        $("head").append($("<link rel='stylesheet' href='" + settings.path + "/themes/" + settings.theme + "/" + settings.theme + ".min.css' type='text/css' media='screen' id='cssTheme' />"));
+        document.onreadystatechange = function () {
+          if (document.readyState === "complete") {
+            $('div#elephanto').css('display', 'inherit');
+          }
+        };
       }
 
 
