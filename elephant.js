@@ -1,4 +1,8 @@
-/* 2017-06-30 : dev v1.1 */
+/*
+ 2017-06-30: dev v1.1
+ Github: https://github.com/fyzalis/elephant
+ Author: Julien Buabent
+*/
 
 $(document).ready(function() {
   (function($) {
@@ -57,6 +61,7 @@ $(document).ready(function() {
         image: ""
       };
       var displayMode = "normal";
+      var removedEntry = false;
 
       //MAIN
       var runElephant = function() {
@@ -128,11 +133,16 @@ $(document).ready(function() {
       }
 
       var updateEntry = function() {
+        if(removedEntry){
+          console.error("This entry has just been removed from list by user.");
+          return false;
+        }
         computeScore();
         localStorage.setItem('elephant::' + page, jsonize(stats));
       }
 
       var removeEntry = function(entry) {
+        removedEntry = true;
         var entryIndex = 0;
         entryIndex = entry_list.indexOf(entry);
         if (entryIndex > -1) {
