@@ -368,7 +368,7 @@ $(document).ready(function() {
               favoriteIcon = stat.favorite ? themePath + "/favorite-on.png" : themePath + "/favorite-off.png";
               hiddenClass = cnt < settings.maxDisplayedResult ? "" : "hiddenEntry";
 
-              list += "<div class='entry " + positionClass + " " + hiddenClass + "' data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "'>";
+              list += "<div class='entry " + positionClass + " " + hiddenClass + "' data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "' data-url='" + metas.page + "'>";
               list += "<div class='favorite' data-url='" + metas.page + "'><img src='" + favoriteIcon + "' /></div>";
 
               if (metas.image) {
@@ -495,12 +495,14 @@ $(document).ready(function() {
           i++
         });
 
-
         $.each(position_list, function(index, page) {
-
           if (position_list[index] !== lastPositionList[index]) {
             position_has_changed = true;
-            displayData();
+            displayData();            
+            var divBackgroundColor = $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('background-color');
+            $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('background-color', 'white');
+            $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').animate({ backgroundColor: divBackgroundColor }, 1000);
+            return false;
           }
         });
         saveLastPositionList();
