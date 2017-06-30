@@ -24,6 +24,7 @@ $(document).ready(function() {
           'normal': 'View all',
           'see_other': 'Restraint view'
         },
+        clearText: "Would you really reset your selection ?",
         pluginInformation: "Selection made based on your browsing on the site."
       }, options);
       var stats = {
@@ -243,8 +244,9 @@ $(document).ready(function() {
         });
         $('#elephanto div.info img.clear_elephant').off('click');
         $('#elephanto div.info img.clear_elephant').on('click', function() {
-          if(confirm("Do you really reset your selection ?")){
-             localStorage.clear();
+          if(confirm(settings.clearText)){
+            $('#elephanto').css('display', 'none');
+            localStorage.clear();
            }
         });
         $('#elephanto div.info img.see_other').off('click');
