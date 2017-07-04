@@ -401,10 +401,6 @@ $(document).ready(function() {
           }
           list += "Infos <img class='info' src='" + themePath + "/info.png'>";
           list += settings.clear+" <img class='clear_elephant' src='" + themePath + "/clear.png' />";
-
-          //test
-          //list += "<span onClick='$.fn.elephant.export();'>EXPORT</span>";
-
           list += "</div>";
 
           $('#elephanto').html(list);
@@ -603,7 +599,6 @@ $(document).ready(function() {
     };
 
     $.fn.elephantExportHTML = function() {
-      console.log('EXPORT ME !');
       var position_list = unjsonize(localStorage.getItem('elephant_position_list'));
       var entry_list =  new Array();
       var entry_info = new Array();
@@ -615,25 +610,49 @@ $(document).ready(function() {
         entry_list.push(entry_info);
         }
       );
+
+      humanStr += "<table border=1 cellpadding=5 style='border:solid 1px black; border-collapse: collapse;'>";
+      humanStr += "<caption style='font-weight:bold; text-align:left;'>User Selection Ranking</caption>";
+      humanStr += "<thead>";
+      humanStr += "<tr>";
+      humanStr += "<th>RANK</th>";
+      humanStr += "<th>TOTAL SCORE</th>";
+      humanStr += "<th>Favorite</th>";
+      humanStr += "<th>Visit</th>";
+      humanStr += "<th>Time</th>";
+      humanStr += "<th>Trigger</th>";
+      humanStr += "<th>Scroll</th>";
+      humanStr += "<th>Url</th>";
+      humanStr += "<th>Last update</th>";
+      humanStr += "</tr>";
+      humanStr += "</thead>";
+      humanStr += "<tbody>";
+
       $.each(entry_list, function(index, value) {
-        humanStr += "<strong>PAGE #"+(index+1)+"</strong><br />";
-        humanStr += "<i>Url: <a href='"+value.url+"' target='_blank'>"+value.url+"</a></i><br />";
-        humanStr += "<i>Last update: "+value.updated_at+"</i><br />";
-        humanStr += "<table border=1 cellpadding=5>";
-        humanStr += "<tr><td>Total score</td><td>"+value.score+"</td></tr>";
-        humanStr += "<tr><td>Favorite</td><td>"+value.favorite+"</td></tr>";
-        humanStr += "<tr><td>Visit</td><td>"+value.visit+"</td></tr>";
-        humanStr += "<tr><td>Time</td><td>"+value.time+"</td></tr>";
-        humanStr += "<tr><td>Trigger</td><td>"+value.trigger+"</td></tr>";
-        humanStr += "<tr><td>Scroll</td><td>"+value.scroll+"</td></tr>";
-        humanStr += "</table>";
+        humanStr += "<tr>";
+        humanStr += "<td style='font-weight:bold;'>#"+(index+1)+"</td>";
+        humanStr += "<td style='font-weight:bold;'>"+value.score+"</td>";
+        humanStr += "<td>"+value.favorite+"</td>";
+        humanStr += "<td>"+value.visit+"</td>";
+        humanStr += "<td>"+value.time+"</td>";
+        humanStr += "<td>"+value.trigger+"</td>";
+        humanStr += "<td>"+value.scroll+"</td>";
+        humanStr += "<td><a href='"+window.location.hostname+value.url+"' target='_blank'>"+value.url+"</a></td>";
+        humanStr += "<td>"+value.updated_at+"</td>";
+        humanStr += "</tr>";
       });
+
+      humanStr += "</tbody>";
+      humanStr += "</table>";
       return humanStr;
+
+
       //Utilities
+      /*
       function debug(data, title) {
         if (!title) title = 'DEBUG';
         console.log(title, data);
-      }
+      }*/
       function unjsonize(data) {
         return jQuery.parseJSON(data);
       }
