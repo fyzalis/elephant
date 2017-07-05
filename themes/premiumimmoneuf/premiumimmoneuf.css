@@ -10,6 +10,8 @@ div#elephanto div.open {
   background-color: #c88301;
   color: white;
   border-top-left-radius: 10px;
+  box-shadow: -5px 1px 5px #0f142f;
+  min-height: 40px;
 }
 
 div#elephanto div.open:hover {
@@ -40,6 +42,7 @@ div#elephanto div.open div.text span.count:after {
 
 div#elephanto div.list {
   background-color: #0f142f;
+  box-shadow: -5px 0px 5px #0f142f;
 }
 
 div#elephanto div.list div.entry {
@@ -55,7 +58,7 @@ div#elephanto div.list div.entry:first-child {
   margin-bottom: 0px;
 }
 
-div#elephanto div.list div.entry:last-child {
+div#elephanto div.list div.entry {
   margin-bottom: 0px;
 }
 
@@ -80,6 +83,7 @@ div#elephanto div.list div.entry div.remove {
 
 div#elephanto div.info {
   background-color: #0f142f;
+  box-shadow: -5px 0px 5px #0f142f;
 }
 
 div#elephant_favorite div#elephant_favorite_off img {
@@ -91,8 +95,17 @@ div#elephant_favorite div#elephant_favorite_on img {
   padding: 5px;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 600px) {
   div#elephanto div.open {
     border-top-left-radius: 0px;
+  }
+  div#elephanto div.open, div#elephanto div.list {
+    box-shadow: none;
+  }
+  div#elephanto div.open {
+    border-top: solid 1px #0f142f;
+  }
+  div#elephanto {
+    width: 100%;
   }
 }

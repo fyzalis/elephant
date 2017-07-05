@@ -26,7 +26,7 @@ $(document).ready(function() {
         theme: "default",
         displayModeText:{
           'normal': 'View all',
-          'see_other': 'Restraint view'
+          'see_other': 'Reduce view'
         },
         clear: "Clear",
         clearText: "Would you really reset your selection ?",
@@ -330,15 +330,13 @@ $(document).ready(function() {
           $('#elephanto div.open div.switch_view img.reduce').css('display', 'block');
           $('#elephanto div.list').css('display', 'block');
           $('#elephanto div.list div.entry:not(.hiddenEntry)').css('display', 'flex');
-          $('#see_other_text').toggle();
-          $('.see_other').toggle();
+          $('div#elephanto div.info').css('display', 'block');
           view_state = "expand";
         } else if (view_state == "expand") {
           $('#elephanto div.open div.switch_view img.expand').css('display', 'block');
           $('#elephanto div.open div.switch_view img.reduce').css('display', 'none');
           $('#elephanto div.list').toggle();
-          $('#see_other_text').toggle();
-          $('.see_other').toggle();
+          $('div#elephanto div.info').css('display', 'none');
           view_state = "reduce";
         } else {
           view_state = "visible";
@@ -405,10 +403,17 @@ $(document).ready(function() {
 
           $('#elephanto').html(list);
 
+          debug(view_state, 'VIEW STATE');
+          debug(displayMode, 'DISPLAY MODE');
+
           if(displayMode == "normal"){
             switchToNormalMode();
           } else if(displayMode == "see_other"){
             switchToSeeOtherMode();
+          }
+
+          if (view_state == "expand" && displayMode == "see_other") {
+            $('div#elephanto div.info').css('display', 'block');
           }
 
           if(position_list.length==1){
@@ -426,6 +431,7 @@ $(document).ready(function() {
         if (position_list.length == 0) {
           $('#elephanto').html("");
         }
+
       }
 
       var autoSwitchView = function() {
@@ -511,7 +517,7 @@ $(document).ready(function() {
             position_has_changed = true;
             displayData();
             var divBackgroundColor = $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('background-color');
-            $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('background-color', 'white');
+            $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('background-color', '#ccc');
             $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').animate({ backgroundColor: divBackgroundColor }, 1000);
             return false;
           }
