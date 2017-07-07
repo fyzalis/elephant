@@ -139,5 +139,16 @@ de personnaliser les différents fichiers (css, images), puis de l'appeler dans 
 ![theme premium](https://github.com/fyzalis/elephant/blob/master/demo/elephant-screenshot-premium.png)
 
 
+
+# Export de données
+
+Il est possible de récupérér au format HTML les données de navigation de l'utilisateur.
+~~~~
+$(document).ready(function () {
+  var elephantExportHTML = $.fn.elephantExportHTML();
+});
+~~~~
+
+
 # Auteur
 *Plugin réalisé par [Julien Buabent](http://julienbuabent.fr), pour le groupe [immo9 - Immobilier neuf à Toulouse](http://toulouseimmo9.com)*
