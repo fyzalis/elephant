@@ -1,6 +1,21 @@
 # ELEPHANT
 
-Ce plugin Jquery permet de stocker, classer par intérêt, et restituer la navigation d'un internaute sur des pages données d'un site.
+[EN]
+This Jquery plugin allows to store, to sort by interest, and to display the navigation of a user on particular pages of a site. It's a kind of "auto smart selection" of favorite user's page on a site.
+At begining, this plugin is developed to a real estate website, but it could be used on a lot of various case.
+
+It allows to display a list of pages that represent the interest of the user of the site, to facilitate the search for products, and to easily find the products for which it has a real interest.
+
+The order of classification of the various recorded pages takes into account certain measurable parameters such as:
+- the time spent on the page
+- the fact of more or less scroll in the page
+- the number of times or the user has visited the page
+- trigger elements (eg. opening a list of information, opening photos, clicking a button, etc.)
+- a "favorites" button, that user can manually notify his interest
+
+[FR]
+Ce plugin Jquery permet de stocker, classer par intérêt, et restituer la navigation d'un internaute sur des pages données d'un site. C'est une sorte de 'sélection automatique et intelligente' des pages favorites d'un utilisateur sur un site.
+A la base, ce plugin est développé pour un site d'agence immobilière, mais il peut etre utilisé dans de nombreux autres cas.
 
 Il permet d'afficher une liste de pages sensés intéresser l'utilisateur du site, lui faciliter la recherche de produits, et retrouver facilement les produits pour lesquels il éprouve un réel intérêt.
 
@@ -68,6 +83,12 @@ favoriteOffText: "Cette page m'intéresse",
 favoriteOnText: "Cette page ne m'intéresse plus"
 path: "",
 theme: "default",
+displayModeText:{
+  'normal': 'View all',
+  'see_other': 'Reduce view'
+},
+clear: "Clear",
+clearText: "Would you really reset your selection ?",
 pluginInformation: "Selection made based on your browsing on the site."
 }
 ~~~~
@@ -92,6 +113,12 @@ favoriteOnText (chaîne) : texte pour enlever une page des favoris.
 path (chaîne): chemin du dossier du plugin (nécéssaire pour la gestion des thèmes).
 
 theme (chaîne): nom du dossier contenant le thème désiré
+
+displayModeText (objet): texte à afficher à coté du bouton qui permet d'afficher toutes les entrées enregistrées
+
+clear (chaîne):  texte à afficher à coté du bouton qui permet de vider la sélection
+
+clearText (chaîne): texte de confirmation lors du vidage de la sélection
 
 pluginInformation (chaîne): Phrase informative sur le fonctionnement du plugin. Dédié à l'utilisateur.
 
