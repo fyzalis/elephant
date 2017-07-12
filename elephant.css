@@ -213,6 +213,23 @@ div#elephant_favorite span.text {
   margin-left: 10px;
 }
 
+#elephanto div.info span.clearConfirm, #elephanto div.info span.informations {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#elephanto div.info span#clearOn {
+  color: green;
+}
+
+#elephanto div.info span#clearOff {
+  color: red;
+}
+
+#elephanto div.info span#infoClose {
+  color: red;
+}
+
 
 /* RESPONSIVE */
 

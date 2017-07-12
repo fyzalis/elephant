@@ -257,14 +257,29 @@ $(document).ready(function() {
       var listenInfo = function(){
         $('#elephanto div.info img.info').off('click');
         $('#elephanto div.info img.info').on('click', function() {
-          alert(settings.pluginInformation);
+          var close = " <span class='informations' id='infoClose'>Fermer</span>";
+          $('#elephanto div.info').html(settings.pluginInformation+close);
+          $('#elephanto div.info span#infoClose').off('click');
+          $('#elephanto div.info span#infoClose').on('click', function(){
+            force_render = true;
+            displayData();
+          });
         });
         $('#elephanto div.info img.clear_elephant').off('click');
         $('#elephanto div.info img.clear_elephant').on('click', function() {
-          if(confirm(settings.clearText)){
+          var confirm = " <span class='clearConfirm' id='clearOn'>Oui</span> | <span class='clearConfirm' id='clearOff'>Non</span>";
+          $('#elephanto div.info').html(settings.clearText+confirm);
+          $('#elephanto div.info span#clearOn, #elephanto div.info span#clearOff').off('click');
+          $('#elephanto div.info span#clearOn').on('click', function(){
             $('#elephanto').css('display', 'none');
             localStorage.clear();
-           }
+          });
+          $('#elephanto div.info span#clearOff').on('click', function(){
+            force_render = true;
+            displayData();
+          });
+
+
         });
         $('#elephanto div.info img.see_other').off('click');
         $('#elephanto div.info img.see_other').on('click', function() {
