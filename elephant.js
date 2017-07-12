@@ -403,9 +403,6 @@ $(document).ready(function() {
 
           $('#elephanto').html(list);
 
-          debug(view_state, 'VIEW STATE');
-          debug(displayMode, 'DISPLAY MODE');
-
           if(displayMode == "normal"){
             switchToNormalMode();
           } else if(displayMode == "see_other"){
