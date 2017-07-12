@@ -177,8 +177,6 @@ div#elephanto div.list div.favorite img {
 
 /* en attendant V2...*/
 
-div#elephanto div.info {}
-
 div#elephanto div.info {
   text-align: right;
   margin: 0px;
@@ -187,6 +185,7 @@ div#elephanto div.info {
   height: 20px;
   font-family: Arial;
   font-size: 14px;
+  display: none;
 }
 
 div#elephanto div.info img {

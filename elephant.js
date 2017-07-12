@@ -52,7 +52,12 @@ $(document).ready(function() {
       var position_has_changed = false;
       var force_render = true;
       var entry_list = new Array();
-      var view_state = "visible"; // => Expand, Reduce, visible
+      //var view_state = "visible"; // => Expand, Reduce, visible
+      var view_state = localStorage.getItem('elephant_view');
+      if(view_state == "" || view_state == null){
+        view_state = "visible";
+      }
+
       var page = window.location.pathname;
       var themePath = settings.path + "/themes/" + settings.theme;
       var meta = {
@@ -81,7 +86,7 @@ $(document).ready(function() {
       }
       var createElephant = function() {
         localStorage.setItem('elephant', jsonize(entry_list));
-        localStorage.setItem('elephant_view', view_state);
+        localStorage.setItem('elephant_view', "visible");
       }
 
       function loadElephant() {
@@ -219,6 +224,7 @@ $(document).ready(function() {
           force_render = true;
           switchFavorite();
           updateEntry();
+          displayData();
         });
       };
       var listenScroll = function() {
@@ -325,22 +331,28 @@ $(document).ready(function() {
 
       //ELEPHANTO
       var openElephanto = function() {
+
         if (view_state == "visible" || view_state == "reduce") {
           $('#elephanto div.open div.switch_view img.expand').css('display', 'none');
           $('#elephanto div.open div.switch_view img.reduce').css('display', 'block');
           $('#elephanto div.list').css('display', 'block');
           $('#elephanto div.list div.entry:not(.hiddenEntry)').css('display', 'flex');
-          $('div#elephanto div.info').css('display', 'block');
           view_state = "expand";
         } else if (view_state == "expand") {
           $('#elephanto div.open div.switch_view img.expand').css('display', 'block');
           $('#elephanto div.open div.switch_view img.reduce').css('display', 'none');
           $('#elephanto div.list').toggle();
-          $('div#elephanto div.info').css('display', 'none');
           view_state = "reduce";
         } else {
           view_state = "visible";
         }
+        if (view_state == "expand") {
+          $('div#elephanto div.info').css('display', 'block');
+        } else {
+          $('div#elephanto div.info').css('display', 'none');
+        }
+
+
         localStorage.setItem('elephant_view', view_state);
         return true;
       }
@@ -410,6 +422,10 @@ $(document).ready(function() {
           }
 
           if (view_state == "expand" && displayMode == "see_other") {
+            $('div#elephanto div.info').css('display', 'block');
+          }
+
+          if (view_state == "expand") {
             $('div#elephanto div.info').css('display', 'block');
           }
 
@@ -640,7 +656,7 @@ $(document).ready(function() {
         humanStr += "<td>"+value.time+"</td>";
         humanStr += "<td>"+value.trigger+"</td>";
         humanStr += "<td>"+value.scroll+"</td>";
-        humanStr += "<td><a href='"+window.location.hostname+value.url+"' target='_blank'>"+value.url+"</a></td>";
+        humanStr += "<td><a href='http://"+window.location.hostname+value.url+"' target='_blank'>"+value.url+"</a></td>";
         humanStr += "<td>"+value.updated_at+"</td>";
         humanStr += "</tr>";
       });
