@@ -24,7 +24,7 @@ $(document).ready(function() {
         favoriteOnText: "Remove to my selection",
         path: "",
         theme: "default",
-        displayModeText:{
+        displayModeText: {
           'normal': 'View all',
           'see_other': 'Reduce view'
         },
@@ -55,15 +55,17 @@ $(document).ready(function() {
 
       //Ugly
       var view_state = localStorage.getItem('elephant_view');
-      if(view_state == "" || view_state == null){
+      if (view_state == "" || view_state == null) {
         view_state = "visible";
       }
 
       //Ugly and not safe on type verification
-      var latest_position_change = new Date(localStorage.getItem('elephant_position_has_changed'));
-      if(latest_position_change == "" || latest_position_change == null || latest_position_change == 'Invalid Date' || latest_position_change=='Thu Jan 01 1970 01:00:00 GMT+0100 (CET)'){
-        latest_position_change = new Date();
-        localStorage.setItem('elephant_position_has_changed', latest_position_change);
+      var latest_position_change = unjsonize(localStorage.getItem('elephant_position_has_changed'));
+      if (latest_position_change == null) {
+        var latest_position_change = {};
+        latest_position_change.time = new Date();
+        latest_position_change.selector = "";
+        localStorage.setItem('elephant_position_has_changed', jsonize(latest_position_change));
       }
 
 
@@ -113,7 +115,7 @@ $(document).ready(function() {
         }
       }
       var createEntry = function() {
-        if(entry_list.length>=20){
+        if (entry_list.length >= 20) {
           console.error("Max recording size for elephant is limited to 20 entries. No more entry will be added before remove at least another.");
           return false;
         }
@@ -148,7 +150,7 @@ $(document).ready(function() {
       }
 
       var updateEntry = function() {
-        if(removedEntry){
+        if (removedEntry) {
           console.error("This entry has just been removed from list by user.");
           return false;
         }
@@ -264,13 +266,13 @@ $(document).ready(function() {
           removeEntry($(this).data('entry'));
         });
       }
-      var listenInfo = function(){
+      var listenInfo = function() {
         $('#elephanto div.info img.info').off('click');
         $('#elephanto div.info img.info').on('click', function() {
           var close = " <span class='informations' id='infoClose'>Fermer</span>";
-          $('#elephanto div.info').html(settings.pluginInformation+close);
+          $('#elephanto div.info').html(settings.pluginInformation + close);
           $('#elephanto div.info span#infoClose').off('click');
-          $('#elephanto div.info span#infoClose').on('click', function(){
+          $('#elephanto div.info span#infoClose').on('click', function() {
             force_render = true;
             displayData();
           });
@@ -278,13 +280,13 @@ $(document).ready(function() {
         $('#elephanto div.info img.clear_elephant').off('click');
         $('#elephanto div.info img.clear_elephant').on('click', function() {
           var confirm = " <span class='clearConfirm' id='clearOn'>Oui</span> | <span class='clearConfirm' id='clearOff'>Non</span>";
-          $('#elephanto div.info').html(settings.clearText+confirm);
+          $('#elephanto div.info').html(settings.clearText + confirm);
           $('#elephanto div.info span#clearOn, #elephanto div.info span#clearOff').off('click');
-          $('#elephanto div.info span#clearOn').on('click', function(){
+          $('#elephanto div.info span#clearOn').on('click', function() {
             $('#elephanto').css('display', 'none');
             localStorage.clear();
           });
-          $('#elephanto div.info span#clearOff').on('click', function(){
+          $('#elephanto div.info span#clearOff').on('click', function() {
             force_render = true;
             displayData();
           });
@@ -293,9 +295,9 @@ $(document).ready(function() {
         });
         $('#elephanto div.info img.see_other').off('click');
         $('#elephanto div.info img.see_other').on('click', function() {
-          if(displayMode == "normal"){
+          if (displayMode == "normal") {
             switchToSeeOtherMode();
-          } else if(displayMode == "see_other"){
+          } else if (displayMode == "see_other") {
             switchToNormalMode();
           }
           displayData();
@@ -313,13 +315,19 @@ $(document).ready(function() {
           switchActive(false);
         }
       }
-      var checkPositionChange = function(){
-        var tmp_position = new Date(localStorage.getItem('elephant_position_has_changed'));
-        if(tmp_position.getTime() > latest_position_change.getTime()){
-          latest_position_change = new Date();
-          localStorage.setItem('elephant_position_has_changed', latest_position_change);
-          force_render = true;
-          displayData();
+      var checkPositionChange = function() {
+        var tmp_local_storage = unjsonize(localStorage.getItem('elephant_position_has_changed'));
+        if (tmp_local_storage.time != "" && tmp_local_storage.selector != "") {
+          var tmp_position = new Date(tmp_local_storage.time);
+          var tmp_latest = new Date(latest_position_change.time);
+          if (tmp_position.getTime() > tmp_latest.getTime()) {
+            force_render = true;
+            displayData();            
+            highLightNewPosition(tmp_local_storage.selector);
+            latest_position_change.time = tmp_local_storage.time;
+            latest_position_change.selector = "";
+            localStorage.setItem('elephant_position_has_changed', jsonize(latest_position_change));
+          }
         }
       }
 
@@ -337,12 +345,12 @@ $(document).ready(function() {
           }
 
           favorite_block += "<div id='elephant_favorite_off' class='" + favorite_off_class + "'>";
-          favorite_block += "<span class='elephant_favorite_off'><img src='"+ themePath + "/favorite-off.png' /></span>";
+          favorite_block += "<span class='elephant_favorite_off'><img src='" + themePath + "/favorite-off.png' /></span>";
           favorite_block += "<span class='text'>" + settings.favoriteOffText + "</span>";
           favorite_block += "</div>";
 
           favorite_block += "<div id='elephant_favorite_on' class='" + favorite_on_class + "'>";
-          favorite_block += "<span class='elephant_favorite_on'><img src='"+ themePath + "/favorite-on.png' /></span>";
+          favorite_block += "<span class='elephant_favorite_on'><img src='" + themePath + "/favorite-on.png' /></span>";
           favorite_block += "<span class='text'>" + settings.favoriteOnText + "</span>";
           favorite_block += "</div>";
 
@@ -412,41 +420,41 @@ $(document).ready(function() {
           list += "<div class='list'>";
 
           $.each(position_list, function(index, value) {
-              metas = unjsonize(localStorage.getItem('elephanto::' + value));
-              stat = unjsonize(localStorage.getItem('elephant::' + value));
-              positionClass = cnt == 0 ? 'first' : "";
-              favoriteIcon = stat.favorite ? themePath + "/favorite-on.png" : themePath + "/favorite-off.png";
-              hiddenClass = cnt < settings.maxDisplayedResult ? "" : "hiddenEntry";
+            metas = unjsonize(localStorage.getItem('elephanto::' + value));
+            stat = unjsonize(localStorage.getItem('elephant::' + value));
+            positionClass = cnt == 0 ? 'first' : "";
+            favoriteIcon = stat.favorite ? themePath + "/favorite-on.png" : themePath + "/favorite-off.png";
+            hiddenClass = cnt < settings.maxDisplayedResult ? "" : "hiddenEntry";
 
-              list += "<div class='entry " + positionClass + " " + hiddenClass + "' data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "' data-url='" + metas.page + "'>";
-              list += "<div class='favorite' data-url='" + metas.page + "'><img src='" + favoriteIcon + "' /></div>";
+            list += "<div class='entry " + positionClass + " " + hiddenClass + "' data-score='" + stat.score + "' data-position='" + cnt + "' data-favorite='" + stat.favorite + "' data-url='" + metas.page + "'>";
+            list += "<div class='favorite' data-url='" + metas.page + "'><img src='" + favoriteIcon + "' /></div>";
 
-              if (metas.image) {
-                list += "<div class='image' data-url='" + metas.page + "'><img src='" + metas.image + "'  /></div>";
-              }
-              if (metas.text) {
-                list += "<div class='text' data-url='" + metas.page + "'>" + metas.text + "</div>";
-              }
+            if (metas.image) {
+              list += "<div class='image' data-url='" + metas.page + "'><img src='" + metas.image + "'  /></div>";
+            }
+            if (metas.text) {
+              list += "<div class='text' data-url='" + metas.page + "'>" + metas.text + "</div>";
+            }
 
-              list += "<div class='remove'><img src='" + themePath + "/remove.png' data-entry='" + value + "' /></div>";
-              list += "</div>";
-              cnt++;
+            list += "<div class='remove'><img src='" + themePath + "/remove.png' data-entry='" + value + "' /></div>";
+            list += "</div>";
+            cnt++;
           });
 
           list += "</div>";
           list += "<div class='info'>";
-          if(cnt > settings.maxDisplayedResult){
-            list += "<span id='see_other_text'>"+settings.displayModeText.normal+"</span> <img class='see_other' src='" + themePath + "/see.png'>";
+          if (cnt > settings.maxDisplayedResult) {
+            list += "<span id='see_other_text'>" + settings.displayModeText.normal + "</span> <img class='see_other' src='" + themePath + "/see.png'>";
           }
           list += "Infos <img class='info' src='" + themePath + "/info.png'>";
-          list += settings.clear+" <img class='clear_elephant' src='" + themePath + "/clear.png' />";
+          list += settings.clear + " <img class='clear_elephant' src='" + themePath + "/clear.png' />";
           list += "</div>";
 
           $('#elephanto').html(list);
 
-          if(displayMode == "normal"){
+          if (displayMode == "normal") {
             switchToNormalMode();
-          } else if(displayMode == "see_other"){
+          } else if (displayMode == "see_other") {
             switchToSeeOtherMode();
           }
 
@@ -458,7 +466,7 @@ $(document).ready(function() {
             $('div#elephanto div.info').css('display', 'block');
           }
 
-          if(position_list.length==1){
+          if (position_list.length == 1) {
             $("div#elephanto div.open div.switch_view img.reduce").css('display', 'block');
             $("div#elephanto div.open div.switch_view img.expand").css('display', 'none');
           }
@@ -490,15 +498,15 @@ $(document).ready(function() {
         }
       }
 
-      var switchToSeeOtherMode = function(){
+      var switchToSeeOtherMode = function() {
         displayMode = "see_other";
         $('#see_other_text').html(settings.displayModeText.see_other);
-        $('div#elephanto').css('height', $(window).height()+'px');
+        $('div#elephanto').css('height', $(window).height() + 'px');
         $('div#elephanto div.list').css('overflow-y', 'auto');
         $('div#elephanto div.list div.entry.hiddenEntry').css('display', 'flex');
       }
 
-      var switchToNormalMode = function(){
+      var switchToNormalMode = function() {
         displayMode = "normal";
         $('#see_other_text').html(settings.displayModeText.normal);
         $('div#elephanto').css('height', 'inherit');
@@ -506,12 +514,12 @@ $(document).ready(function() {
         $('div#elephanto div.list div.entry.hiddenEntry').css('display', 'none');
       }
 
-      var highLightNewPosition = function(selector){
-        var divBackgroundColor = $('div#elephanto div.entry[data-url="'+selector+'"]').css('background-color');
-        $('div#elephanto div.entry[data-url="'+selector+'"]').css('background-color', '#ccc');
-        window.setTimeout(function(){
-          $('div#elephanto div.entry[data-url="'+selector+'"]').css('transition', 'background-color 0.5s');
-          $('div#elephanto div.entry[data-url="'+selector+'"]').css('background-color', divBackgroundColor);
+      var highLightNewPosition = function(selector) {
+        var divBackgroundColor = $('div#elephanto div.entry[data-url="' + selector + '"]').css('background-color');
+        $('div#elephanto div.entry[data-url="' + selector + '"]').css('background-color', '#ccc');
+        window.setTimeout(function() {
+          $('div#elephanto div.entry[data-url="' + selector + '"]').css('transition', 'background-color 0.5s');
+          $('div#elephanto div.entry[data-url="' + selector + '"]').css('background-color', divBackgroundColor);
         }, 200);
       }
 
@@ -567,7 +575,9 @@ $(document).ready(function() {
         $.each(position_list, function(index, page) {
           if (position_list[index] !== lastPositionList[index]) {
             position_has_changed = true;
-            localStorage.setItem('elephant_position_has_changed', new Date());
+            latest_position_change.time = new Date();
+            latest_position_change.selector = position_list[index];
+            localStorage.setItem('elephant_position_has_changed', jsonize(latest_position_change));
             displayData();
             highLightNewPosition(position_list[index]);
             return false;
@@ -584,14 +594,14 @@ $(document).ready(function() {
       }
       var getLastPositionList = function() {
         var last_position_list = unjsonize(localStorage.getItem('elephant_position_list'));
-        if($.isArray(last_position_list)==false){
+        if ($.isArray(last_position_list) == false) {
           last_position_list = new Array();
         }
         return last_position_list;
       }
       var loadTheme = function() {
         $("head").append($("<link rel='stylesheet' href='" + settings.path + "/themes/" + settings.theme + "/" + settings.theme + ".min.css' type='text/css' media='screen' id='cssTheme' />"));
-        document.onreadystatechange = function () {
+        document.onreadystatechange = function() {
           if (document.readyState === "complete") {
             $('div#elephanto').css('display', 'flex');
           }
@@ -615,7 +625,7 @@ $(document).ready(function() {
 
 
       //RUN
-      if(settings.path == ""){
+      if (settings.path == "") {
         console.error('You must define your Elephant directory path. Elephant not running...');
         return false;
       }
@@ -661,7 +671,7 @@ $(document).ready(function() {
 
     $.fn.elephantExportHTML = function() {
       var position_list = unjsonize(localStorage.getItem('elephant_position_list'));
-      var entry_list =  new Array();
+      var entry_list = new Array();
       var entry_info = new Array();
       var humanStr = "";
 
@@ -669,8 +679,7 @@ $(document).ready(function() {
         entry_info = unjsonize(localStorage.getItem('elephant::' + value));
         entry_info['url'] = position_list[index];
         entry_list.push(entry_info);
-        }
-      );
+      });
 
       humanStr += "<table border=1 cellpadding=5 style='border:solid 1px black; border-collapse: collapse;'>";
       humanStr += "<caption style='font-weight:bold; text-align:left;'>User Selection Ranking</caption>";
@@ -691,15 +700,15 @@ $(document).ready(function() {
 
       $.each(entry_list, function(index, value) {
         humanStr += "<tr>";
-        humanStr += "<td style='font-weight:bold;'>#"+(index+1)+"</td>";
-        humanStr += "<td style='font-weight:bold;'>"+value.score+"</td>";
-        humanStr += "<td>"+value.favorite+"</td>";
-        humanStr += "<td>"+value.visit+"</td>";
-        humanStr += "<td>"+value.time+"</td>";
-        humanStr += "<td>"+value.trigger+"</td>";
-        humanStr += "<td>"+value.scroll+"</td>";
-        humanStr += "<td><a href='http://"+window.location.hostname+value.url+"' target='_blank'>"+value.url+"</a></td>";
-        humanStr += "<td>"+value.updated_at+"</td>";
+        humanStr += "<td style='font-weight:bold;'>#" + (index + 1) + "</td>";
+        humanStr += "<td style='font-weight:bold;'>" + value.score + "</td>";
+        humanStr += "<td>" + value.favorite + "</td>";
+        humanStr += "<td>" + value.visit + "</td>";
+        humanStr += "<td>" + value.time + "</td>";
+        humanStr += "<td>" + value.trigger + "</td>";
+        humanStr += "<td>" + value.scroll + "</td>";
+        humanStr += "<td><a href='http://" + window.location.hostname + value.url + "' target='_blank'>" + value.url + "</a></td>";
+        humanStr += "<td>" + value.updated_at + "</td>";
         humanStr += "</tr>";
       });
 
