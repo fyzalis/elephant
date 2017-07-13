@@ -546,7 +546,11 @@ $(document).ready(function() {
             displayData();
             var divBackgroundColor = $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('background-color');
             $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('background-color', '#ccc');
-            $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').animate({ backgroundColor: divBackgroundColor }, 1000);
+            window.setTimeout(function(){
+              $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('transition', 'background-color 0.5s');
+              $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('background-color', divBackgroundColor);
+            }, 200);
+
             return false;
           }
         });
