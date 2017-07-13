@@ -58,7 +58,7 @@ $(document).ready(function() {
         view_state = "visible";
       }
 
-      var page = window.location.pathname;
+      var page = window.location.href;
       var themePath = settings.path + "/themes/" + settings.theme;
       var meta = {
         page: page,
