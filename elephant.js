@@ -20,17 +20,9 @@ $(document).ready(function() {
           'several': ''
         },
         favoriteTrigger: '#elephant_favorite',
-        favoriteOffText: "Add to my selection",
-        favoriteOnText: "Remove to my selection",
         path: "",
         theme: "default",
-        displayModeText: {
-          'normal': 'View all',
-          'see_other': 'Reduce view'
-        },
-        clear: "Clear",
-        clearText: "Would you really reset your selection ?",
-        pluginInformation: "Selection made based on your browsing on the site."
+        lang: "en"
       }, options);
       var stats = {
         time: 0,
@@ -78,6 +70,7 @@ $(document).ready(function() {
       };
       var displayMode = "normal";
       var removedEntry = false;
+      var lang = {};
 
 
       //MAIN
@@ -270,7 +263,7 @@ $(document).ready(function() {
         $('#elephanto div.info img.info').off('click');
         $('#elephanto div.info img.info').on('click', function() {
           var close = " <span class='informations' id='infoClose'>Fermer</span>";
-          $('#elephanto div.info').html(settings.pluginInformation + close);
+          $('#elephanto div.info').html(lang.pluginInformation + close);
           $('#elephanto div.info span#infoClose').off('click');
           $('#elephanto div.info span#infoClose').on('click', function() {
             force_render = true;
@@ -279,8 +272,8 @@ $(document).ready(function() {
         });
         $('#elephanto div.info img.clear_elephant').off('click');
         $('#elephanto div.info img.clear_elephant').on('click', function() {
-          var confirm = " <span class='clearConfirm' id='clearOn'>Oui</span> | <span class='clearConfirm' id='clearOff'>Non</span>";
-          $('#elephanto div.info').html(settings.clearText + confirm);
+          var confirm = " <span class='clearConfirm' id='clearOn'>" + lang.yes + "</span> | <span class='clearConfirm' id='clearOff'>" + lang.no + "</span>";
+          $('#elephanto div.info').html(lang.clearText + confirm);
           $('#elephanto div.info span#clearOn, #elephanto div.info span#clearOff').off('click');
           $('#elephanto div.info span#clearOn').on('click', function() {
             $('#elephanto').css('display', 'none');
@@ -322,7 +315,7 @@ $(document).ready(function() {
           var tmp_latest = new Date(latest_position_change.time);
           if (tmp_position.getTime() > tmp_latest.getTime()) {
             force_render = true;
-            displayData();            
+            displayData();
             highLightNewPosition(tmp_local_storage.selector);
             latest_position_change.time = tmp_local_storage.time;
             latest_position_change.selector = "";
@@ -346,12 +339,12 @@ $(document).ready(function() {
 
           favorite_block += "<div id='elephant_favorite_off' class='" + favorite_off_class + "'>";
           favorite_block += "<span class='elephant_favorite_off'><img src='" + themePath + "/favorite-off.png' /></span>";
-          favorite_block += "<span class='text'>" + settings.favoriteOffText + "</span>";
+          favorite_block += "<span class='text'>" + lang.favoriteOffText + "</span>";
           favorite_block += "</div>";
 
           favorite_block += "<div id='elephant_favorite_on' class='" + favorite_on_class + "'>";
           favorite_block += "<span class='elephant_favorite_on'><img src='" + themePath + "/favorite-on.png' /></span>";
-          favorite_block += "<span class='text'>" + settings.favoriteOnText + "</span>";
+          favorite_block += "<span class='text'>" + lang.favoriteOnText + "</span>";
           favorite_block += "</div>";
 
           $('#elephant_favorite').html(favorite_block);
@@ -444,10 +437,10 @@ $(document).ready(function() {
           list += "</div>";
           list += "<div class='info'>";
           if (cnt > settings.maxDisplayedResult) {
-            list += "<span id='see_other_text'>" + settings.displayModeText.normal + "</span> <img class='see_other' src='" + themePath + "/see.png'>";
+            list += "<span id='see_other_text'>" + lang.displayModeText.normal + "</span> <img class='see_other' src='" + themePath + "/see.png'>";
           }
           list += "Infos <img class='info' src='" + themePath + "/info.png'>";
-          list += settings.clear + " <img class='clear_elephant' src='" + themePath + "/clear.png' />";
+          list += lang.clear + " <img class='clear_elephant' src='" + themePath + "/clear.png' />";
           list += "</div>";
 
           $('#elephanto').html(list);
@@ -500,7 +493,7 @@ $(document).ready(function() {
 
       var switchToSeeOtherMode = function() {
         displayMode = "see_other";
-        $('#see_other_text').html(settings.displayModeText.see_other);
+        $('#see_other_text').html(lang.displayModeText.see_other);
         $('div#elephanto').css('height', $(window).height() + 'px');
         $('div#elephanto div.list').css('overflow-y', 'auto');
         $('div#elephanto div.list div.entry.hiddenEntry').css('display', 'flex');
@@ -508,7 +501,7 @@ $(document).ready(function() {
 
       var switchToNormalMode = function() {
         displayMode = "normal";
-        $('#see_other_text').html(settings.displayModeText.normal);
+        $('#see_other_text').html(lang.displayModeText.normal);
         $('div#elephanto').css('height', 'inherit');
         $('div#elephanto div.list').css('overflow-y', 'auto');
         $('div#elephanto div.list div.entry.hiddenEntry').css('display', 'none');
@@ -599,6 +592,9 @@ $(document).ready(function() {
         }
         return last_position_list;
       }
+
+
+      //Load external files
       var loadTheme = function() {
         $("head").append($("<link rel='stylesheet' href='" + settings.path + "/themes/" + settings.theme + "/" + settings.theme + ".min.css' type='text/css' media='screen' id='cssTheme' />"));
         document.onreadystatechange = function() {
@@ -607,21 +603,20 @@ $(document).ready(function() {
           }
         };
       }
-
-
-      //Utilities
-      function debug(data, title) {
-        if (!title) title = 'DEBUG';
-        console.log(title, data);
+      var loadLang = function() {
+        $.ajax({
+          url: settings.path + "/lang/" + settings.lang + ".json",
+          async: false,
+          type: 'json',
+          type: 'GET',
+          success: function(text) {
+            lang = text;
+          }
+        });
       }
 
-      function jsonize(data) {
-        return JSON.stringify(data);
-      }
 
-      function unjsonize(data) {
-        return jQuery.parseJSON(data);
-      }
+
 
 
       //RUN
@@ -656,6 +651,7 @@ $(document).ready(function() {
           createElephant();
         }
         loadTheme();
+        loadLang();
         loadElephant();
         computePosition();
         displayData();
@@ -666,6 +662,24 @@ $(document).ready(function() {
           checkPositionChange();
         }, (settings.refreshRender * 1000));
       }
+
+
+      //Utilities
+      function debug(data, title) {
+        if (!title) title = 'DEBUG';
+        console.log(title, data);
+      }
+
+      function jsonize(data) {
+        return JSON.stringify(data);
+      }
+
+      function unjsonize(data) {
+        return jQuery.parseJSON(data);
+      }
+
+
+
     };
 
 
