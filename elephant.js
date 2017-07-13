@@ -1,5 +1,5 @@
 /*
- 2017-06-30: dev v1.1
+ 2017-07-13: dev v1.2
  Github: https://github.com/fyzalis/elephant
  Author: Julien Buabent
 */
@@ -52,11 +52,20 @@ $(document).ready(function() {
       var position_has_changed = false;
       var force_render = true;
       var entry_list = new Array();
-      //var view_state = "visible"; // => Expand, Reduce, visible
+
+      //Ugly
       var view_state = localStorage.getItem('elephant_view');
       if(view_state == "" || view_state == null){
         view_state = "visible";
       }
+
+      //Ugly and not safe on type verification
+      var latest_position_change = new Date(localStorage.getItem('elephant_position_has_changed'));
+      if(latest_position_change == "" || latest_position_change == null || latest_position_change == 'Invalid Date' || latest_position_change=='Thu Jan 01 1970 01:00:00 GMT+0100 (CET)'){
+        latest_position_change = new Date();
+        localStorage.setItem('elephant_position_has_changed', latest_position_change);
+      }
+
 
       var page = window.location.href;
       var themePath = settings.path + "/themes/" + settings.theme;
@@ -67,6 +76,7 @@ $(document).ready(function() {
       };
       var displayMode = "normal";
       var removedEntry = false;
+
 
       //MAIN
       var runElephant = function() {
@@ -303,6 +313,15 @@ $(document).ready(function() {
           switchActive(false);
         }
       }
+      var checkPositionChange = function(){
+        var tmp_position = new Date(localStorage.getItem('elephant_position_has_changed'));
+        if(tmp_position.getTime() > latest_position_change.getTime()){
+          latest_position_change = new Date();
+          localStorage.setItem('elephant_position_has_changed', latest_position_change);
+          force_render = true;
+          displayData();
+        }
+      }
 
       //Display favorite
       var displayFavorite = function() {
@@ -346,7 +365,6 @@ $(document).ready(function() {
 
       //ELEPHANTO
       var openElephanto = function() {
-
         if (view_state == "visible" || view_state == "reduce") {
           $('#elephanto div.open div.switch_view img.expand').css('display', 'none');
           $('#elephanto div.open div.switch_view img.reduce').css('display', 'block');
@@ -366,13 +384,9 @@ $(document).ready(function() {
         } else {
           $('div#elephanto div.info').css('display', 'none');
         }
-
-
         localStorage.setItem('elephant_view', view_state);
         return true;
       }
-
-
 
       var displayData = function() {
         if (position_list.length > 0 && (position_has_changed || force_render)) {
@@ -483,12 +497,22 @@ $(document).ready(function() {
         $('div#elephanto div.list').css('overflow-y', 'auto');
         $('div#elephanto div.list div.entry.hiddenEntry').css('display', 'flex');
       }
+
       var switchToNormalMode = function(){
         displayMode = "normal";
         $('#see_other_text').html(settings.displayModeText.normal);
         $('div#elephanto').css('height', 'inherit');
         $('div#elephanto div.list').css('overflow-y', 'auto');
         $('div#elephanto div.list div.entry.hiddenEntry').css('display', 'none');
+      }
+
+      var highLightNewPosition = function(selector){
+        var divBackgroundColor = $('div#elephanto div.entry[data-url="'+selector+'"]').css('background-color');
+        $('div#elephanto div.entry[data-url="'+selector+'"]').css('background-color', '#ccc');
+        window.setTimeout(function(){
+          $('div#elephanto div.entry[data-url="'+selector+'"]').css('transition', 'background-color 0.5s');
+          $('div#elephanto div.entry[data-url="'+selector+'"]').css('background-color', divBackgroundColor);
+        }, 200);
       }
 
       //Calul score
@@ -543,19 +567,16 @@ $(document).ready(function() {
         $.each(position_list, function(index, page) {
           if (position_list[index] !== lastPositionList[index]) {
             position_has_changed = true;
+            localStorage.setItem('elephant_position_has_changed', new Date());
             displayData();
-            var divBackgroundColor = $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('background-color');
-            $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('background-color', '#ccc');
-            window.setTimeout(function(){
-              $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('transition', 'background-color 0.5s');
-              $('div#elephanto div.entry[data-url="'+position_list[index]+'"]').css('background-color', divBackgroundColor);
-            }, 200);
-
+            highLightNewPosition(position_list[index]);
             return false;
           }
         });
         saveLastPositionList();
       }
+
+
 
 
       var saveLastPositionList = function() {
@@ -632,9 +653,11 @@ $(document).ready(function() {
         var refreshData = setInterval(function() {
           loadElephant();
           computePosition();
+          checkPositionChange();
         }, (settings.refreshRender * 1000));
       }
     };
+
 
     $.fn.elephantExportHTML = function() {
       var position_list = unjsonize(localStorage.getItem('elephant_position_list'));
@@ -684,22 +707,11 @@ $(document).ready(function() {
       humanStr += "</table>";
       return humanStr;
 
-
-      //Utilities
-      /*
-      function debug(data, title) {
-        if (!title) title = 'DEBUG';
-        console.log(title, data);
-      }*/
       function unjsonize(data) {
         return jQuery.parseJSON(data);
       }
-
     }
 
   }(jQuery));
-
-
-
 
 });
