@@ -412,6 +412,7 @@ $(document).ready(function() {
           list += "</div>";
           list += "<div class='list'>";
 
+
           $.each(position_list, function(index, value) {
             metas = unjsonize(localStorage.getItem('elephanto::' + value));
             stat = unjsonize(localStorage.getItem('elephant::' + value));
@@ -594,6 +595,9 @@ $(document).ready(function() {
       }
 
 
+
+
+
       //Load external files
       var loadTheme = function() {
         $("head").append($("<link rel='stylesheet' href='" + settings.path + "/themes/" + settings.theme + "/" + settings.theme + ".min.css' type='text/css' media='screen' id='cssTheme' />"));
@@ -606,11 +610,12 @@ $(document).ready(function() {
       var loadLang = function() {
         $.ajax({
           url: settings.path + "/lang/" + settings.lang + ".json",
-          async: false,
           type: 'json',
           type: 'GET',
           success: function(text) {
-            lang = text;
+            lang = text;            
+            loadTheme();
+            run();
           }
         });
       }
@@ -623,44 +628,53 @@ $(document).ready(function() {
       if (settings.path == "") {
         console.error('You must define your Elephant directory path. Elephant not running...');
         return false;
-      }
-
-      //Elephant : record data
-      if (runElephant()) {
-        if (!elephantExists()) {
-          createElephant();
-        }
-        loadElephant();
-        if (!entryExists()) {
-          createEntry();
-        }
-        loadEntry();
-        displayFavorite();
-        setInterval(function() {
-          incrementTime()
-        }, 1000);
-        listenScroll();
-        incrementVisit();
-        listenTrigger();
-        listenFavorite();
-      }
-
-      //Elephanto : display data
-      if (runElephanto()) {
-        if (!elephantExists()) {
-          createElephant();
-        }
-        loadTheme();
+      } else {
+        //Load all externals files before execute the plugin
         loadLang();
-        loadElephant();
-        computePosition();
-        displayData();
+      }
 
-        var refreshData = setInterval(function() {
+
+
+
+
+      var run = function(){
+        //Elephant : record data
+        if (runElephant()) {
+          if (!elephantExists()) {
+            createElephant();
+          }
+          loadElephant();
+          if (!entryExists()) {
+            createEntry();
+          }
+          loadEntry();
+          displayFavorite();
+          setInterval(function() {
+            incrementTime()
+          }, 1000);
+          listenScroll();
+          incrementVisit();
+          listenTrigger();
+          listenFavorite();
+        }
+
+        //Elephanto : display data
+        if (runElephanto()) {
+          if (!elephantExists()) {
+            createElephant();
+          }
+          //loadTheme();
+          //loadLang();
           loadElephant();
           computePosition();
-          checkPositionChange();
-        }, (settings.refreshRender * 1000));
+          displayData();
+
+          var refreshData = setInterval(function() {
+            loadElephant();
+            computePosition();
+            checkPositionChange();
+          }, (settings.refreshRender * 1000));
+        }
       }
 
 

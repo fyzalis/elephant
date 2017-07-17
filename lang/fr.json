@@ -1,0 +1,13 @@
+{
+  "yes":"Oui",
+  "no":"Non",
+  "favoriteOffText": "Ajouter à ma sélection",
+  "favoriteOnText": "Retirer de ma sélection",
+  "clear": "Vider",
+  "clearText": "Êtes-vous sur de vouloir supprimer votre sélection ?",
+  "pluginInformation": "Sélection réalisée sur la base de votre navigation sur le site.",
+  "displayModeText": {
+    "normal": "Tout voir",
+    "see_other": "Réduire"
+  }
+}

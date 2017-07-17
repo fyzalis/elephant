@@ -1,0 +1,13 @@
+{
+  "yes":"Yes",
+  "no":"No",
+  "favoriteOffText": "Add to my selection",
+  "favoriteOnText": "Remove to my selection",
+  "clear": "Clear",
+  "clearText": "Would you really reset your selection ?",
+  "pluginInformation": "Selection made based on your browsing on the site.",
+  "displayModeText": {
+    "normal": "View all",
+    "see_other": "Reduce view"
+  }
+}
