@@ -79,17 +79,9 @@ entryName: {
   'several': ''
 },
 favoriteTrigger: '#elephant_favorite',
-favoriteOffText: "Cette page m'intéresse",
-favoriteOnText: "Cette page ne m'intéresse plus"
 path: "",
 theme: "default",
-displayModeText:{
-  'normal': 'View all',
-  'see_other': 'Reduce view'
-},
-clear: "Clear",
-clearText: "Would you really reset your selection ?",
-pluginInformation: "Selection made based on your browsing on the site."
+lang : "en"
 }
 ~~~~
 triggers (tableau) : définie les éléments qui incrémentent la stat 'trigger' (type selecteur JQuery (tag, id, class,...)).
@@ -106,21 +98,11 @@ entryName (objet): défini le nom 'humain' des entrées de la sélection (ex: pr
 
 favoriteTrigger (chaîne) : id de la div du bouton favoris.
 
-favoriteOffText (chaîne) : texte pour ajouter une page dans les favoris.
-
-favoriteOnText (chaîne) : texte pour enlever une page des favoris.
-
 path (chaîne): chemin du dossier du plugin (nécéssaire pour la gestion des thèmes).
 
 theme (chaîne): nom du dossier contenant le thème désiré
 
-displayModeText (objet): texte à afficher à coté du bouton qui permet d'afficher toutes les entrées enregistrées
-
-clear (chaîne):  texte à afficher à coté du bouton qui permet de vider la sélection
-
-clearText (chaîne): texte de confirmation lors du vidage de la sélection
-
-pluginInformation (chaîne): Phrase informative sur le fonctionnement du plugin. Dédié à l'utilisateur.
+lang (chaîne): fichier langue à appliquer au plugin (fr ou en)
 
 
 # Themes
@@ -131,14 +113,19 @@ de personnaliser les différents fichiers (css, images), puis de l'appeler dans 
 
 # Screenshot
 
-**Thème par défaut :**
+**Thème par défaut v1.0 :**
 ![theme par defaut](https://github.com/fyzalis/elephant/blob/master/demo/elephant-screenshot-default.png)
 
 
-**Thème premiumimmoneuf :**
+**Thème premiumimmoneuf v1.0 :**
 ![theme premium](https://github.com/fyzalis/elephant/blob/master/demo/elephant-screenshot-premium.png)
 
 
+
+# Langues (internationalisation)
+
+Certaines variables de texte sont stockées dans des fichiers langues (dans le dossier /lang). Elles sont automatiquement (et obligatoirement) chargées (en AJAX) via l'option {lang: 'xx'}.
+Pour l'instant, seul le français et l'anglais sont disponibles.
 
 # Export de données
 
@@ -151,4 +138,4 @@ $(document).ready(function () {
 
 
 # Auteur
-*Plugin réalisé par [Julien Buabent](http://julienbuabent.fr), pour le groupe [immo9 - Immobilier neuf à Toulouse](http://toulouseimmo9.com)*
+*Plugin réalisé par [Julien Buabent](http://julienbuabent.fr), pour le groupe [immo9 - Immobilier neuf à Toulouse](http://toulouseimmo9.com, http://premiumimmoneuf.com)*
