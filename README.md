@@ -1,30 +1,30 @@
 # ELEPHANT
 
 [EN]
-This Jquery plugin allows to store, to sort by interest, and to display the navigation of a user on particular pages of a site. It's a kind of "auto smart selection" of favorite user's page on a site.
-At begining, this plugin is developed to a real estate website, but it could be used on a lot of various case.
+This Jquery plugin allows to store, to sort by interest, and to display the navigation of a user on specific pages on a website. It's a kind of "auto smart selection" of favorite user's page on a website.
+At begining, this plugin is developed to a real estate website, but it could be used on a lot of various cases.
 
-It allows to display a list of pages that represent the interest of the user of the site, to facilitate the search for products, and to easily find the products for which it has a real interest.
+It allows to display a list of pages that interests a user during its navigation, to facilitate the search of products, and to easily find the products for which it has a real interest.
 
 The order of classification of the various recorded pages takes into account certain measurable parameters such as:
-- the time spent on the page
-- the fact of more or less scroll in the page
-- the number of times or the user has visited the page
-- trigger elements (eg. opening a list of information, opening photos, clicking a button, etc.)
-- a "favorites" button, that user can manually notify his interest
+- the time spent
+- the fact of scroll, more or less
+- the number of visits
+- trigger elements (eg. opening a list of information, opening photos, clicking a button, etc...)
+- a "favorite" button, to permit to the user to manually notify his interest
 
 [FR]
 Ce plugin Jquery permet de stocker, classer par intérêt, et restituer la navigation d'un internaute sur des pages données d'un site. C'est une sorte de 'sélection automatique et intelligente' des pages favorites d'un utilisateur sur un site.
-A la base, ce plugin est développé pour un site d'agence immobilière, mais il peut etre utilisé dans de nombreux autres cas.
+A la base, ce plugin est développé pour un site d'agence immobilière, mais il peut être utilisé dans de nombreux autres cas.
 
-Il permet d'afficher une liste de pages sensés intéresser l'utilisateur du site, lui faciliter la recherche de produits, et retrouver facilement les produits pour lesquels il éprouve un réel intérêt.
+Il permet d'afficher une liste de pages sensées intéresser l'utilisateur du site, lui faciliter la recherche de produits, et retrouver facilement les produits pour lesquels il éprouve un réel intérêt.
 
 L'ordre de classement des différentes pages enregistrées prends en compte certains paramètres mesurables tels que :
-- le temps passé sur la page
-- le fait de plus ou moins scroller dans la page
-- le nombre de fois ou l'utilisateur à visité la page
+- le temps passé
+- le fait de plus ou moins scroller
+- le nombre de visites
 - des éléments "déclencheurs" (ex: ouvrir une liste d'informations, ouvrir des photos, cliquer sur un bouton, etc...)
-- un bouton "favoris", pour que l'utilisateur puisse notifié manuellement son intérêt
+- un bouton "favoris", pour que l'utilisateur puisse notifier manuellement son intérêt
 
 
 
