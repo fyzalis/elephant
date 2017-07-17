@@ -138,4 +138,4 @@ $(document).ready(function () {
 
 
 # Auteur
-*Plugin réalisé par [Julien Buabent](http://julienbuabent.fr), pour le groupe Immo9 (Immobilier neuf à Toulouse) [Toulouse Immo 9](http://toulouseimmo9.com) [Premium Immo Neuf](http://premiumimmoneuf.com)*
+*Plugin réalisé par [Julien Buabent](http://julienbuabent.fr), pour le groupe Immo9 (Immobilier neuf à Toulouse) [Toulouse Immo 9](http://toulouseimmo9.com), [Premium Immo Neuf](http://premiumimmoneuf.com)*
