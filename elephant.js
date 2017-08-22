@@ -613,7 +613,7 @@ $(document).ready(function() {
           type: 'json',
           type: 'GET',
           success: function(text) {
-            lang = text;            
+            lang = text;
             loadTheme();
             run();
           }
@@ -709,39 +709,41 @@ $(document).ready(function() {
         entry_list.push(entry_info);
       });
 
-      humanStr += "<table border=1 cellpadding=5 style='border:solid 1px black; border-collapse: collapse;'>";
-      humanStr += "<caption style='font-weight:bold; text-align:left;'>User Selection Ranking</caption>";
-      humanStr += "<thead>";
-      humanStr += "<tr>";
-      humanStr += "<th>RANK</th>";
-      humanStr += "<th>TOTAL SCORE</th>";
-      humanStr += "<th>Favorite</th>";
-      humanStr += "<th>Visit</th>";
-      humanStr += "<th>Time</th>";
-      humanStr += "<th>Trigger</th>";
-      humanStr += "<th>Scroll</th>";
-      humanStr += "<th>Url</th>";
-      humanStr += "<th>Last update</th>";
-      humanStr += "</tr>";
-      humanStr += "</thead>";
-      humanStr += "<tbody>";
-
-      $.each(entry_list, function(index, value) {
+      if(entry_list.length > 0){
+        humanStr += "<table border=1 cellpadding=5 style='border:solid 1px black; border-collapse: collapse;'>";
+        humanStr += "<caption style='font-weight:bold; text-align:left;'>User Selection Ranking</caption>";
+        humanStr += "<thead>";
         humanStr += "<tr>";
-        humanStr += "<td style='font-weight:bold;'>#" + (index + 1) + "</td>";
-        humanStr += "<td style='font-weight:bold;'>" + value.score + "</td>";
-        humanStr += "<td>" + value.favorite + "</td>";
-        humanStr += "<td>" + value.visit + "</td>";
-        humanStr += "<td>" + value.time + "</td>";
-        humanStr += "<td>" + value.trigger + "</td>";
-        humanStr += "<td>" + value.scroll + "</td>";
-        humanStr += "<td><a href='http://" + window.location.hostname + value.url + "' target='_blank'>" + value.url + "</a></td>";
-        humanStr += "<td>" + value.updated_at + "</td>";
+        humanStr += "<th>RANK</th>";
+        humanStr += "<th>TOTAL SCORE</th>";
+        humanStr += "<th>Favorite</th>";
+        humanStr += "<th>Visit</th>";
+        humanStr += "<th>Time</th>";
+        humanStr += "<th>Trigger</th>";
+        humanStr += "<th>Scroll</th>";
+        humanStr += "<th>Url</th>";
+        humanStr += "<th>Last update</th>";
         humanStr += "</tr>";
-      });
+        humanStr += "</thead>";
+        humanStr += "<tbody>";
 
-      humanStr += "</tbody>";
-      humanStr += "</table>";
+        $.each(entry_list, function(index, value) {
+          humanStr += "<tr>";
+          humanStr += "<td style='font-weight:bold;'>#" + (index + 1) + "</td>";
+          humanStr += "<td style='font-weight:bold;'>" + value.score + "</td>";
+          humanStr += "<td>" + value.favorite + "</td>";
+          humanStr += "<td>" + value.visit + "</td>";
+          humanStr += "<td>" + value.time + "</td>";
+          humanStr += "<td>" + value.trigger + "</td>";
+          humanStr += "<td>" + value.scroll + "</td>";
+          humanStr += "<td><a href='http://" + window.location.hostname + value.url + "' target='_blank'>" + value.url + "</a></td>";
+          humanStr += "<td>" + value.updated_at + "</td>";
+          humanStr += "</tr>";
+        });
+
+        humanStr += "</tbody>";
+        humanStr += "</table>";
+      }      
       return humanStr;
 
       function unjsonize(data) {
