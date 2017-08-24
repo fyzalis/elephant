@@ -309,17 +309,19 @@ $(document).ready(function() {
         }
       }
       var checkPositionChange = function() {
-        var tmp_local_storage = unjsonize(localStorage.getItem('elephant_position_has_changed'));
-        if (tmp_local_storage.time != "" && tmp_local_storage.selector != "") {
-          var tmp_position = new Date(tmp_local_storage.time);
-          var tmp_latest = new Date(latest_position_change.time);
-          if (tmp_position.getTime() > tmp_latest.getTime()) {
-            force_render = true;
-            displayData();
-            highLightNewPosition(tmp_local_storage.selector);
-            latest_position_change.time = tmp_local_storage.time;
-            latest_position_change.selector = "";
-            localStorage.setItem('elephant_position_has_changed', jsonize(latest_position_change));
+        var tmp_local_storage = unjsonize(localStorage.getItem('elephant_position_has_changed'));        
+        if(tmp_local_storage != null){
+          if (tmp_local_storage.time != "" && tmp_local_storage.selector != "") {
+            var tmp_position = new Date(tmp_local_storage.time);
+            var tmp_latest = new Date(latest_position_change.time);
+            if (tmp_position.getTime() > tmp_latest.getTime()) {
+              force_render = true;
+              displayData();
+              highLightNewPosition(tmp_local_storage.selector);
+              latest_position_change.time = tmp_local_storage.time;
+              latest_position_change.selector = "";
+              localStorage.setItem('elephant_position_has_changed', jsonize(latest_position_change));
+            }
           }
         }
       }
@@ -697,7 +699,7 @@ $(document).ready(function() {
     };
 
 
-    $.fn.elephantExportHTML = function() {      
+    $.fn.elephantExportHTML = function() {
       var position_list = unjsonize(localStorage.getItem('elephant_position_list'));
       var entry_list = new Array();
       var entry_info = new Array();
