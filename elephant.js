@@ -697,7 +697,7 @@ $(document).ready(function() {
     };
 
 
-    $.fn.elephantExportHTML = function() {
+    $.fn.elephantExportHTML = function() {      
       var position_list = unjsonize(localStorage.getItem('elephant_position_list'));
       var entry_list = new Array();
       var entry_info = new Array();
@@ -736,14 +736,14 @@ $(document).ready(function() {
           humanStr += "<td>" + value.time + "</td>";
           humanStr += "<td>" + value.trigger + "</td>";
           humanStr += "<td>" + value.scroll + "</td>";
-          humanStr += "<td><a href='http://" + window.location.hostname + value.url + "' target='_blank'>" + value.url + "</a></td>";
+          humanStr += "<td><a href='" + value.url + "' target='_blank'>" + value.url + "</a></td>";
           humanStr += "<td>" + value.updated_at + "</td>";
           humanStr += "</tr>";
         });
 
         humanStr += "</tbody>";
         humanStr += "</table>";
-      }      
+      }
       return humanStr;
 
       function unjsonize(data) {
