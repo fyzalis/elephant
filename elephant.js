@@ -309,7 +309,7 @@ $(document).ready(function() {
         }
       }
       var checkPositionChange = function() {
-        var tmp_local_storage = unjsonize(localStorage.getItem('elephant_position_has_changed'));        
+        var tmp_local_storage = unjsonize(localStorage.getItem('elephant_position_has_changed'));
         if(tmp_local_storage != null){
           if (tmp_local_storage.time != "" && tmp_local_storage.selector != "") {
             var tmp_position = new Date(tmp_local_storage.time);
