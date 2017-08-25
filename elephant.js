@@ -1,5 +1,5 @@
 /*
- 2017-07-13: dev v1.2
+ 2017-07-13: dev v1.4
  Github: https://github.com/fyzalis/elephant
  Author: Julien Buabent
 */
@@ -66,7 +66,8 @@ $(document).ready(function() {
       var meta = {
         page: page,
         text: "",
-        image: ""
+        image: "",
+        id: ""
       };
       var displayMode = "normal";
       var removedEntry = false;
@@ -117,6 +118,7 @@ $(document).ready(function() {
         localStorage.setItem('elephant::' + page, jsonize(stats));
         meta.text = $('#elephant').data('text');
         meta.image = $('#elephant').data('image');
+        meta.id = $('#elephant').data('id');
         localStorage.setItem('elephanto::' + page, jsonize(meta));
       }
       var loadEntry = function() {
@@ -752,6 +754,45 @@ $(document).ready(function() {
         return jQuery.parseJSON(data);
       }
     }
+
+
+    $.fn.elephantExportJSON = function() {
+      var position_list = unjsonize(localStorage.getItem('elephant_position_list'));
+      var entry_list = new Array();
+      var entry_info = new Array();
+      var jsonArray = new Array();
+
+      $.each(position_list, function(index, value) {
+        entry_info = unjsonize(localStorage.getItem('elephant::' + value));
+        entry_info_id = unjsonize(localStorage.getItem('elephanto::' + value));
+        entry_info['url'] = position_list[index];
+        entry_info['id'] = entry_info_id.id;
+        entry_list.push(entry_info);
+      });
+
+      if(entry_list.length > 0){
+        $.each(entry_list, function(index, value) {
+          jsonArray[index] = {};
+          jsonArray[index].rank = index + 1;
+          jsonArray[index].id = value.id;
+          jsonArray[index].score = value.score;
+          jsonArray[index].favorite = value.favorite;
+          jsonArray[index].visit = value.visit;
+          jsonArray[index].time = value.time;
+          jsonArray[index].trigger = value.trigger;
+          jsonArray[index].scroll = value.scroll;
+          jsonArray[index].url = value.url;
+          jsonArray[index].updated_at = value.updated_at;
+        });
+      }
+      
+      return JSON.stringify(jsonArray);
+
+      function unjsonize(data) {
+        return jQuery.parseJSON(data);
+      }
+    }
+
 
   }(jQuery));
 
