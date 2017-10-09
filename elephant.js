@@ -7,6 +7,8 @@
 $(document).ready(function() {
   (function($) {
 
+    //TEST
+
     $.fn.elephant = function(options) {
 
       var settings = $.extend({
@@ -785,7 +787,7 @@ $(document).ready(function() {
           jsonArray[index].updated_at = value.updated_at;
         });
       }
-      
+
       return JSON.stringify(jsonArray);
 
       function unjsonize(data) {
