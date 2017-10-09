@@ -22,13 +22,19 @@
     </ul>
     <a href="index.html">Retour accueil</a>
     <div id="elephant" data-text="Appartement neuf à Blagnac - ref 178-5" data-image="/demo/images/5.jpg"></div>
-    <input type=button value="AJOUT FAVORIS" id="elephantAdd" />
+    <input type=button value="AJOUT FAVORIS" id="elephant_favorite" />
     <div id="elephanto"></div>
     <script>
     $(document).ready(function() {
       $.fn.elephant({
-        triggers: new Array('.trigger1', '.trigger2'),
-        activeDuration: 5
+        title: 'Sélection personnalisée',
+        entryName: {
+          'one': ' bien',
+          'several': ' biens'
+        },
+        triggers: new Array('.trigger1', '.trigger2', 'trigger3'),
+        refreshRender: 1,
+        path: 'http://dev.elephant.immo9.pro',
       });
     });
     </script>

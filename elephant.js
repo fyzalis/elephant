@@ -9,6 +9,8 @@ $(document).ready(function() {
 
     $.fn.elephant = function(options) {
 
+
+
       var settings = $.extend({
         triggers: new Array(),
         activeDuration: 30,
@@ -605,11 +607,14 @@ $(document).ready(function() {
       //Load external files
       var loadTheme = function() {
         $("head").append($("<link rel='stylesheet' href='" + settings.path + "/themes/" + settings.theme + "/" + settings.theme + ".min.css' type='text/css' media='screen' id='cssTheme' />"));
-        document.onreadystatechange = function() {
+        /*document.onreadystatechange = function() {
           if (document.readyState === "complete") {
             $('div#elephanto').css('display', 'flex');
           }
-        };
+        };*/
+        $(document).ready(function () {
+            $('div#elephanto').css('display', 'flex');
+        });
       }
       var loadLang = function() {
         $.ajax({
