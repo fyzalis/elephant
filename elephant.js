@@ -7,6 +7,8 @@
 $(document).ready(function() {
   (function($) {
 
+    //AAAA
+
     $.fn.elephant = function(options) {
 
       var settings = $.extend({
