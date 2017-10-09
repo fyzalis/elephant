@@ -607,13 +607,15 @@ $(document).ready(function() {
       //Load external files
       var loadTheme = function() {
         $("head").append($("<link rel='stylesheet' href='" + settings.path + "/themes/" + settings.theme + "/" + settings.theme + ".min.css' type='text/css' media='screen' id='cssTheme' />"));
-        /*document.onreadystatechange = function() {
+        /*
+        document.onreadystatechange = function() {
           if (document.readyState === "complete") {
             $('div#elephanto').css('display', 'flex');
           }
-        };*/
+        };
+        */
         $(document).ready(function () {
-            $('div#elephanto').css('display', 'flex');
+          $('div#elephanto').css('display', 'flex');
         });
       }
       var loadLang = function() {
@@ -628,9 +630,7 @@ $(document).ready(function() {
           }
         });
       }
-
-
-
+      
 
 
       //RUN
@@ -672,8 +672,6 @@ $(document).ready(function() {
           if (!elephantExists()) {
             createElephant();
           }
-          //loadTheme();
-          //loadLang();
           loadElephant();
           computePosition();
           displayData();
